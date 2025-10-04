@@ -1,0 +1,21 @@
+:root {
+  --color-bg: #f2f7f8;
+  --color-primary: #28a0bd;
+  --color-secondary: #155565;
+  --color-armony: #bcd6dc;
+}
+
+* {
+  box-sizing: border-box;
+
+  font-family: "Arial", sans-serif;
+  font-weight: 900;
+}
+
+body {
+  background-color: var(--color-bg);
+}
+
+h11 {
+  color: var(--color-primary);
+}
