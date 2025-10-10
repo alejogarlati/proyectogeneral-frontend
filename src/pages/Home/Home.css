@@ -1,10 +1,3 @@
-:root {
-  --color-bg: #292929;
-  --color-primary: #ffc300;
-  --color-secondary: #b88d00;
-  --color-armony: #fff5d6;
-}
-
 body {
   background-color: var(--color-bg);
 }

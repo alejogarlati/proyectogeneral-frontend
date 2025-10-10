@@ -5,7 +5,7 @@ const Home = () => {
   return (
     <body>
       <div>
-        <section className="flex flex-col gap-5 items-center justify-center h-screen text-center mt-50">
+        <section className="flex flex-col gap-5 items-center justify-center h-screen text-center">
           <div className='logo-container'>
             <img src="./src/assets/logo_kiosco_ampus.png" alt="Logo Kiosco Campus" className="mx-auto mb-4" />
             </div>
