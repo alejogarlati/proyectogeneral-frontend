@@ -26,7 +26,7 @@ export const FormLogin1 = () => {
             </label>
             <input
               id="passUsuario"
-              type="text"
+              type="password"
               placeholder="Tu contraseña"
               className="text-sm font-normal p-2 border rounded bg-(--color-armony) p-2 focus:outline-(--color-secondary) transition"
             />
