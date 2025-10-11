@@ -6,15 +6,6 @@
   --color-primary: #ffc300;
   --color-secondary: #b88d00;
   --color-armony: #fff5d6;
-}
-
-* {
-  box-sizing: border-box;
   font-family: 'Inter', sans-serif;
   font-weight: 600;
-  background-color: var(--color-armony);
-}
-
-h1 {
-  color: var(--color-secondary);
 }
