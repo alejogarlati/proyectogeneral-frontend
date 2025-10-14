@@ -1,16 +1,70 @@
-# React + Vite
+# 🎓 Proyecto de Tesis
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+¡Bienvenido al repositorio de **proyectogeneral-frontend**!  
+La interfaz desarrollada para el proyecto de tesis de **Alejo Garlati**.
 
-Currently, two official plugins are available:
+---
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## ✨ Descripción
 
-## React Compiler
+Este proyecto busca **facilitar la gestión y visualización de datos** relevantes para la investigación de tesis.  
+La aplicación es **intuitiva**, **eficiente** y **escalable**, permitiendo a los usuarios interactuar con la información de manera sencilla y moderna.
 
-The React Compiler is not enabled on this template. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+---
 
-## Expanding the ESLint configuration
+## 🚀 Características
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+- 💻 Interfaz moderna y responsiva
+- 📊 Visualización de datos en tiempo real
+- 👥 Gestión de usuarios y roles
+- 🔗 Integración con APIs externas
+- 🔒 Seguridad y protección de datos
+
+---
+
+## 🛠️ Tecnologías utilizadas
+
+- ⚛️ **React** — Interfaz de usuario
+- 📦 **Redux** — Manejo de estado global
+- 🎨 **Material UI** — Componentes visuales
+- 🔌 **Axios** — Comunicación con APIs
+
+---
+
+## 📦 Instalación
+
+1. Clona el repositorio:
+    ```bash
+    git clone https://github.com/alejogarlati/proyectogeneral-frontend.git
+    ```
+2. Instala las dependencias:
+    ```bash
+    npm install
+    ```
+3. Inicia la aplicación:
+    ```bash
+    npm start
+    ```
+
+---
+
+## 🤝 Contribución
+
+¡Las contribuciones son **bienvenidas**!  
+Si deseas colaborar, abre un **issue** o envía un **pull request**.
+
+---
+
+## 👤 Autor
+
+**Alejo Garlati**
+
+---
+
+## 📄 Licencia
+
+Este proyecto está bajo la licencia **MIT**.
+
+---
+
+> ¡Gracias por visitar el repositorio y apoyar este proyecto de tesis! 🚀
