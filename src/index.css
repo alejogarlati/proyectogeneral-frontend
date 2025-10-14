@@ -1,1 +1,11 @@
+@import url('https://fonts.googleapis.com/css2?family=Fustat:wght@200..800&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
 @import "tailwindcss";
+
+:root {
+  --color-bg: #292929;
+  --color-primary: #ffc300;
+  --color-secondary: #b88d00;
+  --color-armony: #fff5d6;
+  font-family: 'Inter', sans-serif;
+  font-weight: 600;
+}
