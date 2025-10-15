@@ -1,9 +1,10 @@
-import React from "react";
+import React, { use } from "react";
 import { Footer } from "../Footer/Footer.jsx";
-import {useForm} from "react-hook-form";
+import { useForm } from "react-hook-form";
+import { getLogin } from "../../services/services.jsx";
+import { useNavigate } from "react-router-dom";
 
 export const FormLogin1 = () => {
-
   const {
     register,
     handleSubmit,
@@ -11,11 +12,26 @@ export const FormLogin1 = () => {
     watch,
     reset,
     resetField,
-    setValue
+    setValue,
   } = useForm();
 
+  const navigate = useNavigate();
 
-  const onSubmit = handleSubmit((data) => console.log(data));
+  const onSubmit = handleSubmit(async (data) => {
+    const user = await getLogin(data);
+    // console.log(user);
+    try {
+      if (user.data.data) {
+        alert("Inicio de sesión exitoso");
+        navigate("/home");
+      } else {
+        alert("Error en el inicio de sesión");
+      }
+    } catch (error) {
+      console.error(error);
+      alert("Error interno: ", error.message);
+    }
+  });
 
   return (
     <div className="form-login-1 flex flex-col gap-12 items-center justify-center h-[92dvh]">
@@ -23,35 +39,36 @@ export const FormLogin1 = () => {
         <h1 className="text-5xl text-(--color-secondary) max-w-85 text-center">
           Formulario de Inicio de Sesión
         </h1>
-        <form onSubmit={onSubmit} className="flex flex-col gap-6 text-(--color-secondary)">
+        <form
+          onSubmit={onSubmit}
+          className="flex flex-col gap-6 text-(--color-secondary)"
+        >
           <fieldset className="flex flex-col gap-2">
             <label htmlFor="nombreUsuario" className="ml-2 text-xs">
               Usuario
             </label>
             <input
-              id="nombreUsuario"
+              id="email"
               type="text"
-              placeholder="Tu nombre de usuario"
+              placeholder="Tu correo electrónico"
               className="text-sm font-normal p-2 border rounded bg-(--color-armony) p-2 focus:outline-(--color-secondary) transition"
-              {...register("nombreUsuario", { 
-                  required: "Nombre de usuario inválido", 
-                  maxLength: {value: 20, message: "El nombre de usuario no puede exceder los 20 caracteres"}
-                  })
-              }
+              {...register("email", {
+                required: "Correo inválido",
+              })}
             />
           </fieldset>
           <fieldset className="flex flex-col gap-2">
-            <label htmlFor="passUsuario" className="ml-2 text-xs ">
+            <label htmlFor="password" className="ml-2 text-xs ">
               Contraseña
             </label>
             <input
-              id="passUsuario"
+              id="password"
               type="password"
               placeholder="Tu contraseña"
               className="text-sm font-normal p-2 border rounded bg-(--color-armony) p-2 focus:outline-(--color-secondary) transition"
-              {...register("passUsuario", {
+              {...register("password", {
                 required: "Contraseña inválida",
-                maxLength: {value: 20, message: "La contraseña no puede exceder los 20 caracteres"}
+                maxLength: { value: 20 },
               })}
             />
           </fieldset>
