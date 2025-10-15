@@ -1,11 +1,11 @@
 import React from "react";
-import "./Home.css";
+import "./Welcome.css";
 import { FormLogin1 } from "../../components/LoginForm/FormLogin1.jsx";
 import { Navbar } from "../../components/Navbar/Navbar.jsx";
 import { Footer } from "../../components/Footer/Footer.jsx";
 import { Link } from "react-router-dom";
 
-const Home = () => {
+const Welcome = () => {
   return (
     <section className="home min-h-screen bg-(--color-armony)">
       <div className="container mx-auto px-4">
@@ -32,4 +32,4 @@ const Home = () => {
   );
 };
 
-export default Home;
+export default Welcome;
