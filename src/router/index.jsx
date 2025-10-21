@@ -4,6 +4,7 @@ import Layout from "../pages/Layout/Layout.jsx";
 import { loader as layoutLoader } from "../pages/Layout/Layout.jsx";
 import { Home } from "../pages/Home/Home.jsx";
 import { loader as homeLoader } from "../pages/Home/Home.jsx";
+import { Login } from "../pages/Login/Login.jsx";
 
 export const router = createBrowserRouter([
     {
@@ -25,7 +26,11 @@ export const router = createBrowserRouter([
     },
     {
         path: "/welcome",
-        element: <Welcome/>,
-    }
+        element: <Welcome/>
+    },
+    {
+        path: "/login",
+        element: <Login/>
+    },
 
 ])
