@@ -1,0 +1,31 @@
+import { Routes, Route, createBrowserRouter } from "react-router-dom";
+import Welcome from "../pages/Welcome/Welcome.jsx";
+import Layout from "../pages/Layout/Layout.jsx";
+import { loader as layoutLoader } from "../pages/Layout/Layout.jsx";
+import { Home } from "../pages/Home/Home.jsx";
+import { loader as homeLoader } from "../pages/Home/Home.jsx";
+
+export const router = createBrowserRouter([
+    {
+        path: "/",
+        element: <Layout/> ,
+        errorElement: <div> Error 404 Not Found </div>,
+        loader: layoutLoader,
+        children: 
+        [{
+            index: true,
+            element: <Home/>,
+            loader: homeLoader,
+        },
+        {
+        path: "/products",
+        element: <div> Products Page </div>,
+        }]
+
+    },
+    {
+        path: "/welcome",
+        element: <Welcome/>,
+    }
+
+])
