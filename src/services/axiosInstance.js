@@ -9,9 +9,11 @@ const axiosInstance = axios.create({
 
 axiosInstance.interceptors.request.use(
   (config) => {
-    const accessToken = localStorage.getItem("accessToken");
+    console.log("LInterceptor de Axios activado");
+    const accessToken = sessionStorage.getItem("accessToken");
+    console.log("Access Token del LInterceptor:", accessToken);
     if (accessToken) {
-      config.headers.Authorization = `Bearer ${AccessToken}`;
+      config.headers.Authorization = `Bearer ${accessToken}`;
     }
     return config;
   },

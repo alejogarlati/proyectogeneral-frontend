@@ -19,12 +19,12 @@ export const FormLogin1 = () => {
 
   const onSubmit = handleSubmit(async (data) => {
     const user = await getLogin(data);
-    console.log(data);
-    // console.log(user);
+
     try {
-      if (user.data.data) {
+      if (user.data.success) {
         alert("Inicio de sesión exitoso");
-        navigate("/home");
+        sessionStorage.setItem("accessToken", user.data.accessToken);
+        //navigate("/home");
       } else {
         alert("Error en el inicio de sesión");
       }
