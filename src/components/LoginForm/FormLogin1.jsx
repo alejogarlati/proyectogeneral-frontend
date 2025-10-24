@@ -36,10 +36,13 @@ export const FormLogin1 = () => {
 
   return (
     <div className="form-login-1 flex flex-col gap-12 items-center justify-center h-[92dvh]">
-      <div className="bg-white p-18 flex flex-col gap-8 rounded-xl shadow-xl">
-        <h1 className="text-5xl text-(--color-secondary) max-w-85 text-center">
-          Formulario de Inicio de Sesión
-        </h1>
+      <div className="flex flex-col gap-12 items-center justify-center bg-white p-18 flex flex-col gap-8 rounded-xl shadow-xl">
+        <div className="logo-container">
+          <img
+            src="./src/assets/logo_tradyOne_png.png"
+            alt="Logo Kiosco Campus"
+          />
+        </div>
         <form
           onSubmit={onSubmit}
           className="flex flex-col gap-6 text-(--color-secondary)"
@@ -75,7 +78,7 @@ export const FormLogin1 = () => {
           </fieldset>
           <button
             type="submit"
-            className="mt-4 p-2 bg-(--color-secondary) rounded transition text-(--color-armony)"
+            className="mt-4 p-2 bg-(--color-primary) rounded transition text-(--color-bg)"
           >
             Iniciar Sesión
           </button>
