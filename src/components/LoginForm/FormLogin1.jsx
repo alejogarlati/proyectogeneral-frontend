@@ -1,7 +1,7 @@
 import React, { use } from "react";
 import { Footer } from "../Footer/Footer.jsx";
 import { useForm } from "react-hook-form";
-import { getLogin } from "../../services/services.jsx";
+import { getLogin } from "../../services/services.js";
 import { useNavigate } from "react-router-dom";
 
 export const FormLogin1 = () => {
@@ -18,13 +18,12 @@ export const FormLogin1 = () => {
   const navigate = useNavigate();
 
   const onSubmit = handleSubmit(async (data) => {
-    const user = await getLogin(data);
-
     try {
+      const user = await getLogin(data);
       if (user.data.success) {
         alert("Inicio de sesión exitoso");
         sessionStorage.setItem("accessToken", user.data.accessToken);
-        //navigate("/home");
+        navigate("/");
       } else {
         alert("Error en el inicio de sesión");
       }

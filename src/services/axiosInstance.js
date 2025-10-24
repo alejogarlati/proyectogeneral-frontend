@@ -1,5 +1,5 @@
 import axios from "axios";
-import { API_URL } from "../../config.js";
+import { API_URL } from "../config.js";
 
 
 const axiosInstance = axios.create({
@@ -9,9 +9,7 @@ const axiosInstance = axios.create({
 
 axiosInstance.interceptors.request.use(
   (config) => {
-    console.log("LInterceptor de Axios activado");
     const accessToken = sessionStorage.getItem("accessToken");
-    console.log("Access Token del LInterceptor:", accessToken);
     if (accessToken) {
       config.headers.Authorization = `Bearer ${accessToken}`;
     }

@@ -22,11 +22,14 @@ const Layout = () => {
 export default Layout
 
 export const loader = () => {
-  throw new Response("Not authorized", { 
+  if (!sessionStorage.getItem("accessToken")) {
+    throw new Response("Not authorized", { 
     status: 302,
     headers: {
       Location: "/welcome"
     } 
-  });
+    });
+  }
+
   return null;
 }
