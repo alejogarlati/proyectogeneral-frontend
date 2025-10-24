@@ -21,6 +21,7 @@ export const router = createBrowserRouter([
       {
         path: "/products",
         element: <div> Products Page </div>,
+<<<<<<< HEAD
       },
     ],
   },
@@ -33,3 +34,18 @@ export const router = createBrowserRouter([
     element: <Login />,
   },
 ]);
+=======
+        }]
+
+    },
+    {
+        path: "/welcome",
+        element: <Welcome/>
+    },
+    {
+        path: "/login",
+        element: <Login/>
+    },
+
+])
+>>>>>>> af6fb32056dfff1378a7c2a8e97c2b5e7935f499
