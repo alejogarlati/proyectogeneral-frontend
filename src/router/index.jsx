@@ -1,5 +1,4 @@
 import { Routes, Route, createBrowserRouter } from "react-router-dom";
-import Welcome from "../pages/Welcome/Welcome.jsx";
 import Layout from "../pages/Layout/Layout.jsx";
 import { loader as layoutLoader } from "../pages/Layout/Layout.jsx";
 import { Home } from "../pages/Home/Home.jsx";
@@ -23,10 +22,6 @@ export const router = createBrowserRouter([
         element: <div> Products Page </div>,
       },
     ],
-  },
-  {
-    path: "/welcome",
-    element: <Welcome />,
   },
   {
     path: "/login",

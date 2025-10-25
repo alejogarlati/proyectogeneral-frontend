@@ -1,13 +1,12 @@
 import React from "react";
-import { FormLogin1 } from "../../components/LoginForm/FormLogin1.jsx";
-import { Navbar } from "../../components/Navbar/Navbar.jsx";
+import { FormLogin } from "../../components/LoginForm/FormLogin.jsx";
 
 export const Login = () => {
   return (
     <div className="bg-(--color-armony)">
-      <Navbar />
+      {/* <Sidebar /> */}
       <div className="login-page flex flex-col items-center justify-center">
-        <FormLogin1 />
+        <FormLogin />
       </div>
     </div>
   );
