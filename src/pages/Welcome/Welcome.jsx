@@ -8,9 +8,9 @@ import { Link } from "react-router-dom";
 const Welcome = () => {
   return (
     <section className="home min-h-screen bg-(--color-armony)">
-      <div className="container mx-auto px-4">
+      <div>
         <Navbar />
-        <section className="flex flex-col gap-12 items-center justify-center text-center min-h-[92dvh]">
+        <section className="flex flex-col gap-12 items-center justify-center text-center min-h-[94dvh]">
           <div className="flex flex-col gap-4 items-center justify-center text-center bg-white p-16 rounded-xl shadow-xl">
             <div className="logo-container mb-2">
               <img
