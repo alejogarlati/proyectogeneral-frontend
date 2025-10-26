@@ -4,6 +4,7 @@ import { useForm } from "react-hook-form";
 import { getLogin } from "../../services/services.js";
 import { useNavigate } from "react-router-dom";
 import "./FormLogin.css";
+import toast from "react-hot-toast";
 
 export const FormLogin = () => {
   const {
@@ -21,16 +22,16 @@ export const FormLogin = () => {
   const onSubmit = handleSubmit(async (data) => {
     try {
       const user = await getLogin(data);
+
       if (user.data.success) {
-        alert("Inicio de sesión exitoso");
+        toast.success("Inicio de sesión exitoso");
         sessionStorage.setItem("accessToken", user.data.accessToken);
         navigate("/");
       } else {
-        alert("Error en el inicio de sesión");
+        toast.error("Error en el inicio de sesión");
       }
     } catch (error) {
-      console.error(error);
-      alert("Error interno: ", error.message);
+      toast.error("Error en el inicio de sesión");
     }
   });
 

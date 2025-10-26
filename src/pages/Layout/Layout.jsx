@@ -10,6 +10,8 @@ import {
   SidebarTrigger,
 } from "@/components/ui/sidebar";
 
+import { Toaster } from "react-hot-toast";
+
 // tu sidebar (el que ya tenés con <Sidebar>... dentro)
 import { AppSidebar } from "../../components/Sidebar/Sidebar.jsx"; // ajustá la ruta
 
@@ -17,17 +19,16 @@ export default function Layout() {
   return (
     <SidebarProvider>
       <AppSidebar />
-
       <SidebarInset>
         <header className="flex h-14 items-center gap-2 px-4 border-b">
-          <SidebarTrigger />
-          <h1 className="text-lg font-medium">Mi App</h1>
+          <SidebarTrigger/>
+          <h1> | Mi app</h1>
         </header>
-
-        <main className="p-4 min-h-screen">
+        <main className="p-4">
           <Outlet />
         </main>
       </SidebarInset>
+      <Toaster />
     </SidebarProvider>
   );
 }

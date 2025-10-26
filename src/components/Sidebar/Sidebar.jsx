@@ -57,6 +57,8 @@ import {
 } from "lucide-react";
 import { use } from "react";
 
+import logoTrady from "@/assets/logo_tradyOne_png.png";
+
 const testUser = {
   name: "Alejo Garlati",
   email: "agarlati@gmail.com",
@@ -186,7 +188,7 @@ const items = [
       },
       {
         title: "Roles y permisos",
-        url: "/usuarios/roles",
+        url: "/usuarios/roles-permisos",
         rol: 1,
       },
     ],
@@ -210,6 +212,15 @@ export function AppSidebar() {
     <Sidebar variant="inset" collapsible="icon">
       <SidebarContent>
         <SidebarGroup>
+          <SidebarGroupLabel className='my-4'>
+            <div className="w-full flex flex-row items-start">
+              <img
+                src={logoTrady}
+                alt="Logo Sidebar"
+                className="h-8 object-contain"
+              />
+            </div>
+          </SidebarGroupLabel>
           <SidebarGroupLabel>Menú Principal</SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>
@@ -241,10 +252,7 @@ export function AppSidebar() {
                         <SidebarMenuSub>
                           {item.submenu.map((itemsub) => (
                             <SidebarMenuSubItem key={itemsub.title}>
-                              <SidebarMenuSubButton
-                                asChild
-                                //   isActive={item.isActive}
-                              >
+                              <SidebarMenuSubButton asChild>
                                 <Link to={itemsub.url}>{itemsub.title}</Link>
                               </SidebarMenuSubButton>
                             </SidebarMenuSubItem>
@@ -302,15 +310,19 @@ export function AppSidebar() {
               </DropdownMenuLabel>
               <DropdownMenuSeparator />
               <DropdownMenuGroup>
-                <DropdownMenuItem className="py-2">
-                  <CircleUserRound />
-                  Cuenta
-                </DropdownMenuItem>
+                <Link to="/usuarios/cuenta">
+                  <DropdownMenuItem className="py-2">
+                    <CircleUserRound />
+                    Cuenta
+                  </DropdownMenuItem>
+                </Link>
               </DropdownMenuGroup>
-              <DropdownMenuItem className="py-2">
-                <LogOut />
-                <button onClick={logout}>Cerrar sesión</button>
-              </DropdownMenuItem>
+              <button onClick={logout} className="w-full">
+                <DropdownMenuItem className="py-2">
+                  <LogOut />
+                  Cerrar sesión
+                </DropdownMenuItem>
+              </button>
             </DropdownMenuContent>
           </DropdownMenu>
         </SidebarFooter>

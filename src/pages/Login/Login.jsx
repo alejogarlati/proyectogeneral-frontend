@@ -1,5 +1,6 @@
 import React from "react";
 import { FormLogin } from "../../components/LoginForm/FormLogin.jsx";
+import { Toaster } from "react-hot-toast";
 
 export const Login = () => {
   return (
@@ -8,6 +9,7 @@ export const Login = () => {
       <div className="login-page flex flex-col items-center justify-center">
         <FormLogin />
       </div>
+      <Toaster />
     </div>
   );
 };
