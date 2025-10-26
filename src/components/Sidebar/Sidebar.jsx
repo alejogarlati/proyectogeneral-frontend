@@ -59,22 +59,20 @@ import { use } from "react";
 
 import logoTrady from "@/assets/logo_tradyOne_png.png";
 
-const testUser = {
-  name: "Alejo Garlati",
-  email: "agarlati@gmail.com",
-  avatar: null,
-  rol: 1,
-};
-
 const items = [
   {
     title: "Home",
     url: "/",
     icon: Home,
-    rol: [],
+    rol: [1, 2, 6, 8],
+    haveLink: true,
   },
   {
     title: "Proveedores",
+    url: "/proveedores",
+    icon: Truck,
+    rol: [1, 6, 8],
+    haveLink: false,
     submenu: [
       {
         title: "Listado",
@@ -87,12 +85,13 @@ const items = [
         rol: [1, 6, 8],
       },
     ],
-    url: "/proveedores",
-    icon: Truck,
-    rol: [1, 6, 8],
   },
   {
     title: "Productos",
+    url: "/productos",
+    icon: PackageSearch,
+    rol: [1, 2, 6, 8],
+    haveLink: false,
     submenu: [
       {
         title: "Listado general",
@@ -110,12 +109,13 @@ const items = [
         rol: [1, 8],
       },
     ],
-    url: "/productos",
-    icon: PackageSearch,
-    rol: [1, 2, 6, 8],
   },
   {
     title: "Clientes",
+    url: "/clientes",
+    icon: BookUser,
+    rol: [1, 2, 6],
+    haveLink: false,
     submenu: [
       {
         title: "Listado",
@@ -128,12 +128,13 @@ const items = [
         rol: [1, 6],
       },
     ],
-    url: "/clientes",
-    icon: BookUser,
-    rol: [1, 2, 6],
   },
   {
     title: "Ventas",
+    url: "/ventas",
+    icon: BadgeDollarSign,
+    rol: [1, 2, 6],
+    haveLink: false,
     submenu: [
       {
         title: "Nueva venta",
@@ -151,12 +152,13 @@ const items = [
         rol: [1, 6],
       },
     ],
-    url: "/ventas",
-    icon: BadgeDollarSign,
-    rol: [1, 2, 6],
   },
   {
     title: "Compras",
+    url: "/compras",
+    icon: ShoppingBasket,
+    rol: [1, 6, 8],
+    haveLink: false,
     submenu: [
       {
         title: "Nueva compra",
@@ -174,27 +176,25 @@ const items = [
         rol: [1, 6, 8],
       },
     ],
-    url: "/compras",
-    icon: ShoppingBasket,
-    rol: [1, 6, 8],
   },
   {
     title: "Usuarios",
+    url: "/usuarios",
+    icon: Settings,
+    rol: [1],
+    haveLink: false,
     submenu: [
       {
         title: "Gestionar cuentas",
         url: "/usuarios/gestionar",
-        rol: 1,
+        rol: [1],
       },
       {
         title: "Roles y permisos",
         url: "/usuarios/roles-permisos",
-        rol: 1,
+        rol: [1],
       },
     ],
-    url: "configuracion",
-    icon: Settings,
-    rol: ["admin", "vendedor"],
   },
 ];
 
@@ -204,18 +204,18 @@ export function AppSidebar() {
   const { pathname } = useLocation();
   const navigate = useNavigate();
 
-  const handleHome = () => {
+  const handleClick = (url, haveLink) => {
     if (state === "collapsed") {
       toggleSidebar();
     }
-
-    console.log(pathname);
-
-    if (pathname !== "/") navigate("/");
+    if (haveLink) navigate(url);
   };
+
+  const activeUser = JSON.parse(sessionStorage.getItem("user"))
 
   const logout = () => {
     sessionStorage.removeItem("accessToken");
+    sessionStorage.removeItem("user");
     navigate("/");
   };
 
@@ -242,10 +242,12 @@ export function AppSidebar() {
                   key={item.title}
                   defaultOpen={index === 0}
                 >
-                  <SidebarMenuItem>
+                   { item.rol.includes(activeUser.userRoleId) &&   
+                      (
+                        <SidebarMenuItem>
                     {/* !! IMPORTANTE: agregar animaciones facheras */}
                     <CollapsibleTrigger className="w-full">
-                      <SidebarMenuButton asChild onClick={handleHome}>
+                      <SidebarMenuButton asChild onClick={() => handleClick(item.url, item.haveLink)}>
                         <span>
                           <item.icon />
                           {item.title}{" "}
@@ -261,17 +263,21 @@ export function AppSidebar() {
                     {item.submenu?.length ? (
                       <CollapsibleContent>
                         <SidebarMenuSub>
-                          {item.submenu.map((itemsub) => (
-                            <SidebarMenuSubItem key={itemsub.title}>
-                              <SidebarMenuSubButton asChild>
-                                <Link to={itemsub.url}>{itemsub.title}</Link>
-                              </SidebarMenuSubButton>
-                            </SidebarMenuSubItem>
+                          { item.submenu.map((itemsub) => ( 
+                               itemsub.rol.includes(activeUser.userRoleId) &&
+                               ( 
+                                <SidebarMenuSubItem key={itemsub.title}>
+                                  <SidebarMenuSubButton asChild>
+                                    <Link to={itemsub.url}>{itemsub.title}</Link>
+                                  </SidebarMenuSubButton>
+                                </SidebarMenuSubItem>
+                            )
                           ))}
-                        </SidebarMenuSub>
+                         </SidebarMenuSub>
                       </CollapsibleContent>
                     ) : null}
-                  </SidebarMenuItem>
+                        </SidebarMenuItem>
+                    )}
                 </Collapsible>
               ))}
             </SidebarMenu>
@@ -285,13 +291,13 @@ export function AppSidebar() {
                 className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground"
               >
                 <Avatar className="h-8 w-8 rounded-lg grayscale">
-                  <AvatarImage src={testUser.avatar} alt={testUser.name} />
+                  <AvatarImage src={activeUser.avatar} alt={activeUser.userName} />
                   <AvatarFallback className="rounded-lg">AG</AvatarFallback>
                 </Avatar>
                 <div className="grid flex-1 text-left text-sm leading-tight">
-                  <span className="truncate font-medium">{testUser.name}</span>
+                  <span className="truncate font-medium">{activeUser.userName}</span>
                   <span className="text-muted-foreground truncate text-xs">
-                    {testUser.email}
+                    {activeUser.userRoleName}
                   </span>
                 </div>
                 <EllipsisVertical className="ml-auto size-4" />
@@ -306,15 +312,18 @@ export function AppSidebar() {
               <DropdownMenuLabel className="p-0 font-normal">
                 <div className="flex items-center gap-2 px-1 py-1.5 text-left text-sm">
                   <Avatar className="h-8 w-8 rounded-lg">
-                    <AvatarImage src={testUser.avatar} alt={testUser.name} />
+                    <AvatarImage src={activeUser.avatar} alt={activeUser.userName} />
                     <AvatarFallback className="rounded-lg">AG</AvatarFallback>
                   </Avatar>
                   <div className="grid flex-1 text-left text-sm leading-tight">
                     <span className="truncate font-medium">
-                      {testUser.name}
+                      {activeUser.userName}
                     </span>
                     <span className="text-muted-foreground truncate text-xs">
-                      {testUser.email}
+                      {activeUser.userMail}
+                    </span>
+                    <span className="text-muted-foreground truncate text-xs">
+                      {activeUser.userRoleName}
                     </span>
                   </div>
                 </div>

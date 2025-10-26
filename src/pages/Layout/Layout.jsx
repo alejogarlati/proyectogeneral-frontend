@@ -55,7 +55,6 @@ export const loader = () => {
 
   const decodedToken = jwtDecode(token);
   const currentTime = Date.now() / 1000;
-  console.log("Expiracion: ", decodedToken.exp, " Current Time: ", currentTime);
   if (decodedToken.exp < currentTime) {
     sessionStorage.removeItem("accessToken");
     alert("Sesión expirada. Por favor, inicie sesión nuevamente.");

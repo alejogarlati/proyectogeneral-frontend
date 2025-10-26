@@ -26,6 +26,7 @@ export const FormLogin = () => {
       if (user.data.success) {
         toast.success("Inicio de sesión exitoso");
         sessionStorage.setItem("accessToken", user.data.accessToken);
+        sessionStorage.setItem("user", JSON.stringify(user.data.data));
         navigate("/");
       } else {
         toast.error("Error en el inicio de sesión");
