@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 import {
   LogOut,
@@ -6,6 +6,10 @@ import {
   CircleUserRound,
   Bell,
   EllipsisVertical,
+  Minus,
+  Plus,
+  ChevronDown,
+  ChevronRight,
 } from "lucide-react";
 
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -21,6 +25,12 @@ import {
 } from "@/components/ui/dropdown-menu";
 
 import {
+  Collapsible,
+  CollapsibleTrigger,
+  CollapsibleContent,
+} from "@/components/ui/collapsible";
+
+import {
   Sidebar,
   SidebarContent,
   SidebarFooter,
@@ -31,13 +41,9 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
   useSidebar,
-  Collapsible,
-  CollapsibleMenuItem,
-  CollapsibleTrigger,
-  CollapsibleMenuButton,
-  CollapsibleContent,
   SidebarMenuSub,
   SidebarMenuSubItem,
+  SidebarMenuSubButton,
 } from "@/components/ui/sidebar";
 
 import {
@@ -49,66 +55,157 @@ import {
   Truck,
   ShoppingBasket,
 } from "lucide-react";
+import { use } from "react";
 
 const testUser = {
   name: "Alejo Garlati",
   email: "agarlati@gmail.com",
   avatar: null,
-  rol: null,
+  rol: 1,
 };
 
 const items = [
   {
     title: "Home",
-    submenu: [
-      { title: "Subitem 1", url: "/subitem1" },
-      { title: "Subitem 2", url: "/subitem2" },
-    ],
     url: "/",
     icon: Home,
-    rol: undefined,
-  },
-  {
-    title: "Productos",
-    submenu: [{}],
-    url: "/productos",
-    icon: PackageSearch,
-    rol: undefined,
-  },
-  {
-    title: "Clientes",
-    url: "/clientes",
-    icon: BookUser,
-    rol: undefined,
-  },
-  {
-    title: "Ventas",
-    url: "/ventas",
-    icon: BadgeDollarSign,
-    rol: undefined,
-  },
-  {
-    title: "Compras",
-    url: "/compras",
-    icon: ShoppingBasket,
-    rol: undefined,
+    rol: [],
   },
   {
     title: "Proveedores",
+    submenu: [
+      {
+        title: "Listado",
+        url: "/proveedores/listado",
+        rol: [1, 6, 8],
+      },
+      {
+        title: "Informes",
+        url: "/proveedores/informes",
+        rol: [1, 6, 8],
+      },
+    ],
     url: "/proveedores",
     icon: Truck,
-    rol: undefined,
+    rol: [1, 6, 8],
   },
   {
-    title: "Configuración",
+    title: "Productos",
+    submenu: [
+      {
+        title: "Listado general",
+        url: "/productos/listado",
+        rol: [1, 2, 6, 8],
+      },
+      {
+        title: "Precios",
+        url: "/productos/precios",
+        rol: [1, 8],
+      },
+      {
+        title: "Categorías",
+        url: "/productos/categorias",
+        rol: [1, 8],
+      },
+    ],
+    url: "/productos",
+    icon: PackageSearch,
+    rol: [1, 2, 6, 8],
+  },
+  {
+    title: "Clientes",
+    submenu: [
+      {
+        title: "Listado",
+        url: "/clientes/listado",
+        rol: [1, 2, 6],
+      },
+      {
+        title: "Informes",
+        url: "/clientes/informes",
+        rol: [1, 6],
+      },
+    ],
+    url: "/clientes",
+    icon: BookUser,
+    rol: [1, 2, 6],
+  },
+  {
+    title: "Ventas",
+    submenu: [
+      {
+        title: "Nueva venta",
+        url: "/ventas/nueva",
+        rol: [1, 2],
+      },
+      {
+        title: "Listado",
+        url: "/ventas/listado",
+        rol: [1, 2, 6],
+      },
+      {
+        title: "Informes",
+        url: "/ventas/informes",
+        rol: [1, 6],
+      },
+    ],
+    url: "/ventas",
+    icon: BadgeDollarSign,
+    rol: [1, 2, 6],
+  },
+  {
+    title: "Compras",
+    submenu: [
+      {
+        title: "Nueva compra",
+        url: "/compras/nueva",
+        rol: [1, 8],
+      },
+      {
+        title: "Listado",
+        url: "/compras/listado",
+        rol: [1, 6, 8],
+      },
+      {
+        title: "Informes",
+        url: "/compras/informes",
+        rol: [1, 6, 8],
+      },
+    ],
+    url: "/compras",
+    icon: ShoppingBasket,
+    rol: [1, 6, 8],
+  },
+  {
+    title: "Usuarios",
+    submenu: [
+      {
+        title: "Gestionar cuentas",
+        url: "/usuarios/gestionar",
+        rol: 1,
+      },
+      {
+        title: "Roles y permisos",
+        url: "/usuarios/roles",
+        rol: 1,
+      },
+    ],
     url: "configuracion",
     icon: Settings,
-    rol: undefined,
+    rol: ["admin", "vendedor"],
   },
 ];
 
 export function AppSidebar() {
   const { isMobile } = useSidebar();
+
+  const navigate = useNavigate();
+
+  const logout = () => {
+    sessionStorage.removeItem("accessToken");
+    navigate("/");
+  };
+
   return (
     <Sidebar variant="inset" collapsible="icon">
       <SidebarContent>
@@ -117,20 +214,44 @@ export function AppSidebar() {
           <SidebarGroupContent>
             <SidebarMenu>
               {/* agregar renderizado condicional según user.rol */}
-              {items.map((item) => (
-                <Collapsible defaultOpen className="group/collapsible">
-                  <SidebarMenuItem key={item.title}>
-                    <CollapsibleTrigger asChild>
+              {items.map((item, index) => (
+                <Collapsible
+                  className="group/collapsible"
+                  key={item.title}
+                  defaultOpen={index === 0}
+                >
+                  <SidebarMenuItem>
+                    {/* !! IMPORTANTE: agregar animaciones facheras */}
+                    <CollapsibleTrigger className="w-full">
                       <SidebarMenuButton asChild>
-                        <Link to={item.url}>
+                        <span>
                           <item.icon />
-                          <span>{item.title}</span>
-                        </Link>
-                        <SidebarMenuSub>
-                          <SidebarMenuSubItem />
-                        </SidebarMenuSub>
+                          {item.title}{" "}
+                          {item.submenu?.length ? (
+                            <div className="w-full">
+                              <ChevronRight className="w-4 h-4 ml-auto group-data-[state=open]/collapsible:hidden" />
+                              <ChevronDown className="w-4 h-4 ml-auto group-data-[state=closed]/collapsible:hidden" />
+                            </div>
+                          ) : null}
+                        </span>
                       </SidebarMenuButton>
                     </CollapsibleTrigger>
+                    {item.submenu?.length ? (
+                      <CollapsibleContent>
+                        <SidebarMenuSub>
+                          {item.submenu.map((itemsub) => (
+                            <SidebarMenuSubItem key={itemsub.title}>
+                              <SidebarMenuSubButton
+                                asChild
+                                //   isActive={item.isActive}
+                              >
+                                <Link to={itemsub.url}>{itemsub.title}</Link>
+                              </SidebarMenuSubButton>
+                            </SidebarMenuSubItem>
+                          ))}
+                        </SidebarMenuSub>
+                      </CollapsibleContent>
+                    ) : null}
                   </SidebarMenuItem>
                 </Collapsible>
               ))}
@@ -181,23 +302,14 @@ export function AppSidebar() {
               </DropdownMenuLabel>
               <DropdownMenuSeparator />
               <DropdownMenuGroup>
-                <DropdownMenuItem>
+                <DropdownMenuItem className="py-2">
                   <CircleUserRound />
                   Cuenta
                 </DropdownMenuItem>
-                <DropdownMenuItem>
-                  <CreditCard />
-                  Pagos
-                </DropdownMenuItem>
-                <DropdownMenuItem>
-                  <Bell />
-                  Notificaciones
-                </DropdownMenuItem>
               </DropdownMenuGroup>
-              <DropdownMenuSeparator />
-              <DropdownMenuItem>
+              <DropdownMenuItem className="py-2">
                 <LogOut />
-                Cerrar sesión
+                <button onClick={logout}>Cerrar sesión</button>
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
