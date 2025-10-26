@@ -1,3 +1,5 @@
+import { Link } from "react-router-dom";
+
 import {
   LogOut,
   CreditCard,
@@ -28,7 +30,14 @@ import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
-  useSidebar
+  useSidebar,
+  Collapsible,
+  CollapsibleMenuItem,
+  CollapsibleTrigger,
+  CollapsibleMenuButton,
+  CollapsibleContent,
+  SidebarMenuSub,
+  SidebarMenuSubItem,
 } from "@/components/ui/sidebar";
 
 import {
@@ -36,52 +45,70 @@ import {
   Home,
   BookUser,
   BadgeDollarSign,
-  "Settings" as Config,
+  Settings,
   Truck,
+  ShoppingBasket,
 } from "lucide-react";
 
 const testUser = {
   name: "Alejo Garlati",
   email: "agarlati@gmail.com",
   avatar: null,
+  rol: null,
 };
 
 const items = [
   {
     title: "Home",
-    url: "#",
+    submenu: [
+      { title: "Subitem 1", url: "/subitem1" },
+      { title: "Subitem 2", url: "/subitem2" },
+    ],
+    url: "/",
     icon: Home,
+    rol: undefined,
   },
   {
     title: "Productos",
-    url: "#",
+    submenu: [{}],
+    url: "/productos",
     icon: PackageSearch,
+    rol: undefined,
   },
   {
     title: "Clientes",
-    url: "#",
+    url: "/clientes",
     icon: BookUser,
+    rol: undefined,
   },
   {
     title: "Ventas",
-    url: "#",
+    url: "/ventas",
     icon: BadgeDollarSign,
+    rol: undefined,
   },
   {
     title: "Compras",
-    url: "#",
+    url: "/compras",
+    icon: ShoppingBasket,
+    rol: undefined,
+  },
+  {
+    title: "Proveedores",
+    url: "/proveedores",
     icon: Truck,
+    rol: undefined,
   },
   {
     title: "Configuración",
-    url: "#",
-    icon: Config,
+    url: "configuracion",
+    icon: Settings,
+    rol: undefined,
   },
 ];
 
-
 export function AppSidebar() {
-    const { isMobile } = useSidebar();
+  const { isMobile } = useSidebar();
   return (
     <Sidebar variant="inset" collapsible="icon">
       <SidebarContent>
@@ -89,15 +116,23 @@ export function AppSidebar() {
           <SidebarGroupLabel>Menú Principal</SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>
+              {/* agregar renderizado condicional según user.rol */}
               {items.map((item) => (
-                <SidebarMenuItem key={item.title}>
-                  <SidebarMenuButton asChild>
-                    <a href={item.url}>
-                      <item.icon />
-                      <span>{item.title}</span>
-                    </a>
-                  </SidebarMenuButton>
-                </SidebarMenuItem>
+                <Collapsible defaultOpen className="group/collapsible">
+                  <SidebarMenuItem key={item.title}>
+                    <CollapsibleTrigger asChild>
+                      <SidebarMenuButton asChild>
+                        <Link to={item.url}>
+                          <item.icon />
+                          <span>{item.title}</span>
+                        </Link>
+                        <SidebarMenuSub>
+                          <SidebarMenuSubItem />
+                        </SidebarMenuSub>
+                      </SidebarMenuButton>
+                    </CollapsibleTrigger>
+                  </SidebarMenuItem>
+                </Collapsible>
               ))}
             </SidebarMenu>
           </SidebarGroupContent>
@@ -111,7 +146,7 @@ export function AppSidebar() {
               >
                 <Avatar className="h-8 w-8 rounded-lg grayscale">
                   <AvatarImage src={testUser.avatar} alt={testUser.name} />
-                  <AvatarFallback className="rounded-lg">CN</AvatarFallback>
+                  <AvatarFallback className="rounded-lg">AG</AvatarFallback>
                 </Avatar>
                 <div className="grid flex-1 text-left text-sm leading-tight">
                   <span className="truncate font-medium">{testUser.name}</span>
@@ -132,7 +167,7 @@ export function AppSidebar() {
                 <div className="flex items-center gap-2 px-1 py-1.5 text-left text-sm">
                   <Avatar className="h-8 w-8 rounded-lg">
                     <AvatarImage src={testUser.avatar} alt={testUser.name} />
-                    <AvatarFallback className="rounded-lg">CN</AvatarFallback>
+                    <AvatarFallback className="rounded-lg">AG</AvatarFallback>
                   </Avatar>
                   <div className="grid flex-1 text-left text-sm leading-tight">
                     <span className="truncate font-medium">
