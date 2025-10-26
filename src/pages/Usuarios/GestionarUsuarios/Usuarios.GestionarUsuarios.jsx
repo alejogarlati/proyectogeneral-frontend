@@ -1,3 +1,4 @@
+import { getUsers } from "@/services/services";
 import React from "react";
 import { useNavigate } from "react-router-dom";
 
@@ -6,12 +7,18 @@ export const UsuariosGestionarUsuarios = () => {
 
   return (
     <div>
-      <h1>Gestión de Usuarios</h1>
+      
       <button className='btn p-2 bg-(--primary)' onClick={() => navigate("/")}>Ir al Home</button>
     </div>
   );
 };
 
-export const loader = () => {
+export const loader = async () => {
+  const usuarios = await getUsers();
+  if (usuarios.data.success) {
+    console.log("Listado de Usuarios: ", usuarios.data.data); 
+  }
   return null;
 };
+
+

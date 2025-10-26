@@ -14,8 +14,13 @@ import { ComprasNuevaCompra } from "@/pages/Compras/NuevaVenta/Compras.NuevaComp
 import { ComprasListado } from "@/pages/Compras/Listado/Compras.listado.jsx";
 import { ComprasInformes } from "@/pages/Compras/Informes/Compras.informes.jsx";
 import { UsuariosGestionarUsuarios } from "@/pages/Usuarios/GestionarUsuarios/Usuarios.GestionarUsuarios.jsx";
+import { loader as gestionUsuariosLoader } from "@/pages/Usuarios/GestionarUsuarios/Usuarios.GestionarUsuarios.jsx";
 import { UsuariosRolesPermisos } from "@/pages/Usuarios/RolesPermisos/Usuarios.RolesPermisos.jsx";
+import { loader as rolesPermisosUsuariosLoader } from "@/pages/Usuarios/RolesPermisos/Usuarios.RolesPermisos.jsx";
 import { UsuariosCuenta } from "@/pages/Usuarios/Cuenta/Usuarios.cuenta.jsx";
+import { loader as cuentaUsuarioLoader } from "@/pages/Usuarios/Cuenta/Usuarios.cuenta.jsx";
+import { loader } from "@/pages/Layout/Layout.jsx";
+
 
 
 
@@ -95,16 +100,19 @@ export const rutas = [
   {
     path: "/usuarios/gestionar",
     element: <UsuariosGestionarUsuarios />,
+    loader: gestionUsuariosLoader,
     slug: "Gestión de Usuarios",
   },
   {
     path: "/usuarios/roles-permisos",
     element: <UsuariosRolesPermisos />,
+    loader: rolesPermisosUsuariosLoader,
     slug: "Roles y Permisos de Usuario",
   },
   {
     path: "/usuarios/cuenta",
     element: <UsuariosCuenta />,
+    loader: cuentaUsuarioLoader,
     slug: "Mi Cuenta",
   },
 ];
