@@ -1,4 +1,4 @@
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 
 import {
   LogOut,
@@ -199,9 +199,20 @@ const items = [
 ];
 
 export function AppSidebar() {
-  const { isMobile } = useSidebar();
+  const { isMobile, toggleSidebar, state } = useSidebar();
 
+  const { pathname } = useLocation();
   const navigate = useNavigate();
+
+  const handleHome = () => {
+    if (state === "collapsed") {
+      toggleSidebar();
+    }
+
+    console.log(pathname);
+
+    if (pathname !== "/") navigate("/");
+  };
 
   const logout = () => {
     sessionStorage.removeItem("accessToken");
@@ -212,7 +223,7 @@ export function AppSidebar() {
     <Sidebar variant="inset" collapsible="icon">
       <SidebarContent>
         <SidebarGroup>
-          <SidebarGroupLabel className='my-4'>
+          <SidebarGroupLabel className="my-4">
             <div className="w-full flex flex-row items-start">
               <img
                 src={logoTrady}
@@ -234,7 +245,7 @@ export function AppSidebar() {
                   <SidebarMenuItem>
                     {/* !! IMPORTANTE: agregar animaciones facheras */}
                     <CollapsibleTrigger className="w-full">
-                      <SidebarMenuButton asChild>
+                      <SidebarMenuButton asChild onClick={handleHome}>
                         <span>
                           <item.icon />
                           {item.title}{" "}
