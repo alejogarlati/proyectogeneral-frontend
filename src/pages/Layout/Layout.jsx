@@ -4,22 +4,33 @@ import { Navbar } from "../../components/Navbar/Navbar.jsx";
 import { Footer } from "../../components/Footer/Footer.jsx";
 import { jwtDecode } from "jwt-decode";
 import { redirect } from "react-router-dom";
+import {
+  SidebarProvider,
+  SidebarInset,
+  SidebarTrigger,
+} from "@/components/ui/sidebar";
 
-const Layout = () => {
+// tu sidebar (el que ya tenés con <Sidebar>... dentro)
+import { AppSidebar } from "../../components/Sidebar/Sidebar.jsx"; // ajustá la ruta
+
+export default function Layout() {
   return (
-    <div className="grid grid-cols-12">
-      <section className="col-span-3 flex flex-col justify-between items-center">
-        {/* <Sidebar /> */}
-        <Footer />
-      </section>
-      <section className="col-span-9 min-h-screen">
-        <Outlet />
-      </section>
-    </div>
-  );
-};
+    <SidebarProvider>
+      <AppSidebar />
 
-export default Layout;
+      <SidebarInset>
+        <header className="flex h-14 items-center gap-2 px-4 border-b">
+          <SidebarTrigger />
+          <h1 className="text-lg font-medium">Mi App</h1>
+        </header>
+
+        <main className="p-4 min-h-screen">
+          <Outlet />
+        </main>
+      </SidebarInset>
+    </SidebarProvider>
+  );
+}
 
 export const loader = () => {
   const token = sessionStorage.getItem("accessToken");
