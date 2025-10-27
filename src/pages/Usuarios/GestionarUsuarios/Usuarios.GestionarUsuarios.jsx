@@ -6,13 +6,15 @@ import { Input } from "@/components/ui/input"
 export const UsuariosGestionarUsuarios = () => {
   const navigate = useNavigate();
 
-  const usersData = useLoaderData();
+  const userList = useLoaderData();
 
   const handleOnChange = (e) => {
     // console.log(e.target.value)
-    const results = usersData.filter((item) => item.userName == e.target.value)
-    console.log("Resultados :", results)
-  }
+    const filteredUsers = userList.filter((user) =>
+        user.userName.toLowerCase().includes(e.target.value.toLowerCase())
+    );
+    console.log(filteredUsers);
+  };
 
   return (
     <div className="grid grid-cols-12 w-full gap-4 h-screen">
