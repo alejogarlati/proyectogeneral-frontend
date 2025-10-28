@@ -42,6 +42,7 @@ export const UsuariosGestionarUsuarios = () => {
             columns = {["userName", "userMail", "roleName"]}
             captionStyle = "text-start"
             headStyle = "w-[250px]"
+            noDataStyle = "mx-auto pt-4 text-center font-medium w-full"
           />
         </div>
       </div>

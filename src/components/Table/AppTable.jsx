@@ -38,7 +38,7 @@ export const AppTable = (props) => {
         </TableBody>
       </Table>
       {props.userData.length == 0 && (
-        <div className="mx-auto pt-4 text-center font-medium w-full">
+        <div className={props.noDataStyle}>
           No se encontraron datos
         </div>
       )}
