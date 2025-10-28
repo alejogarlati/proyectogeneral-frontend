@@ -23,9 +23,9 @@ export const UsuariosGestionarUsuarios = () => {
 
 
   return (
-    <div className="grid grid-cols-12 w-full gap-4 h-screen">
-      <div className="col-span-6 flex flex-col items-center justify-start w-full gap-2 p-4">
-        <div className="searchbar w-full">
+    <div className="grid grid-cols-12 w-full gap-6 h-screen p-4">
+      <div className="col-span-6 flex flex-col items-center justify-start w-full gap-2 p-8 bg-white rounded-xl shadow">
+        <div className="searchbar w-full py-4">
           <Input
             type="text"
             placeholder="Buscar"
