@@ -24,7 +24,7 @@ export const UsuariosGestionarUsuarios = () => {
 
   return (
     <div className="grid grid-cols-12 w-full gap-4 h-screen">
-      <div className="col-span-6 flex flex-col items-center justify-start w-full gap-2 rounded rounded-xl p-4">
+      <div className="col-span-6 flex flex-col items-center justify-start w-full gap-2 p-4">
         <div className="searchbar w-full">
           <Input
             type="text"
@@ -34,12 +34,14 @@ export const UsuariosGestionarUsuarios = () => {
             onChange={handleOnChange}
           />
         </div>
-        <div className="flex flex-col usersTable w-full">
+        <div className="flex flex-col usersTable w-full mt-5">
           <AppTable
             caption="Esta es la lista de usuarios"
             headers={["Nombre", "Email", "Rol"]}
             userData = {filteredUsers}
             columns = {["userName", "userMail", "roleName"]}
+            captionStyle = "text-start"
+            headStyle = "w-[250px]"
           />
         </div>
       </div>

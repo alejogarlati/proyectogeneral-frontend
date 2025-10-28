@@ -11,12 +11,12 @@ import {
 export const AppTable = (props) => {
   return (
     <div>
-      <Table>
-        <TableCaption className="text-start">{(props.userData.length > 0) && props.caption}</TableCaption>
+      <Table className={props.tableStyle}>
+        <TableCaption className={props.captionStyle}>{(props.userData.length > 0) && props.caption}</TableCaption>
         <TableHeader>
           <TableRow>
             {props.headers.map((header) => (
-              <TableHead className="w-[250px]">{header}</TableHead>
+              <TableHead className={props.headStyle}>{header}</TableHead>
             ))}
           </TableRow>
         </TableHeader>
