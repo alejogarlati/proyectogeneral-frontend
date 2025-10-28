@@ -55,6 +55,7 @@ import {
   Truck,
   ShoppingBasket,
 } from "lucide-react";
+
 import { use } from "react";
 
 import logoTrady from "@/assets/logo_tradyOne_png.png";
