@@ -1,5 +1,5 @@
 import React from "react";
-import { Outlet } from "react-router-dom";
+import { Outlet, useLocation } from "react-router-dom";
 import { Navbar } from "../../components/Navbar/Navbar.jsx";
 import { Footer } from "../../components/Footer/Footer.jsx";
 import { jwtDecode } from "jwt-decode";
@@ -12,17 +12,31 @@ import {
 
 import { Toaster } from "react-hot-toast";
 
-// tu sidebar (el que ya tenés con <Sidebar>... dentro)
-import { AppSidebar } from "../../components/Sidebar/Sidebar.jsx"; // ajustá la ruta
+import { AppSidebar } from "../../components/Sidebar/Sidebar.jsx";
+
+import { rutas } from "@/router/rutas.jsx";
+
+const Titulo = () => {
+  const { pathname } = useLocation();
+
+  const ruta = rutas.find((item) => item.path === pathname)
+
+  return ruta.slug;
+};
 
 export default function Layout() {
+
+
+
   return (
     <SidebarProvider>
       <AppSidebar />
       <SidebarInset>
         <header className="flex h-14 items-center gap-2 px-4 border-b">
-          <SidebarTrigger/>
-          <h1> | Mi app</h1>
+          <SidebarTrigger />
+          <h1>
+            <Titulo />
+          </h1>
         </header>
         <main className="p-4">
           <Outlet />
@@ -41,7 +55,6 @@ export const loader = () => {
 
   const decodedToken = jwtDecode(token);
   const currentTime = Date.now() / 1000;
-  console.log("Expiracion: ", decodedToken.exp, " Current Time: ", currentTime);
   if (decodedToken.exp < currentTime) {
     sessionStorage.removeItem("accessToken");
     alert("Sesión expirada. Por favor, inicie sesión nuevamente.");
