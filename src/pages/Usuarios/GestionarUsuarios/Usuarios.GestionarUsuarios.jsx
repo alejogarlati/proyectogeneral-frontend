@@ -15,7 +15,8 @@ export const UsuariosGestionarUsuarios = () => {
   
   const handleOnChange = (e) => {
     const filtered = userList.filter((user) =>
-      user.userName.toLowerCase().includes(e.target.value.toLowerCase())
+      user.userName.toLowerCase().includes(e.target.value.toLowerCase() ) || 
+      user.userMail.toLowerCase().includes(e.target.value.toLowerCase() )
     );
     setFilteredUsers(filtered);
   };
