@@ -1,32 +1,52 @@
-import React from 'react'
-import { Outlet } from 'react-router-dom'
-import { Navbar } from '../../components/Navbar/Navbar.jsx'
-import { Footer } from '../../components/Footer/Footer.jsx'
+import React from "react";
+import { Outlet } from "react-router-dom";
+import { Navbar } from "../../components/Navbar/Navbar.jsx";
+import { Footer } from "../../components/Footer/Footer.jsx";
+import { jwtDecode } from "jwt-decode";
+import { redirect } from "react-router-dom";
+import {
+  SidebarProvider,
+  SidebarInset,
+  SidebarTrigger,
+} from "@/components/ui/sidebar";
 
-const Layout = () => {
+import { Toaster } from "react-hot-toast";
+
+// tu sidebar (el que ya tenés con <Sidebar>... dentro)
+import { AppSidebar } from "../../components/Sidebar/Sidebar.jsx"; // ajustá la ruta
+
+export default function Layout() {
   return (
-    <div>
-        <section>
-            <Navbar />
-        </section>
-        <section>
-            <Outlet />
-        </section>
-        <section>
-            <Footer />
-        </section>
-    </div>
-  )
+    <SidebarProvider>
+      <AppSidebar />
+      <SidebarInset>
+        <header className="flex h-14 items-center gap-2 px-4 border-b">
+          <SidebarTrigger/>
+          <h1> | Mi app</h1>
+        </header>
+        <main className="p-4">
+          <Outlet />
+        </main>
+      </SidebarInset>
+      <Toaster />
+    </SidebarProvider>
+  );
 }
-
-export default Layout
 
 export const loader = () => {
-  throw new Response("Not authorized", { 
-    status: 302,
-    headers: {
-      Location: "/welcome"
-    } 
-  });
+  const token = sessionStorage.getItem("accessToken");
+  if (!token) {
+    throw redirect("/login");
+  }
+
+  const decodedToken = jwtDecode(token);
+  const currentTime = Date.now() / 1000;
+  console.log("Expiracion: ", decodedToken.exp, " Current Time: ", currentTime);
+  if (decodedToken.exp < currentTime) {
+    sessionStorage.removeItem("accessToken");
+    alert("Sesión expirada. Por favor, inicie sesión nuevamente.");
+    throw redirect("/login");
+  }
+
   return null;
-}
+};

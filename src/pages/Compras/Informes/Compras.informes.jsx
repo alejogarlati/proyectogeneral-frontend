@@ -1,13 +1,13 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
-import { Navbar } from "../../components/Navbar/Navbar.jsx";
 
-export const Home = () => {
+export const ComprasInformes = () => {
   const navigate = useNavigate();
 
   return (
     <div>
-      <h1>Home</h1>
+      <h1>Informes de Compras</h1>
+      <button className='btn p-2 bg-(--primary)' onClick={() => navigate("/")}>Ir al Home</button>
     </div>
   );
 };

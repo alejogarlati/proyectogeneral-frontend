@@ -1,0 +1,10 @@
+.input-colors {
+  background-color: var(--background);
+  color: var(--foreground);
+  border-color: var(--border);
+
+}
+
+.input-colors:focus {
+  border-color: var(--ring);
+}

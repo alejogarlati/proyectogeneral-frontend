@@ -3,8 +3,10 @@ import { Footer } from "../Footer/Footer.jsx";
 import { useForm } from "react-hook-form";
 import { getLogin } from "../../services/services.js";
 import { useNavigate } from "react-router-dom";
+import "./FormLogin.css";
+import toast from "react-hot-toast";
 
-export const FormLogin1 = () => {
+export const FormLogin = () => {
   const {
     register,
     handleSubmit,
@@ -20,23 +22,23 @@ export const FormLogin1 = () => {
   const onSubmit = handleSubmit(async (data) => {
     try {
       const user = await getLogin(data);
+
       if (user.data.success) {
-        alert("Inicio de sesión exitoso");
+        toast.success("Inicio de sesión exitoso");
         sessionStorage.setItem("accessToken", user.data.accessToken);
         navigate("/");
       } else {
-        alert("Error en el inicio de sesión");
+        toast.error("Error en el inicio de sesión");
       }
     } catch (error) {
-      console.error(error);
-      alert("Error interno: ", error.message);
+      toast.error("Error en el inicio de sesión");
     }
   });
 
   return (
     <div className="form-login-1 flex flex-col gap-12 items-center justify-center h-[92dvh]">
       <div className="flex flex-col gap-12 items-center justify-center bg-white p-18 flex flex-col gap-8 rounded-xl shadow-xl">
-        <div className="logo-container">
+        <div className="logo-container w-40">
           <img
             src="./src/assets/logo_tradyOne_png.png"
             alt="Logo Kiosco Campus"
@@ -54,7 +56,7 @@ export const FormLogin1 = () => {
               id="email"
               type="text"
               placeholder="Tu correo electrónico"
-              className="text-sm font-normal p-2 border rounded bg-(--color-armony) p-2 focus:outline-(--color-secondary) transition"
+              className="input-colors text-sm font-normal p-2 border rounded p-2 transition"
               {...register("email", {
                 required: "Correo inválido",
               })}
@@ -68,7 +70,7 @@ export const FormLogin1 = () => {
               id="password"
               type="password"
               placeholder="Tu contraseña"
-              className="text-sm font-normal p-2 border rounded bg-(--color-armony) p-2 focus:outline-(--color-secondary) transition"
+              className="input-colors text-sm font-normal p-2 border rounded p-2 transition"
               {...register("password", {
                 required: "Contraseña inválida",
                 maxLength: { value: 20 },
@@ -77,13 +79,17 @@ export const FormLogin1 = () => {
           </fieldset>
           <button
             type="submit"
-            className="mt-4 p-2 bg-(--color-primary) rounded transition text-(--color-bg)"
+            className="mt-4 p-2 bg-(--primary) rounded transition text-(--primary-foreground)"
           >
             Iniciar Sesión
           </button>
         </form>
       </div>
-      <Footer />
+      <div className="footer h-[1dvh] mt-4">
+        <p className="footer-text text-xs">
+          © 2025 P*A(2). Todos los derechos reservados.
+        </p>
+      </div>
     </div>
   );
 };
