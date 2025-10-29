@@ -50,7 +50,9 @@ export const UsuariosGestionarUsuarios = () => {
         </div>
       </div>
       <div className="col-span-4 bg-(--card) rounded p-4 shadow">
-        <UserCard />
+        <UserCard
+          datos={selectedUser}
+        />
       </div>
     </div>
   );
