@@ -4,22 +4,29 @@ import { Input } from "@/components/ui/input";
 import { AppTable } from "@/components/Table/AppTable.jsx";
 
 import { getUsers } from "@/services/services";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { UserCard } from "@/components/UserCard/UserCard.jsx";
 
 export const UsuariosGestionarUsuarios = () => {
+
   const navigate = useNavigate();
 
   const userList = useLoaderData();
 
   const [selectedUser, setSelectedUser] = useState(null);
+  const [roleFilter, setRoleFilter] = useState(null);
   const [filteredUsers, setFilteredUsers] = useState(userList);
+
+  useEffect(() => {
+    handleOnChange({ target: { value: document.getElementById("searchInput").value } })
+  }, [roleFilter]);
 
   const handleOnChange = (e) => {
     const filtered = userList.filter(
       (user) =>
-        user.userName.toLowerCase().includes(e.target.value.toLowerCase()) ||
-        user.userMail.toLowerCase().includes(e.target.value.toLowerCase())
+        (user.userName.toLowerCase().includes(e.target.value.toLowerCase()) ||
+        user.userMail.toLowerCase().includes(e.target.value.toLowerCase())) &&
+        user.roleName.toLowerCase().includes(roleFilter ? roleFilter.toLowerCase() : "")
     );
     setFilteredUsers(filtered);
   };
@@ -35,8 +42,11 @@ export const UsuariosGestionarUsuarios = () => {
             name="searchInput"
             onChange={handleOnChange}
           />
+          {roleFilter && (
+            <div className="mt-1 ms-1 text-muted-foreground text-sm">Filtro Adicional: Rol({roleFilter})</div>
+          )}
         </div>
-        <div className="flex flex-col usersTable w-full mt-5">
+        <div className="flex flex-col usersTable w-full mt-3">
           <AppTable
             caption="Esta es la lista de usuarios"
             headers={["Nombre", "Email", "Rol"]}
@@ -52,6 +62,8 @@ export const UsuariosGestionarUsuarios = () => {
       <div className="col-span-4 bg-(--card) rounded p-4 shadow">
         <UserCard
           datos={selectedUser}
+          roleFilter={roleFilter}
+          onRoleFilter={(roleName) => setRoleFilter(roleName)}
         />
       </div>
     </div>
@@ -61,7 +73,6 @@ export const UsuariosGestionarUsuarios = () => {
 export const loader = async () => {
   const usuarios = await getUsers();
   if (usuarios.data.success) {
-    // console.log("Listado de Usuarios: ", usuarios.data.data);
     return usuarios.data.data;
   }
   return null;

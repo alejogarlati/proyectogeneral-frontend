@@ -9,6 +9,7 @@ import {
 } from "@/components/ui/table";
 
 export const AppTable = (props) => {
+  const handleclick = (row) => props.onSelect?.(row)
   return (
     <div>
       <Table className={props.tableStyle}>
@@ -22,7 +23,7 @@ export const AppTable = (props) => {
         </TableHeader>
         <TableBody>
           {props.userData.map((row) => (
-            <TableRow key={row.id} onClick={()=>props.onSelect?.(row)}>
+            <TableRow key={row.id} onClick={()=>handleclick(row)}>
               {props.columns.map((data, index) => (
                 <TableCell
                   key={index}
