@@ -15,16 +15,17 @@ export const AppTable = (props) => {
         <TableCaption className={props.captionStyle}>{(props.userData.length > 0) && props.caption}</TableCaption>
         <TableHeader>
           <TableRow>
-            {props.headers.map((header) => (
-              <TableHead className={props.headStyle}>{header}</TableHead>
+            {props.headers.map((header, index) => (
+              <TableHead key={index} className={props.headStyle}>{header}</TableHead>
             ))}
           </TableRow>
         </TableHeader>
         <TableBody>
           {props.userData.map((row) => (
-            <TableRow>
-              {props.columns.map((data) => (
+            <TableRow key={row.id} onClick={()=>props.onSelect?.(row)}>
+              {props.columns.map((data, index) => (
                 <TableCell
+                  key={index}
                   className={
                     (data === "userName" ? "font-bold " : "") +
                     (props.userData.length > 8 ? "h-15" : "h-20")

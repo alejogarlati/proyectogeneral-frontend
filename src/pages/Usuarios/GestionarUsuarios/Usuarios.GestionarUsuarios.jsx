@@ -11,6 +11,7 @@ export const UsuariosGestionarUsuarios = () => {
 
   const userList = useLoaderData();
 
+  const [selectedUser, setSelectedUser] = useState(null);
   const [filteredUsers, setFilteredUsers] = useState(userList); 
   
   const handleOnChange = (e) => {
@@ -23,7 +24,7 @@ export const UsuariosGestionarUsuarios = () => {
 
 
   return (
-    <div className="grid grid-cols-12 w-full gap-6 h-screen p-4">
+    <div className="grid grid-cols-12 w-full gap-6 p-4">
       <div className="col-span-6 flex flex-col items-center justify-start w-full gap-2 p-8 bg-white rounded-xl shadow">
         <div className="searchbar w-full py-4">
           <Input
@@ -43,11 +44,12 @@ export const UsuariosGestionarUsuarios = () => {
             captionStyle = "text-start"
             headStyle = "w-[250px]"
             noDataStyle = "mx-auto pt-4 text-center font-medium w-full"
+            onSelect={(row) => setSelectedUser(row)}
           />
         </div>
       </div>
       <div className="col-span-6 bg-(--primary) rounded p-4">
-        <p> Lorem ipsum </p>
+        <p> Esuario Seleccionado: {selectedUser?.userName} </p>
       </div>
     </div>
   );
