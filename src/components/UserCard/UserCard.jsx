@@ -8,9 +8,9 @@ export const UserCard = (props) => {
         <AvatarFallback className="text-3xl font-bold">AS</AvatarFallback>
       </Avatar>
       <div className="text-center flex flex-col items-center">
-        <h1 className="text-2xl font-semibold">{props.datos.userName}</h1>
-        <h3 className="text-sm">{props.datos.userMail}</h3>
-        <Button className="w-full mt-4">{props.datos.roleName}</Button>
+        <h1 className="text-2xl font-semibold">{props.datos?.userName}</h1>
+        <h3 className="text-sm">{props.datos?.userMail}</h3>
+        <Button className="w-full mt-4">{props.datos?.roleName}</Button>
       </div>
       {/* <h2 className="">Administrador</h2> */}
     </div>
