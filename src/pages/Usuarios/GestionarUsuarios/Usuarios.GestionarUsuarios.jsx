@@ -6,9 +6,11 @@ import { AppTable } from "@/components/Table/AppTable.jsx";
 import { getUsers } from "@/services/services";
 import { useEffect, useState } from "react";
 import { UserCard } from "@/components/UserCard/UserCard.jsx";
+import { Badge } from "@/components/ui/badge";
+
+import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 
 export const UsuariosGestionarUsuarios = () => {
-
   const navigate = useNavigate();
 
   const userList = useLoaderData();
@@ -18,23 +20,31 @@ export const UsuariosGestionarUsuarios = () => {
   const [filteredUsers, setFilteredUsers] = useState(userList);
 
   useEffect(() => {
-    handleOnChange({ target: { value: document.getElementById("searchInput").value } })
+    handleOnChange({
+      target: { value: document.getElementById("searchInput").value },
+    });
   }, [roleFilter]);
 
   const handleOnChange = (e) => {
     const filtered = userList.filter(
       (user) =>
         (user.userName.toLowerCase().includes(e.target.value.toLowerCase()) ||
-        user.userMail.toLowerCase().includes(e.target.value.toLowerCase())) &&
-        user.roleName.toLowerCase().includes(roleFilter ? roleFilter.toLowerCase() : "")
+          user.userMail.toLowerCase().includes(e.target.value.toLowerCase())) &&
+        user.roleName
+          .toLowerCase()
+          .includes(roleFilter ? roleFilter.toLowerCase() : "")
     );
     setFilteredUsers(filtered);
   };
 
+  const handleValueChange = (val) => {
+    setRoleFilter(val === roleFilter ? null : val);
+  };
+
   return (
     <div className="grid grid-cols-12 w-full gap-6 p-4">
-      <div className="col-span-8 flex flex-col items-center justify-start w-full gap-2 p-8 bg-(--card) rounded-xl shadow">
-        <div className="searchbar w-full py-4">
+      <div className={(selectedUser ? "col-span-9 " : "col-span-12 ") + "flex flex-col items-center justify-start w-full gap-2 p-8 bg-(--card) rounded-xl shadow"}>
+        <div className="w-full flex flex-col gap-3">
           <Input
             type="text"
             placeholder="Buscar"
@@ -42,9 +52,35 @@ export const UsuariosGestionarUsuarios = () => {
             name="searchInput"
             onChange={handleOnChange}
           />
-          {roleFilter && (
-            <div className="mt-1 ms-1 text-muted-foreground text-sm">Filtro Adicional: Rol({roleFilter})</div>
-          )}
+          <ToggleGroup
+            type="single"
+            spacing={1}
+            size="sm"
+            value={roleFilter || ""}
+            onValueChange={handleValueChange}
+          >
+            <ToggleGroupItem
+              className="bg-(--secondary) text-(--primary-whited)"
+              value="Administrador"
+              aria-label="Filtrar por rol de Administrador"
+            >
+              Administrador
+            </ToggleGroupItem>
+            <ToggleGroupItem
+              className="bg-(--secondary) text-(--primary-whited)"
+              value="Vendedor"
+              aria-label="Filtrar por rol de Vendedor"
+            >
+              Vendedor
+            </ToggleGroupItem>
+            <ToggleGroupItem
+              className="bg-(--secondary) text-(--primary-whited)"
+              value="Compras"
+              aria-label="Filtrar por rol de Compras"
+            >
+              Compras
+            </ToggleGroupItem>
+          </ToggleGroup>
         </div>
         <div className="flex flex-col usersTable w-full mt-3">
           <AppTable
@@ -59,21 +95,24 @@ export const UsuariosGestionarUsuarios = () => {
           />
         </div>
       </div>
-      <div className="col-span-4 bg-(--card) rounded p-4 shadow">
-        <UserCard
-          datos={selectedUser}
-          roleFilter={roleFilter}
-          onRoleFilter={(roleName) => setRoleFilter(roleName)}
-        />
-      </div>
+      {selectedUser && (
+        <div className="col-span-3 bg-(--card) rounded p-4 shadow">
+          <UserCard datos={selectedUser} roleFilter={roleFilter} />
+        </div>
+      )}
     </div>
   );
 };
 
 export const loader = async () => {
-  const usuarios = await getUsers();
-  if (usuarios.data.success) {
-    return usuarios.data.data;
-  }
-  return null;
+  const [usuarios] = await Promise.all([
+    getUsers(),
+    // await getRoles()
+  ]);
+
+  const userData = usuarios.data.data;
+
+  // const rolesData = roles.data.data;
+
+  return userData;
 };
