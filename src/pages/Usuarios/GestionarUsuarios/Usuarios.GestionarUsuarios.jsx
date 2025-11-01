@@ -7,8 +7,12 @@ import { getUsers } from "@/services/services";
 import { useEffect, useState } from "react";
 import { UserCard } from "@/components/UserCard/UserCard.jsx";
 import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
 
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
+
+import { ArrowRightFromLine } from "lucide-react";
+import { AppSheet } from "@/components/AppSheet/AppSheet.jsx";
 
 export const UsuariosGestionarUsuarios = () => {
   const navigate = useNavigate();
@@ -18,12 +22,21 @@ export const UsuariosGestionarUsuarios = () => {
   const [selectedUser, setSelectedUser] = useState(null);
   const [roleFilter, setRoleFilter] = useState(null);
   const [filteredUsers, setFilteredUsers] = useState(userList);
+  const [isOpen, setIsOpen] = useState(false);
 
   useEffect(() => {
     handleOnChange({
       target: { value: document.getElementById("searchInput").value },
     });
   }, [roleFilter]);
+
+  useEffect(() => {
+    setIsOpen(true);
+  }, [selectedUser]);
+
+  useEffect(() => {
+    setSelectedUser(null);
+  }, [isOpen]);
 
   const handleOnChange = (e) => {
     const filtered = userList.filter(
@@ -41,17 +54,33 @@ export const UsuariosGestionarUsuarios = () => {
     setRoleFilter(val === roleFilter ? null : val);
   };
 
+  const handleNew = () => {};
+
   return (
     <div className="grid grid-cols-12 w-full gap-6 p-4">
-      <div className={(selectedUser ? "col-span-9 " : "col-span-12 ") + "flex flex-col items-center justify-start w-full gap-2 p-8 bg-(--card) rounded-xl shadow"}>
+      <div
+        className={
+          (selectedUser && isOpen ? "col-span-9 " : "col-span-12 ") +
+          "flex flex-col items-center justify-start w-full gap-2 p-8 bg-(--card) rounded-xl shadow"
+        }
+      >
         <div className="w-full flex flex-col gap-3">
-          <Input
-            type="text"
-            placeholder="Buscar"
-            id="searchInput"
-            name="searchInput"
-            onChange={handleOnChange}
-          />
+          <div className="flex flex-row gap-2 ">
+            <Input
+              type="text"
+              placeholder="Buscar"
+              id="searchInput"
+              name="searchInput"
+              onChange={handleOnChange}
+            />
+            <Button onClick={() => handleNew()}>
+              <AppSheet 
+              buttonTitle="Nuevo Usuario"
+              sheetTitle="Crear Nuevo Usario"
+              sheetDescription="Modulo de Creacion de Usario"
+              />
+            </Button>
+          </div>
           <ToggleGroup
             type="single"
             spacing={1}
@@ -91,13 +120,19 @@ export const UsuariosGestionarUsuarios = () => {
             captionStyle="text-start"
             headStyle="w-[250px]"
             noDataStyle="mx-auto pt-4 text-center font-medium w-full"
-            onSelect={(row) => setSelectedUser(row)}
+            onSelect={(row) => {
+              setSelectedUser(row);
+            }}
           />
         </div>
       </div>
-      {selectedUser && (
+      {selectedUser && isOpen && (
         <div className="col-span-3 bg-(--card) rounded p-4 shadow">
-          <UserCard datos={selectedUser} roleFilter={roleFilter} />
+          <UserCard
+            datos={selectedUser}
+            roleFilter={roleFilter}
+            isOpen={(open) => setIsOpen(open)}
+          />
         </div>
       )}
     </div>

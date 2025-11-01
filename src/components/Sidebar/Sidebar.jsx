@@ -212,7 +212,7 @@ export function AppSidebar() {
     if (haveLink) navigate(url);
   };
 
-  const activeUser = JSON.parse(sessionStorage.getItem("user"))
+  const activeUser = JSON.parse(sessionStorage.getItem("user"));
 
   const logout = () => {
     sessionStorage.removeItem("accessToken");
@@ -243,42 +243,46 @@ export function AppSidebar() {
                   key={item.title}
                   defaultOpen={index === 0}
                 >
-                   { item.rol.includes(activeUser.userRoleId) &&   
-                      (
-                        <SidebarMenuItem>
-                    {/* !! IMPORTANTE: agregar animaciones facheras */}
-                    <CollapsibleTrigger className="w-full">
-                      <SidebarMenuButton asChild onClick={() => handleClick(item.url, item.haveLink)}>
-                        <span>
-                          <item.icon />
-                          {item.title}{" "}
-                          {item.submenu?.length ? (
-                            <div className="w-full">
-                              <ChevronRight className="w-4 h-4 ml-auto group-data-[state=open]/collapsible:hidden" />
-                              <ChevronDown className="w-4 h-4 ml-auto group-data-[state=closed]/collapsible:hidden" />
-                            </div>
-                          ) : null}
-                        </span>
-                      </SidebarMenuButton>
-                    </CollapsibleTrigger>
-                    {item.submenu?.length ? (
-                      <CollapsibleContent>
-                        <SidebarMenuSub>
-                          { item.submenu.map((itemsub) => ( 
-                               itemsub.rol.includes(activeUser.userRoleId) &&
-                               ( 
-                                <SidebarMenuSubItem key={itemsub.title}>
-                                  <SidebarMenuSubButton asChild>
-                                    <Link to={itemsub.url}>{itemsub.title}</Link>
-                                  </SidebarMenuSubButton>
-                                </SidebarMenuSubItem>
-                            )
-                          ))}
-                         </SidebarMenuSub>
-                      </CollapsibleContent>
-                    ) : null}
-                        </SidebarMenuItem>
-                    )}
+                  {item.rol.includes(activeUser.userRoleId) && (
+                    <SidebarMenuItem>
+                      {/* !! IMPORTANTE: agregar animaciones facheras */}
+                      <CollapsibleTrigger className="w-full">
+                        <SidebarMenuButton
+                          asChild
+                          onClick={() => handleClick(item.url, item.haveLink)}
+                        >
+                          <span>
+                            <item.icon />
+                            {item.title}{" "}
+                            {item.submenu?.length ? (
+                              <div className="w-full">
+                                <ChevronRight className="w-4 h-4 ml-auto group-data-[state=open]/collapsible:hidden" />
+                                <ChevronDown className="w-4 h-4 ml-auto group-data-[state=closed]/collapsible:hidden" />
+                              </div>
+                            ) : null}
+                          </span>
+                        </SidebarMenuButton>
+                      </CollapsibleTrigger>
+                      {item.submenu?.length ? (
+                        <CollapsibleContent>
+                          <SidebarMenuSub>
+                            {item.submenu.map(
+                              (itemsub) =>
+                                itemsub.rol.includes(activeUser.userRoleId) && (
+                                  <SidebarMenuSubItem key={itemsub.title}>
+                                    <SidebarMenuSubButton asChild>
+                                      <Link to={itemsub.url}>
+                                        {itemsub.title}
+                                      </Link>
+                                    </SidebarMenuSubButton>
+                                  </SidebarMenuSubItem>
+                                )
+                            )}
+                          </SidebarMenuSub>
+                        </CollapsibleContent>
+                      ) : null}
+                    </SidebarMenuItem>
+                  )}
                 </Collapsible>
               ))}
             </SidebarMenu>
@@ -292,11 +296,16 @@ export function AppSidebar() {
                 className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground"
               >
                 <Avatar className="h-8 w-8 rounded-lg grayscale">
-                  <AvatarImage src={activeUser.avatar} alt={activeUser.userName} />
+                  <AvatarImage
+                    src={activeUser.avatar}
+                    alt={activeUser.userName}
+                  />
                   <AvatarFallback className="rounded-lg">AG</AvatarFallback>
                 </Avatar>
                 <div className="grid flex-1 text-left text-sm leading-tight">
-                  <span className="truncate font-medium">{activeUser.userName}</span>
+                  <span className="truncate font-medium">
+                    {activeUser.userName}
+                  </span>
                   <span className="text-muted-foreground truncate text-xs">
                     {activeUser.userRoleName}
                   </span>
@@ -313,7 +322,10 @@ export function AppSidebar() {
               <DropdownMenuLabel className="p-0 font-normal">
                 <div className="flex items-center gap-2 px-1 py-1.5 text-left text-sm">
                   <Avatar className="h-8 w-8 rounded-lg">
-                    <AvatarImage src={activeUser.avatar} alt={activeUser.userName} />
+                    <AvatarImage
+                      src={activeUser.avatar}
+                      alt={activeUser.userName}
+                    />
                     <AvatarFallback className="rounded-lg">AG</AvatarFallback>
                   </Avatar>
                   <div className="grid flex-1 text-left text-sm leading-tight">
