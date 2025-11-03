@@ -7,11 +7,15 @@ import {
   SheetTrigger,
 } from "@/components/ui/sheet";
 
+import { Button} from "@/components/ui/button"
+
 export const AppSheet = (props) => {
   return (
     <div>
       <Sheet>
-        <SheetTrigger>{props.buttonTitle}</SheetTrigger>
+        <Button asChild>
+          <SheetTrigger>{props.buttonTitle}</SheetTrigger>
+        </Button>
         <SheetContent>
           <SheetHeader>
             <SheetTitle>{props.sheetTitle}</SheetTitle>

@@ -73,13 +73,14 @@ export const UsuariosGestionarUsuarios = () => {
               name="searchInput"
               onChange={handleOnChange}
             />
-            <Button onClick={() => handleNew()}>
-              <AppSheet 
+            {/* <Button> */}
+            <AppSheet
+              onClick={() => handleNew()}
               buttonTitle="Nuevo Usuario"
-              sheetTitle="Crear Nuevo Usario"
-              sheetDescription="Modulo de Creacion de Usario"
-              />
-            </Button>
+              sheetTitle="Crear Nuevo Usuario"
+              sheetDescription="Modulo de Creacion de Usuario"
+            />
+            {/* </Button> */}
           </div>
           <ToggleGroup
             type="single"

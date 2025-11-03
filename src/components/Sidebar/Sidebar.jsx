@@ -59,6 +59,7 @@ import {
 import { use } from "react";
 
 import logoTrady from "@/assets/logo_tradyOne_png.png";
+import { takeInitials } from "@/utilities/takeInitials";
 
 const items = [
   {
@@ -300,7 +301,7 @@ export function AppSidebar() {
                     src={activeUser.avatar}
                     alt={activeUser.userName}
                   />
-                  <AvatarFallback className="rounded-lg">AG</AvatarFallback>
+                  <AvatarFallback className="rounded-lg">{takeInitials(activeUser.userName)}</AvatarFallback>
                 </Avatar>
                 <div className="grid flex-1 text-left text-sm leading-tight">
                   <span className="truncate font-medium">
@@ -326,7 +327,7 @@ export function AppSidebar() {
                       src={activeUser.avatar}
                       alt={activeUser.userName}
                     />
-                    <AvatarFallback className="rounded-lg">AG</AvatarFallback>
+                    <AvatarFallback className="rounded-lg">{takeInitials(activeUser.userName)}</AvatarFallback>
                   </Avatar>
                   <div className="grid flex-1 text-left text-sm leading-tight">
                     <span className="truncate font-medium">

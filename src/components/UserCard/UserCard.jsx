@@ -6,6 +6,8 @@ import { Button } from "@headlessui/react";
 import { Pencil, Trash2, X } from "lucide-react";
 import toast from "react-hot-toast";
 
+import { takeInitials } from "@/utilities/takeInitials";
+
 export const UserCard = (props) => {
   const handleDelete = (user) => {
     toast(`Se eliminará el usuario ${user.userName}`);
@@ -27,7 +29,7 @@ export const UserCard = (props) => {
       </div>
       <div className="flex flex-col items-center justify-center gap-4 p-12 h-full">
         <Avatar className="h-25 w-25">
-          <AvatarFallback className="text-3xl font-bold">AS</AvatarFallback>
+          <AvatarFallback className="text-3xl font-bold">{takeInitials(props.datos?.userName)}</AvatarFallback>
         </Avatar>
         <div className="text-center flex flex-col items-center">
           <h1 className="text-2xl font-semibold">{props.datos?.userName}</h1>
