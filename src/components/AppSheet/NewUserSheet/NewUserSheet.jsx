@@ -43,7 +43,7 @@ export const NewUserSheet = () => {
       maxLength: value.length <= 20,
       uppercase: /[A-Z]/.test(value),
       number: /\d/.test(value),
-      specialChar: /[*+\-@$&#]/.test(value),
+      specialChar: /[*+\-@$&#!¡¿?]/.test(value),
     });
   };
 
@@ -93,7 +93,7 @@ export const NewUserSheet = () => {
       <div className="flex flex-col gap-2">
         <Label>Contraseña temporal</Label>
         <Input
-          type="text"
+          type="password"
           autoComplete="off"
           placeholder="Mínimo 8 caracteres"
           {...register("password", {
@@ -105,29 +105,22 @@ export const NewUserSheet = () => {
           <p className="text-danger">{errors.password.message}</p>
         )}
         {password?.length > 0 && (
-          <div className="flex flex-col px-2 mr-0 justify-between text-sm">
-            <ul
-              style={{
-                listStyleType: "none",
-                padding: 0,
-                paddingLeft: "5px",
-                marginTop: "0px",
-              }}
-            >
-              <li style={{ color: requirements.minLength ? "green" : "red" }}>
+          <div className="mt-2 px-2 justify-between text-xs text-(--muted-foreground)">
+            <ul className="flex flex-col gap-1">
+              <li className={requirements.minLength ? "text-(--primary)" : "text-(--muted-foreground)"}>
                 Al menos 8 caracteres
               </li>
-              <li style={{ color: requirements.maxLength ? "green" : "red" }}>
+              <li className={requirements.maxLength ? "text-(--primary)" : "text-(--muted-foreground)"}>
                 Máximo 20 caracteres
               </li>
-              <li style={{ color: requirements.uppercase ? "green" : "red" }}>
+              <li className={requirements.uppercase ? "text-(--primary)" : "text-(--muted-foreground)"}>
                 Una letra mayúscula
               </li>
-              <li style={{ color: requirements.number ? "green" : "red" }}>
+              <li className={requirements.number ? "text-(--primary)" : "text-(--muted-foreground)"}>
                 Un número
               </li>
-              <li style={{ color: requirements.specialChar ? "green" : "red" }}>
-                Un carácter especial (* + - @ $ & #)
+              <li className={requirements.specialChar ? "text-(--primary)" : "text-(--muted-foreground)"}>
+                Un carácter especial (! * + - @ $ & # ¡ ¿ ?)
               </li>
             </ul>
           </div>
