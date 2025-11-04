@@ -13,6 +13,7 @@ import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 
 import { ArrowRightFromLine } from "lucide-react";
 import { AppSheet } from "@/components/AppSheet/AppSheet.jsx";
+import { NewUserSheet } from "@/components/AppSheet/NewUserSheet/NewUserSheet.jsx";
 
 export const UsuariosGestionarUsuarios = () => {
   const navigate = useNavigate();
@@ -79,6 +80,7 @@ export const UsuariosGestionarUsuarios = () => {
               buttonTitle="Nuevo Usuario"
               sheetTitle="Crear Nuevo Usuario"
               sheetDescription="Modulo de Creacion de Usuario"
+              children={<NewUserSheet/>}
             />
             {/* </Button> */}
           </div>

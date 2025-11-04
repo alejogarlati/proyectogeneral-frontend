@@ -1,10 +1,13 @@
 import React, { use } from "react";
-import { Footer } from "../Footer/Footer.jsx";
 import { useForm } from "react-hook-form";
+
+import { useState } from "react";
 import { getLogin } from "../../services/services.js";
 import { useNavigate } from "react-router-dom";
 import "./FormLogin.css";
 import toast from "react-hot-toast";
+
+// !-- FALTA IMPLEMENTAR REACT-HOOK-FORM
 
 export const FormLogin = () => {
   const {
@@ -16,6 +19,14 @@ export const FormLogin = () => {
     resetField,
     setValue,
   } = useForm();
+
+  const [requirements, setRequirements] = useState({
+    minLength: false,
+    maxLength: false,
+    uppercase: false,
+    number: false,
+    specialChar: false,
+  });
 
   const navigate = useNavigate();
 
@@ -36,14 +47,12 @@ export const FormLogin = () => {
     }
   });
 
+
   return (
     <div className="form-login-1 flex flex-col gap-12 items-center justify-center h-[92dvh]">
       <div className="flex flex-col items-center justify-center bg-white p-18  gap-8 rounded-xl shadow-xl">
         <div className="logo-container w-40">
-          <img
-            src="./src/assets/logo_tradyOne_png.png"
-            alt="Logo Kiosco Campus"
-          />
+          <img src="./src/assets/logo_tradyOne_png.png" alt="Logo Trady One" />
         </div>
         <form
           onSubmit={onSubmit}
@@ -76,6 +85,7 @@ export const FormLogin = () => {
                 required: "Contraseña inválida",
                 maxLength: { value: 20 },
               })}
+              onChange={(e) => validatePassword(e.target.value)}
             />
           </fieldset>
           <button
