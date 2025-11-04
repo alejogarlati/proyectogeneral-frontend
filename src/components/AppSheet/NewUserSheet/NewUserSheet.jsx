@@ -12,6 +12,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { SelectGroup, SelectLabel } from "@radix-ui/react-select";
+import toast from "react-hot-toast";
 
 export const NewUserSheet = () => {
   const {
@@ -24,7 +25,7 @@ export const NewUserSheet = () => {
     setValue,
   } = useForm();
 
-  const password = watch("password");
+  const [password, setPassword] = useState(null);
 
   const [requirements, setRequirements] = useState({
     minLength: false,
@@ -36,12 +37,13 @@ export const NewUserSheet = () => {
 
   // Validar requisitos dinámicamente
   const validatePassword = (value) => {
+    setPassword(value);
     setRequirements({
       minLength: value.length >= 8,
       maxLength: value.length <= 20,
       uppercase: /[A-Z]/.test(value),
       number: /\d/.test(value),
-      specialChar: /[*+-@$&#]/.test(value),
+      specialChar: /[*+\-@$&#]/.test(value),
     });
   };
 
@@ -49,32 +51,100 @@ export const NewUserSheet = () => {
     const requisitosPassword = Object.values(requirements).some(
       (value) => !value
     );
+    if (requisitosPassword) {
+      toast.error("La contraseña no cumple con los requisitos.");
+    } else {
+      // Lógica para enviar los datos al servidor o manejar el formulario
+      console.log("Datos del formulario:", data);
+      toast.success("Usuario creado exitosamente.");
+      reset();
+    }
   };
 
   return (
-    <div className="flex flex-col gap-8 p-4">
+    <form noValidate onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-8 p-4">
       <div className="flex flex-col gap-4">
         <Label>Nombre Completo</Label>
-        <Input type="username" placeholder="Nombre y Apellido" />
+        <Input
+          type="text"
+          autoComplete="off"
+          placeholder="Nombre y Apellido"
+          {...register("fullName", { required: "El nombre es obligatorio" })}
+        />
+        {errors.fullName && (
+          <p className="text-danger">{"Ingrese un nombre válido"}</p>
+        )}
       </div>
       <div className="flex flex-col gap-2">
         <Label>Correo electrónico</Label>
-        <Input type="email" placeholder="micorreo@misitio.com" />
+        <Input
+          type="email"
+          autoComplete="off"
+          placeholder="micorreo@misitio.com"
+          {...register("email", {
+            required: "El email es obligatorio",
+            pattern: /^[^\s@]+@[^\s@]+.[^\s@]+$/,
+          })}
+        />
+        {errors.email && (
+          <p className="text-danger">{"Ingrese un email válido"}</p>
+        )}
       </div>
       <div className="flex flex-col gap-2">
         <Label>Contraseña temporal</Label>
         <Input
-          type="password"
+          type="text"
+          autoComplete="off"
           placeholder="Mínimo 8 caracteres"
+          {...register("password", {
+            required: "La contraseña es obligatoria",
+          })}
           onChange={(e) => validatePassword(e.target.value)}
         />
         {errors.password && (
           <p className="text-danger">{errors.password.message}</p>
         )}
+        {password?.length > 0 && (
+          <div className="flex flex-col px-2 mr-0 justify-between text-sm">
+            <ul
+              style={{
+                listStyleType: "none",
+                padding: 0,
+                paddingLeft: "5px",
+                marginTop: "0px",
+              }}
+            >
+              <li style={{ color: requirements.minLength ? "green" : "red" }}>
+                Al menos 8 caracteres
+              </li>
+              <li style={{ color: requirements.maxLength ? "green" : "red" }}>
+                Máximo 20 caracteres
+              </li>
+              <li style={{ color: requirements.uppercase ? "green" : "red" }}>
+                Una letra mayúscula
+              </li>
+              <li style={{ color: requirements.number ? "green" : "red" }}>
+                Un número
+              </li>
+              <li style={{ color: requirements.specialChar ? "green" : "red" }}>
+                Un carácter especial (* + - @ $ & #)
+              </li>
+            </ul>
+          </div>
+        )}
       </div>
       <div className="flex flex-col gap-2">
         <Label>Confirmar Contraseña</Label>
-        <Input type="password" placeholder="Las contraseñas deben coincidir" />
+        <Input
+          type="password"
+          autoComplete="off"
+          placeholder="Las contraseñas deben coincidir"
+          {...register("confirmPassword", {
+            required: "La contraseña es obligatoria",
+            validate: (value) =>
+              value === password || "Las contraseñas no coinciden",
+          })}
+        />
       </div>
       <hr></hr>
       <div className="flex flex-col gap-2">
@@ -92,7 +162,7 @@ export const NewUserSheet = () => {
           </SelectContent>
         </Select>
       </div>
-      <Button>Crear Usuario</Button>
-    </div>
+      <Button type="submit">Crear Usuario</Button>
+    </form>
   );
 };
