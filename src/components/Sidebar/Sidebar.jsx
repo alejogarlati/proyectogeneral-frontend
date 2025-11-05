@@ -247,7 +247,7 @@ export function AppSidebar() {
                   {item.rol.includes(activeUser.userRoleId) && (
                     <SidebarMenuItem>
                       {/* !! IMPORTANTE: agregar animaciones facheras */}
-                      <CollapsibleTrigger className="w-full">
+                      <CollapsibleTrigger className="w-full" >
                         <SidebarMenuButton
                           asChild
                           onClick={() => handleClick(item.url, item.haveLink)}
@@ -301,7 +301,7 @@ export function AppSidebar() {
                     src={activeUser.avatar}
                     alt={activeUser.userName}
                   />
-                  <AvatarFallback className="rounded-lg">{takeInitials(activeUser.userName)}</AvatarFallback>
+                  <AvatarFallback className="rounded-lg">{takeInitials(activeUser?.userName)}</AvatarFallback>
                 </Avatar>
                 <div className="grid flex-1 text-left text-sm leading-tight">
                   <span className="truncate font-medium">
@@ -327,7 +327,7 @@ export function AppSidebar() {
                       src={activeUser.avatar}
                       alt={activeUser.userName}
                     />
-                    <AvatarFallback className="rounded-lg">{takeInitials(activeUser.userName)}</AvatarFallback>
+                    <AvatarFallback className="rounded-lg">{takeInitials(activeUser?.userName)}</AvatarFallback>
                   </Avatar>
                   <div className="grid flex-1 text-left text-sm leading-tight">
                     <span className="truncate font-medium">

@@ -33,7 +33,7 @@ export default function Layout() {
       <AppSidebar />
       <SidebarInset>
         <header className="flex h-14 items-center gap-2 px-4 border-b">
-          <SidebarTrigger />
+          <SidebarTrigger className="cursor-pointer" />
           <h1>
             <Titulo />
           </h1>

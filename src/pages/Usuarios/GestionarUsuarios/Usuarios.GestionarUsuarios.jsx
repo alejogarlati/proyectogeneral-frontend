@@ -3,7 +3,7 @@ import { useNavigate, useLoaderData } from "react-router-dom";
 import { Input } from "@/components/ui/input";
 import { AppTable } from "@/components/Table/AppTable.jsx";
 
-import { getUsers } from "@/services/services";
+import { getRoles, getUsers } from "@/services/services";
 import { useEffect, useState } from "react";
 import { UserCard } from "@/components/UserCard/UserCard.jsx";
 import { Badge } from "@/components/ui/badge";
@@ -18,7 +18,8 @@ import { NewUserSheet } from "@/components/AppSheet/NewUserSheet/NewUserSheet.js
 export const UsuariosGestionarUsuarios = () => {
   const navigate = useNavigate();
 
-  const userList = useLoaderData();
+  const userList = useLoaderData().userData;
+  const rolesList = useLoaderData().rolesData;
 
   const [selectedUser, setSelectedUser] = useState(null);
   const [roleFilter, setRoleFilter] = useState(null);
@@ -77,7 +78,7 @@ export const UsuariosGestionarUsuarios = () => {
               buttonTitle="Nuevo Usuario"
               sheetTitle="Crear Nuevo Usuario"
               sheetDescription="Modulo de Creacion de Usuario"
-              children={<NewUserSheet/>}
+              children={<NewUserSheet roles={rolesList}/>}
             />
             {/* </Button> */}
           </div>
@@ -140,14 +141,14 @@ export const UsuariosGestionarUsuarios = () => {
 };
 
 export const loader = async () => {
-  const [usuarios] = await Promise.all([
+  const [usuarios, roles] = await Promise.all([
     getUsers(),
-    // await getRoles()
+    getRoles(),
   ]);
 
   const userData = usuarios.data.data;
 
-  // const rolesData = roles.data.data;
+  const rolesData = roles.data.data;
 
-  return userData;
+  return {userData, rolesData};
 };

@@ -13,3 +13,5 @@ export const createUser = async (data) =>
 
 export const deleteUser = async (id) =>
   await axiosInstance.delete(`/users/destroy/${id}`);
+
+export const getRoles = async () => await axiosInstance.get("/roles");

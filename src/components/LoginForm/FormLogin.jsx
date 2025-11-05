@@ -20,13 +20,6 @@ export const FormLogin = () => {
     setValue,
   } = useForm();
 
-  const [requirements, setRequirements] = useState({
-    minLength: false,
-    maxLength: false,
-    uppercase: false,
-    number: false,
-    specialChar: false,
-  });
 
   const navigate = useNavigate();
 
@@ -85,7 +78,6 @@ export const FormLogin = () => {
                 required: "Contraseña inválida",
                 maxLength: { value: 20 },
               })}
-              onChange={(e) => validatePassword(e.target.value)}
             />
           </fieldset>
           <button

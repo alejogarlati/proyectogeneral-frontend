@@ -1,4 +1,4 @@
-import { useForm } from "react-hook-form";
+import { Controller, useForm } from "react-hook-form";
 import { useState } from "react";
 
 import { Input } from "@/components/ui/input";
@@ -14,9 +14,11 @@ import {
 import { SelectGroup, SelectLabel } from "@radix-ui/react-select";
 import toast from "react-hot-toast";
 import { SheetClose } from "@/components/ui/sheet";
+import { createUser } from "@/services/services";
 
-export const NewUserSheet = () => {
+export const NewUserSheet = (props) => {
   const {
+    control,
     register,
     handleSubmit,
     formState: { errors },
@@ -57,10 +59,24 @@ export const NewUserSheet = () => {
     if (requisitosPassword) {
       toast.error("La contraseña no cumple con los requisitos.");
     } else {
-      // Lógica para enviar los datos al servidor o manejar el formulario
-      console.log("Datos del formulario:", data);
-      toast.success("Usuario creado exitosamente.");
-      reset();
+      const datos = {
+        userName: data.fullName,
+        userMail: data.email,
+        userDate: new Date().toISOString(),
+        userRole: parseInt(data.role),
+        password: data.password,
+      };
+      try {
+        const newUser = await createUser(datos);
+        if (newUser.status === 201) {
+          toast.success("Usuario creado exitosamente.");
+          reset();
+        } else {
+          toast.error("Error al crear el usuario.");
+        }
+      } catch (error) {
+        toast.error("Error al crear el usuario.");
+      }
     }
   };
 
@@ -178,19 +194,26 @@ export const NewUserSheet = () => {
       </div>
       <hr></hr>
       <div className="flex flex-col gap-2">
-        <Select>
-          <Label>Rol de usuario</Label>
-          <SelectTrigger className="w-full">
-            <SelectValue placeholder="Roles" />
-          </SelectTrigger>
-          <SelectContent>
-            {/* <SelectGroup className="flex flex-col p-2 gap-1"> */}
-            <SelectItem value="light">Light</SelectItem>
-            <SelectItem value="dark">Dark</SelectItem>
-            <SelectItem value="system">System</SelectItem>
-            {/* </SelectGroup> */}
-          </SelectContent>
-        </Select>
+        <Controller
+          name="role"
+          control={control}
+          defaultValue={0}
+          render={({ field }) => (
+            <Select value={field.value} onValueChange={field.onChange}>
+              <Label>Rol de usuario</Label>
+              <SelectTrigger className="w-full">
+                <SelectValue placeholder="Roles" />
+              </SelectTrigger>
+              <SelectContent>
+                {props.roles.map((role) => (
+                  <SelectItem key={role.id} value={role.id.toString()}>
+                    {role.name}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          )}
+        ></Controller>
       </div>
       <SheetClose asChild>
         <Button type="submit">Crear Usuario</Button>
