@@ -92,28 +92,16 @@ export const UsuariosGestionarUsuarios = () => {
             size="sm"
             value={roleFilter || ""}
             onValueChange={handleValueChange}
-          >
-            <ToggleGroupItem
-              className="bg-(--secondary) text-(--primary-whited)"
-              value="Administrador"
-              aria-label="Filtrar por rol de Administrador"
-            >
-              Administrador
+          > 
+            { rolesList.map( (role) => (
+              <ToggleGroupItem
+                className="bg-(--secondary) text-(--primary-whited)"
+                value={role.name}
+                aria-label="Filtrar por rol de Administrador"
+              >
+              {role.name}
             </ToggleGroupItem>
-            <ToggleGroupItem
-              className="bg-(--secondary) text-(--primary-whited)"
-              value="Vendedor"
-              aria-label="Filtrar por rol de Vendedor"
-            >
-              Vendedor
-            </ToggleGroupItem>
-            <ToggleGroupItem
-              className="bg-(--secondary) text-(--primary-whited)"
-              value="Compras"
-              aria-label="Filtrar por rol de Compras"
-            >
-              Compras
-            </ToggleGroupItem>
+              ))}
           </ToggleGroup>
         </div>
         <div className="flex flex-col usersTable w-full mt-3">
