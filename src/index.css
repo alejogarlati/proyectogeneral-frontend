@@ -187,3 +187,11 @@
     @apply bg-background text-foreground;
   }
 }
+
+Button {
+  cursor: pointer;
+}
+
+button {
+  cursor: pointer;
+}

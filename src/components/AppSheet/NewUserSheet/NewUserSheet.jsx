@@ -17,6 +17,8 @@ import { SheetClose } from "@/components/ui/sheet";
 import { createUser } from "@/services/services";
 import { getUserByEmail } from "@/services/services.js";
 
+import { Eye, EyeOff } from "lucide-react";
+
 export const NewUserSheet = (props) => {
   const {
     control,
@@ -87,6 +89,12 @@ export const NewUserSheet = (props) => {
     }
   };
 
+  const [toggleEye, setToggleEye] = useState(false);
+
+  const handleEye = () => {
+    setToggleEye((prev) => !prev);
+  };
+
   return (
     <form
       noValidate
@@ -100,37 +108,45 @@ export const NewUserSheet = (props) => {
             type="text"
             autoComplete="off"
             placeholder="Nombre y Apellido"
-            {...register("fullName", { 
-                required: { value: true, message: "El nombre es obligatorio" } 
+            {...register("fullName", {
+              required: { value: true, message: "El nombre es obligatorio" },
             })}
           />
           {errors.fullName && (
-            <p className="text-(--destructive) pl-2 text-xs">{errors.fullName.message}</p>
+            <p className="text-(--destructive) pl-2 text-xs">
+              {errors.fullName.message}
+            </p>
           )}
         </div>
       </div>
       <div className="flex flex-col gap-2">
         <Label className="pl-1">Correo electrónico</Label>
-        <div className="flex flex-col gap-2"> 
+        <div className="flex flex-col gap-2">
           <Input
             type="email"
             autoComplete="off"
             placeholder="micorreo@misitio.com"
             {...register("email", {
-              required: { value: true, message: "El email es obligatorio"},
-              pattern: { value: /^[^\s@]+@[^\s@]+.[^\s@]+$/, message: "Ingrese un email válido" },
+              required: { value: true, message: "El email es obligatorio" },
+              pattern: {
+                value: /^[^\s@]+@[^\s@]+.[^\s@]+$/,
+                message: "Ingrese un email válido",
+              },
             })}
           />
           {errors.email && (
-            <p className="text-(--destructive) pl-2 text-xs">{errors.email.message}</p>
+            <p className="text-(--destructive) pl-2 text-xs">
+              {errors.email.message}
+            </p>
           )}
-        </div> 
+        </div>
       </div>
       <div className="flex flex-col gap-2">
         <Label className="pl-1">Contraseña temporal</Label>
-        <div className="flex flex-col gap-2"> 
+        <div className="flex flex-row gap-2 items-center justify-end">
           <Input
-            type="password"
+            id="password"
+            type={toggleEye ? "text" : "password"}
             autoComplete="new-password"
             placeholder="Mínimo 8 caracteres"
             {...register("password", {
@@ -138,10 +154,20 @@ export const NewUserSheet = (props) => {
             })}
             onChange={(e) => validatePassword(e.target.value)}
           />
-          {errors.password && (
-            <p className="text-(--destructive) pl-2 text-xs">{errors.password.message}</p>
-          )}
+          <button type="button" onClick={handleEye}>
+            {toggleEye ? (
+              <Eye className="text-(--muted-foreground) hover:text-(--primary) h-5 w-5 hover:scale-110 cursor-pointer animate ease-in-out duration-200" />
+            ) : (
+              <EyeOff className="text-(--muted-foreground) hover:text-(--primary) h-5 w-5 hover:scale-110 cursor-pointer animate ease-in-out duration-200" />
+            )}
+            {/* <Eye /> */}
+          </button>
         </div>
+        {errors.password && (
+          <p className="text-(--destructive) pl-2 text-xs">
+            {errors.password.message}
+          </p>
+        )}
         {password?.length > 0 && (
           <div className="mt-2 px-2 justify-between text-xs text-(--muted-foreground)">
             <ul className="flex flex-col gap-1">
@@ -208,8 +234,10 @@ export const NewUserSheet = (props) => {
             })}
           />
           {errors.confirmPassword && (
-              <p className="text-(--destructive) pl-2 text-xs">{errors.confirmPassword.message}</p>
-            )}
+            <p className="text-(--destructive) pl-2 text-xs">
+              {errors.confirmPassword.message}
+            </p>
+          )}
         </div>
       </div>
       <hr></hr>
@@ -217,13 +245,13 @@ export const NewUserSheet = (props) => {
         <Controller
           name="role"
           control={control}
-          defaultValue={null}
-          rules={{ required: { value: true, message: "Rol obligatorio" }}}
+          defaultValue={undefined}
+          rules={{ required: { value: true, message: "Rol obligatorio" } }}
           render={({ field }) => (
             <Select value={field.value} onValueChange={field.onChange}>
               <Label className="pl-1">Rol de usuario</Label>
               <SelectTrigger className="w-full">
-                <SelectValue placeholder="Roles" />
+                <SelectValue placeholder="Roles"/>
               </SelectTrigger>
               <SelectContent>
                 {props.roles.map((role) => (
@@ -235,9 +263,11 @@ export const NewUserSheet = (props) => {
             </Select>
           )}
         />
-        { errors.role && (
-            <p className="text-(--destructive) pl-2 text-xs">{errors.role.message}</p>
-          )}
+        {errors.role && (
+          <p className="text-(--destructive) pl-2 text-xs">
+            {errors.role.message}
+          </p>
+        )}
       </div>
       <Button type="submit">Crear Usuario</Button>
     </form>
