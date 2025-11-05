@@ -13,6 +13,7 @@ import {
 } from "@/components/ui/select";
 import { SelectGroup, SelectLabel } from "@radix-ui/react-select";
 import toast from "react-hot-toast";
+import { SheetClose } from "@/components/ui/sheet";
 
 export const NewUserSheet = () => {
   const {
@@ -47,6 +48,8 @@ export const NewUserSheet = () => {
     });
   };
 
+  const [open, setOpen] = useState(true);
+
   const onSubmit = async (data) => {
     const requisitosPassword = Object.values(requirements).some(
       (value) => !value
@@ -62,7 +65,11 @@ export const NewUserSheet = () => {
   };
 
   return (
-    <form noValidate onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-8 p-4">
+    <form
+      noValidate
+      onSubmit={handleSubmit(onSubmit)}
+      className="flex flex-col gap-8 p-4"
+    >
       <div className="flex flex-col gap-4">
         <Label>Nombre Completo</Label>
         <Input
@@ -107,19 +114,49 @@ export const NewUserSheet = () => {
         {password?.length > 0 && (
           <div className="mt-2 px-2 justify-between text-xs text-(--muted-foreground)">
             <ul className="flex flex-col gap-1">
-              <li className={requirements.minLength ? "text-(--primary)" : "text-(--muted-foreground)"}>
+              <li
+                className={
+                  requirements.minLength
+                    ? "text-(--primary)"
+                    : "text-(--muted-foreground)"
+                }
+              >
                 Al menos 8 caracteres
               </li>
-              <li className={requirements.maxLength ? "text-(--primary)" : "text-(--muted-foreground)"}>
+              <li
+                className={
+                  requirements.maxLength
+                    ? "text-(--primary)"
+                    : "text-(--muted-foreground)"
+                }
+              >
                 Máximo 20 caracteres
               </li>
-              <li className={requirements.uppercase ? "text-(--primary)" : "text-(--muted-foreground)"}>
+              <li
+                className={
+                  requirements.uppercase
+                    ? "text-(--primary)"
+                    : "text-(--muted-foreground)"
+                }
+              >
                 Una letra mayúscula
               </li>
-              <li className={requirements.number ? "text-(--primary)" : "text-(--muted-foreground)"}>
+              <li
+                className={
+                  requirements.number
+                    ? "text-(--primary)"
+                    : "text-(--muted-foreground)"
+                }
+              >
                 Un número
               </li>
-              <li className={requirements.specialChar ? "text-(--primary)" : "text-(--muted-foreground)"}>
+              <li
+                className={
+                  requirements.specialChar
+                    ? "text-(--primary)"
+                    : "text-(--muted-foreground)"
+                }
+              >
                 Un carácter especial (! * + - @ $ & # ¡ ¿ ?)
               </li>
             </ul>
@@ -155,7 +192,9 @@ export const NewUserSheet = () => {
           </SelectContent>
         </Select>
       </div>
-      <Button type="submit">Crear Usuario</Button>
+      <SheetClose asChild>
+        <Button type="submit">Crear Usuario</Button>
+      </SheetClose>
     </form>
   );
 };

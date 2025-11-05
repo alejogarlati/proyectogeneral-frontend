@@ -7,7 +7,7 @@ import {
   SheetTrigger,
 } from "@/components/ui/sheet";
 
-import { Button} from "@/components/ui/button"
+import { Button } from "@/components/ui/button"
 
 export const AppSheet = (props) => {
   return (

@@ -55,8 +55,6 @@ export const UsuariosGestionarUsuarios = () => {
     setRoleFilter(val === roleFilter ? null : val);
   };
 
-  const handleNew = () => {};
-
   return (
     <div className="grid grid-cols-12 w-full gap-6 p-4">
       <div
@@ -76,7 +74,6 @@ export const UsuariosGestionarUsuarios = () => {
             />
             {/* <Button> */}
             <AppSheet
-              onClick={() => handleNew()}
               buttonTitle="Nuevo Usuario"
               sheetTitle="Crear Nuevo Usuario"
               sheetDescription="Modulo de Creacion de Usuario"
