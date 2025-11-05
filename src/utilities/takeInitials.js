@@ -1,14 +1,7 @@
 export const takeInitials = (string) => {
-    const initials = string.split(" ")
-        const name = initials[0]
-        let lastName = ""
-        
-        if (initials.length > 2) {
-          lastName = initials[2]
-        } else {
-          lastName = initials[1]
-        }
-    
-        const finalInitials = name.charAt(0) + lastName.charAt(0)
-        return finalInitials
+  const initials = string.split(" ").map(inicial => inicial.charAt(0)).join("");
+  if (initials.length > 2) {
+    return initials.charAt(0) + initials.charAt(initials.length - 1);
+  }  
+  return initials;
 }
