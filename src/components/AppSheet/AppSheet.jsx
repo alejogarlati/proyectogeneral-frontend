@@ -23,9 +23,13 @@ export const AppSheet = (props) => {
         <SheetContent>
           <SheetHeader>
             <SheetTitle>{props.sheetTitle}</SheetTitle>
-{/*             <SheetDescription>{props.sheetDescription}</SheetDescription> */}
+            {/*             <SheetDescription>{props.sheetDescription}</SheetDescription> */}
           </SheetHeader>
-            {React.cloneElement(props.children, { closeSheet: () => setOpen(false) })}
+          <div className="min-h-0 overflow-y-auto">
+            {React.cloneElement(props.children, {
+              closeSheet: () => setOpen(false),
+            })}
+          </div>
         </SheetContent>
       </Sheet>
     </div>
