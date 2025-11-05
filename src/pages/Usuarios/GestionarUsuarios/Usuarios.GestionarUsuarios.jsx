@@ -1,4 +1,4 @@
-import { useNavigate, useLoaderData } from "react-router-dom";
+import { useLoaderData, useRevalidator } from "react-router-dom";
 
 import { Input } from "@/components/ui/input";
 import { AppTable } from "@/components/Table/AppTable.jsx";
@@ -16,10 +16,10 @@ import { AppSheet } from "@/components/AppSheet/AppSheet.jsx";
 import { NewUserSheet } from "@/components/AppSheet/NewUserSheet/NewUserSheet.jsx";
 
 export const UsuariosGestionarUsuarios = () => {
-  const navigate = useNavigate();
 
   const userList = useLoaderData().userData;
   const rolesList = useLoaderData().rolesData;
+  const { revalidate } = useRevalidator();
 
   const [selectedUser, setSelectedUser] = useState(null);
   const [roleFilter, setRoleFilter] = useState(null);
@@ -39,6 +39,10 @@ export const UsuariosGestionarUsuarios = () => {
   useEffect(() => {
     setSelectedUser(null);
   }, [isOpen]);
+
+  useEffect(() => {
+    setFilteredUsers(userList);
+  }, [userList]);
 
   const handleOnChange = (e) => {
     const filtered = userList.filter(
@@ -78,7 +82,7 @@ export const UsuariosGestionarUsuarios = () => {
               buttonTitle="Nuevo Usuario"
               sheetTitle="Crear Nuevo Usuario"
               sheetDescription="Modulo de Creacion de Usuario"
-              children={<NewUserSheet roles={rolesList}/>}
+              children={<NewUserSheet roles={rolesList} onCreate={()=> revalidate()}/>}
             />
             {/* </Button> */}
           </div>
@@ -133,6 +137,7 @@ export const UsuariosGestionarUsuarios = () => {
             datos={selectedUser}
             roleFilter={roleFilter}
             isOpen={(open) => setIsOpen(open)}
+            onDelete={ () => { setIsOpen(false); revalidate(); } }
           />
         </div>
       )}

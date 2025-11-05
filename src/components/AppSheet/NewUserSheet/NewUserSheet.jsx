@@ -15,6 +15,7 @@ import { SelectGroup, SelectLabel } from "@radix-ui/react-select";
 import toast from "react-hot-toast";
 import { SheetClose } from "@/components/ui/sheet";
 import { createUser } from "@/services/services";
+import { getUserByEmail } from "@/services/services.js";
 
 export const NewUserSheet = (props) => {
   const {
@@ -67,15 +68,21 @@ export const NewUserSheet = (props) => {
         password: data.password,
       };
       try {
-        const newUser = await createUser(datos);
-        if (newUser.status === 201) {
-          toast.success("Usuario creado exitosamente.");
-          reset();
+        const repeatedEmail = await getUserByEmail({ email: data.email });
+        console.log("Repeated Mail: ", repeatedEmail);
+        if (repeatedEmail.status === 204) {
+          const newUser = await createUser(datos);
+          if (newUser.status === 201) {
+            toast.success("Usuario creado exitosamente.");
+            props.onCreate?.();
+            if (typeof props.closeSheet === "function") props.closeSheet();
+            reset();
+          }
         } else {
-          toast.error("Error al crear el usuario.");
+          toast.error("El email ya se encuentra registrado");
         }
       } catch (error) {
-        toast.error("Error al crear el usuario.");
+        console.log("Error creating user: ", error);
       }
     }
   };
@@ -86,47 +93,55 @@ export const NewUserSheet = (props) => {
       onSubmit={handleSubmit(onSubmit)}
       className="flex flex-col gap-8 p-4"
     >
-      <div className="flex flex-col gap-4">
-        <Label>Nombre Completo</Label>
-        <Input
-          type="text"
-          autoComplete="off"
-          placeholder="Nombre y Apellido"
-          {...register("fullName", { required: "El nombre es obligatorio" })}
-        />
-        {errors.fullName && (
-          <p className="text-danger">{"Ingrese un nombre válido"}</p>
-        )}
+      <div className="flex flex-col gap-2">
+        <Label className="pl-1">Nombre Completo</Label>
+        <div className="flex flex-col gap-2">
+          <Input
+            type="text"
+            autoComplete="off"
+            placeholder="Nombre y Apellido"
+            {...register("fullName", { 
+                required: { value: true, message: "El nombre es obligatorio" } 
+            })}
+          />
+          {errors.fullName && (
+            <p className="text-(--destructive) pl-2 text-xs">{errors.fullName.message}</p>
+          )}
+        </div>
       </div>
       <div className="flex flex-col gap-2">
-        <Label>Correo electrónico</Label>
-        <Input
-          type="email"
-          autoComplete="off"
-          placeholder="micorreo@misitio.com"
-          {...register("email", {
-            required: "El email es obligatorio",
-            pattern: /^[^\s@]+@[^\s@]+.[^\s@]+$/,
-          })}
-        />
-        {errors.email && (
-          <p className="text-danger">{"Ingrese un email válido"}</p>
-        )}
+        <Label className="pl-1">Correo electrónico</Label>
+        <div className="flex flex-col gap-2"> 
+          <Input
+            type="email"
+            autoComplete="off"
+            placeholder="micorreo@misitio.com"
+            {...register("email", {
+              required: { value: true, message: "El email es obligatorio"},
+              pattern: { value: /^[^\s@]+@[^\s@]+.[^\s@]+$/, message: "Ingrese un email válido" },
+            })}
+          />
+          {errors.email && (
+            <p className="text-(--destructive) pl-2 text-xs">{errors.email.message}</p>
+          )}
+        </div> 
       </div>
       <div className="flex flex-col gap-2">
-        <Label>Contraseña temporal</Label>
-        <Input
-          type="password"
-          autoComplete="off"
-          placeholder="Mínimo 8 caracteres"
-          {...register("password", {
-            required: "La contraseña es obligatoria",
-          })}
-          onChange={(e) => validatePassword(e.target.value)}
-        />
-        {errors.password && (
-          <p className="text-danger">{errors.password.message}</p>
-        )}
+        <Label className="pl-1">Contraseña temporal</Label>
+        <div className="flex flex-col gap-2"> 
+          <Input
+            type="password"
+            autoComplete="new-password"
+            placeholder="Mínimo 8 caracteres"
+            {...register("password", {
+              required: { value: true, message: "Contraseña Obligatoria" },
+            })}
+            onChange={(e) => validatePassword(e.target.value)}
+          />
+          {errors.password && (
+            <p className="text-(--destructive) pl-2 text-xs">{errors.password.message}</p>
+          )}
+        </div>
         {password?.length > 0 && (
           <div className="mt-2 px-2 justify-between text-xs text-(--muted-foreground)">
             <ul className="flex flex-col gap-1">
@@ -180,27 +195,33 @@ export const NewUserSheet = (props) => {
         )}
       </div>
       <div className="flex flex-col gap-2">
-        <Label>Confirmar Contraseña</Label>
-        <Input
-          type="password"
-          autoComplete="off"
-          placeholder="Las contraseñas deben coincidir"
-          {...register("confirmPassword", {
-            required: "La contraseña es obligatoria",
-            validate: (value) =>
-              value === password || "Las contraseñas no coinciden",
-          })}
-        />
+        <Label className="pl-1">Confirmar Contraseña</Label>
+        <div className="flex flex-col gap-2">
+          <Input
+            type="password"
+            autoComplete="off"
+            placeholder="Las contraseñas deben coincidir"
+            {...register("confirmPassword", {
+              required: "La contraseña es obligatoria",
+              validate: (value) =>
+                value === password || "Las contraseñas no coinciden",
+            })}
+          />
+          {errors.confirmPassword && (
+              <p className="text-(--destructive) pl-2 text-xs">{errors.confirmPassword.message}</p>
+            )}
+        </div>
       </div>
       <hr></hr>
       <div className="flex flex-col gap-2">
         <Controller
           name="role"
           control={control}
-          defaultValue={0}
+          defaultValue={null}
+          rules={{ required: { value: true, message: "Rol obligatorio" }}}
           render={({ field }) => (
             <Select value={field.value} onValueChange={field.onChange}>
-              <Label>Rol de usuario</Label>
+              <Label className="pl-1">Rol de usuario</Label>
               <SelectTrigger className="w-full">
                 <SelectValue placeholder="Roles" />
               </SelectTrigger>
@@ -213,11 +234,12 @@ export const NewUserSheet = (props) => {
               </SelectContent>
             </Select>
           )}
-        ></Controller>
+        />
+        { errors.role && (
+            <p className="text-(--destructive) pl-2 text-xs">{errors.role.message}</p>
+          )}
       </div>
-      <SheetClose asChild>
-        <Button type="submit">Crear Usuario</Button>
-      </SheetClose>
+      <Button type="submit">Crear Usuario</Button>
     </form>
   );
 };

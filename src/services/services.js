@@ -6,7 +6,10 @@ export const getLogin = async (data) =>
 export const getUsers = async () => await axiosInstance.get("/users");
 
 export const getUserById = async (id) =>
-  await axiosInstance.get(`/users/${id}`);
+  await axiosInstance.get(`/users/search/${id}`);
+
+export const getUserByEmail = async (email) =>
+  await axiosInstance.post('/users/search/email', email);
 
 export const createUser = async (data) =>
   await axiosInstance.post("/users", data);

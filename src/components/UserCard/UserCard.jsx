@@ -9,9 +9,14 @@ import toast from "react-hot-toast";
 import { takeInitials } from "@/utilities/takeInitials";
 
 export const UserCard = (props) => {
-  const handleDelete = (user) => {
-    toast(`Se eliminará el usuario ${user.userName}`);
-    deleteUser(user.id);
+  const handleDelete = async (user) => {
+    try {
+      await deleteUser(user.id);
+      toast.success("Usuario eliminado exitosamente.");
+      props.onDelete?.();
+    } catch (error) {
+      toast.error("Error al eliminar el usuario.");
+    }
   };
 
   const handleCollapser = (open) => props.isOpen?.(false);
