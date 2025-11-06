@@ -221,6 +221,10 @@ export function AppSidebar() {
     navigate("/");
   };
 
+  const darkMode = () => {
+  document.documentElement.classList.add("dark");
+}
+
   return (
     <Sidebar variant="inset" collapsible="icon">
       <SidebarContent>

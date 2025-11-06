@@ -19,15 +19,12 @@ import { rutas } from "@/router/rutas.jsx";
 const Titulo = () => {
   const { pathname } = useLocation();
 
-  const ruta = rutas.find((item) => item.path === pathname)
+  const ruta = rutas.find((item) => item.path === pathname);
 
   return ruta.slug;
 };
 
 export default function Layout() {
-
-
-
   return (
     <SidebarProvider>
       <AppSidebar />
@@ -48,12 +45,20 @@ export default function Layout() {
 }
 
 export const loader = () => {
+  const darkMode = () => {
+    document.documentElement.classList.add("dark");
+  };
+
+  darkMode();
+
+  const user = sessionStorage.getItem("user");
   const token = sessionStorage.getItem("accessToken");
   if (!token) {
     throw redirect("/login");
   }
 
   const decodedToken = jwtDecode(token);
+  console.log("Token decodificado:", decodedToken);
   const currentTime = Date.now() / 1000;
   if (decodedToken.exp < currentTime) {
     sessionStorage.removeItem("accessToken");
