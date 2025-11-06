@@ -34,11 +34,11 @@ export const UserCard = (props) => {
       </div>
       <div className="flex flex-col items-center justify-center gap-4 p-12 h-full">
         <Avatar className="h-25 w-25">
-          <AvatarFallback className="text-3xl font-bold">{takeInitials(props.datos?.userName)}</AvatarFallback>
+          <AvatarFallback className="text-3xl font-bold">{takeInitials(props.datos?.userFullName)}</AvatarFallback>
         </Avatar>
         <div className="text-center flex flex-col items-center">
-          <h1 className="text-2xl font-semibold">{props.datos?.userName}</h1>
-          <h3 className="text-sm">{props.datos?.userMail}</h3>
+          <h1 className="text-2xl font-semibold">{props.datos?.userFullName}</h1>
+          <h3 className="text-sm">{props.datos?.userEmail}</h3>
           <Badge className="mt-4">{props.datos?.roleName}</Badge>
         </div>
         <div className="flex flex-row gap-6 mt-2">

@@ -61,9 +61,10 @@ export const NewUserSheet = (props) => {
       toast.error("La contraseña no cumple con los requisitos.");
     } else {
       const datos = {
-        userName: data.fullName,
-        userMail: data.email,
-        userDate: new Date().toISOString(),
+        userLastName: data.lastName,
+        userName: data.firstName,
+        userEmail: data.email,
+        userBirthDate: null,
         userRole: parseInt(data.role),
         password: data.password,
       };
@@ -92,20 +93,38 @@ export const NewUserSheet = (props) => {
       onSubmit={handleSubmit(onSubmit)}
       className="flex flex-col gap-8 p-4"
     >
-      <div className="flex flex-col gap-2">
-        <Label className="pl-1">Nombre Completo</Label>
+            <div className="flex flex-col gap-2">
+        <Label className="pl-1">Apellido</Label>
         <div className="flex flex-col gap-2">
           <Input
             type="text"
             autoComplete="off"
-            placeholder="Nombre y Apellido"
-            {...register("fullName", {
+            placeholder="Apellido"
+            {...register("lastName", {
+              required: { value: true, message: "El apellido es obligatorio" },
+            })}
+          />
+          {errors.lastName && (
+            <p className="text-(--destructive) pl-2 text-xs">
+              {errors.lastName.message}
+            </p>
+          )}
+        </div>
+      </div>
+      <div className="flex flex-col gap-2">
+        <Label className="pl-1">Nombre</Label>
+        <div className="flex flex-col gap-2">
+          <Input
+            type="text"
+            autoComplete="off"
+            placeholder="Nombre"
+            {...register("firstName", {
               required: { value: true, message: "El nombre es obligatorio" },
             })}
           />
-          {errors.fullName && (
+          {errors.firstName && (
             <p className="text-(--destructive) pl-2 text-xs">
-              {errors.fullName.message}
+              {errors.firstName.message}
             </p>
           )}
         </div>

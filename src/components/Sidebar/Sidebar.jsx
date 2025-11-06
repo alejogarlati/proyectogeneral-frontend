@@ -303,13 +303,13 @@ export function AppSidebar() {
                 <Avatar className="h-8 w-8 rounded-lg grayscale">
                   <AvatarImage
                     src={activeUser.avatar}
-                    alt={activeUser.userName}
+                    alt={activeUser.userFullName}
                   />
-                  <AvatarFallback className="rounded-lg">{takeInitials(activeUser?.userName)}</AvatarFallback>
+                  <AvatarFallback className="rounded-lg">{takeInitials(activeUser?.userFullName)}</AvatarFallback>
                 </Avatar>
                 <div className="grid flex-1 text-left text-sm leading-tight">
                   <span className="truncate font-medium">
-                    {activeUser.userName}
+                    {activeUser.userFullName}
                   </span>
                   <span className="text-muted-foreground truncate text-xs">
                     {activeUser.userRoleName}
@@ -329,13 +329,13 @@ export function AppSidebar() {
                   <Avatar className="h-8 w-8 rounded-lg">
                     <AvatarImage
                       src={activeUser.avatar}
-                      alt={activeUser.userName}
+                      alt={activeUser.userFullName}
                     />
-                    <AvatarFallback className="rounded-lg">{takeInitials(activeUser?.userName)}</AvatarFallback>
+                    <AvatarFallback className="rounded-lg">{takeInitials(activeUser?.userFullName)}</AvatarFallback>
                   </Avatar>
                   <div className="grid flex-1 text-left text-sm leading-tight">
                     <span className="truncate font-medium">
-                      {activeUser.userName}
+                      {activeUser.userFullName}
                     </span>
                     <span className="text-muted-foreground truncate text-xs">
                       {activeUser.userMail}

@@ -64,7 +64,7 @@ export const UsuariosGestionarUsuarios = () => {
     <div className="grid grid-cols-12 w-full gap-6 p-4">
       <div
         className={
-          (selectedUser && isOpen ? "col-span-9 " : "col-span-12 ") +
+          (selectedUser && isOpen ? "col-span-8 " : "col-span-12 ") +
           "flex flex-col items-center justify-start w-full gap-2 p-8 bg-(--card) rounded-xl shadow"
         }
       >
@@ -110,7 +110,7 @@ export const UsuariosGestionarUsuarios = () => {
             caption="Esta es la lista de usuarios"
             headers={["Nombre", "Email", "Rol"]}
             userData={filteredUsers}
-            columns={["userName", "userMail", "roleName"]}
+            columns={["userFullName", "userEmail", "roleName"]}
             captionStyle="text-start"
             headStyle="w-[250px]"
             noDataStyle="mx-auto pt-4 text-center font-medium w-full"
@@ -121,7 +121,7 @@ export const UsuariosGestionarUsuarios = () => {
         </div>
       </div>
       {selectedUser && isOpen && (
-        <div className="col-span-3 bg-(--card) rounded p-4 shadow">
+        <div className="col-span-4 bg-(--card) rounded p-4 shadow">
           <UserCard
             datos={selectedUser}
             roleFilter={roleFilter}
@@ -140,7 +140,10 @@ export const loader = async () => {
     getRoles(),
   ]);
 
-  const userData = usuarios.data.data;
+  const userData = usuarios.data.data.map(user => ({
+    ...user,
+    userFullName: `${user.userName} ${user.userLastName}`,
+  }));
 
   const rolesData = roles.data.data;
 
