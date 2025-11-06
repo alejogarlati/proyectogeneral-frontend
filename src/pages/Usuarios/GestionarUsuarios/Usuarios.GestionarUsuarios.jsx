@@ -93,8 +93,9 @@ export const UsuariosGestionarUsuarios = () => {
             value={roleFilter || ""}
             onValueChange={handleValueChange}
           > 
-            { rolesList.map( (role) => (
+            { rolesList.map( (role, index) => (
               <ToggleGroupItem
+              key={index}
                 className="bg-(--secondary) text-(--primary-whited)"
                 value={role.name}
                 aria-label="Filtrar por rol de Administrador"

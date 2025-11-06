@@ -30,9 +30,10 @@ export const NewUserSheet = (props) => {
     resetField,
     setValue,
   } = useForm();
-
+  
   const [password, setPassword] = useState(null);
-
+  const [toggleEye, setToggleEye] = useState(false);
+  const [open, setOpen] = useState(true);
   const [requirements, setRequirements] = useState({
     minLength: false,
     maxLength: false,
@@ -41,7 +42,6 @@ export const NewUserSheet = (props) => {
     specialChar: false,
   });
 
-  // Validar requisitos dinámicamente
   const validatePassword = (value) => {
     setPassword(value);
     setRequirements({
@@ -52,8 +52,6 @@ export const NewUserSheet = (props) => {
       specialChar: /[*+\-@$&#!¡¿?]/.test(value),
     });
   };
-
-  const [open, setOpen] = useState(true);
 
   const onSubmit = async (data) => {
     const requisitosPassword = Object.values(requirements).some(
@@ -71,13 +69,12 @@ export const NewUserSheet = (props) => {
       };
       try {
         const repeatedEmail = await getUserByEmail({ email: data.email });
-        console.log("Repeated Mail: ", repeatedEmail);
         if (repeatedEmail.status === 204) {
           const newUser = await createUser(datos);
           if (newUser.status === 201) {
             toast.success("Usuario creado exitosamente.");
             props.onCreate?.();
-            if (typeof props.closeSheet === "function") props.closeSheet();
+            props.closeSheet();
             reset();
           }
         } else {
@@ -87,12 +84,6 @@ export const NewUserSheet = (props) => {
         console.log("Error creating user: ", error);
       }
     }
-  };
-
-  const [toggleEye, setToggleEye] = useState(false);
-
-  const handleEye = () => {
-    setToggleEye((prev) => !prev);
   };
 
   return (
@@ -154,7 +145,7 @@ export const NewUserSheet = (props) => {
             })}
             onChange={(e) => validatePassword(e.target.value)}
           />
-          <button type="button" onClick={handleEye}>
+          <button type="button" onClick={() => setToggleEye(!toggleEye)}>
             {toggleEye ? (
               <Eye className="text-(--muted-foreground) hover:text-(--primary) h-5 w-5 hover:scale-110 cursor-pointer animate ease-in-out duration-200" />
             ) : (
