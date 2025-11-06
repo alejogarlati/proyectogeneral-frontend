@@ -18,3 +18,5 @@ export const deleteUser = async (id) =>
   await axiosInstance.delete(`/users/destroy/${id}`);
 
 export const getRoles = async () => await axiosInstance.get("/roles");
+
+export const getMenusByUserId = async (userId) => await axiosInstance.get("/menus/user/" + userId);

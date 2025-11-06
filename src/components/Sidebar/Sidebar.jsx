@@ -61,7 +61,7 @@ import { use } from "react";
 import logoTrady from "@/assets/logo_tradyOne_png.png";
 import { takeInitials } from "@/utilities/takeInitials";
 
-const items = [
+/* const items = [
   {
     title: "Home",
     url: "/",
@@ -198,9 +198,10 @@ const items = [
       },
     ],
   },
-];
+]; */
 
-export function AppSidebar() {
+export function AppSidebar(props) {
+
   const { isMobile, toggleSidebar, state } = useSidebar();
 
   const { pathname } = useLocation();
@@ -242,13 +243,13 @@ export function AppSidebar() {
           <SidebarGroupContent>
             <SidebarMenu>
               {/* agregar renderizado condicional según user.rol */}
-              {items.map((item, index) => (
+              {props.items.map((item, index) => (
                 <Collapsible
                   className="group/collapsible"
                   key={item.title}
                   defaultOpen={index === 0}
                 >
-                  {item.rol.includes(activeUser.userRoleId) && (
+
                     <SidebarMenuItem>
                       {/* !! IMPORTANTE: agregar animaciones facheras */}
                       <CollapsibleTrigger className="w-full" >
@@ -273,7 +274,7 @@ export function AppSidebar() {
                           <SidebarMenuSub>
                             {item.submenu.map(
                               (itemsub) =>
-                                itemsub.rol.includes(activeUser.userRoleId) && (
+
                                   <SidebarMenuSubItem key={itemsub.title}>
                                     <SidebarMenuSubButton asChild>
                                       <Link to={itemsub.url}>
@@ -281,13 +282,13 @@ export function AppSidebar() {
                                       </Link>
                                     </SidebarMenuSubButton>
                                   </SidebarMenuSubItem>
-                                )
+                                
                             )}
                           </SidebarMenuSub>
                         </CollapsibleContent>
                       ) : null}
                     </SidebarMenuItem>
-                  )}
+
                 </Collapsible>
               ))}
             </SidebarMenu>

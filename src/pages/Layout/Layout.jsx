@@ -1,5 +1,5 @@
 import React from "react";
-import { Outlet, useLocation } from "react-router-dom";
+import { Outlet, useLoaderData, useLocation } from "react-router-dom";
 import { Navbar } from "../../components/Navbar/Navbar.jsx";
 import { Footer } from "../../components/Footer/Footer.jsx";
 import { jwtDecode } from "jwt-decode";
@@ -15,19 +15,24 @@ import { Toaster } from "react-hot-toast";
 import { AppSidebar } from "../../components/Sidebar/Sidebar.jsx";
 
 import { rutas } from "@/router/rutas.jsx";
+import { getMenusByUserId } from "@/services/services.js";
+
 
 const Titulo = () => {
   const { pathname } = useLocation();
-
+  
   const ruta = rutas.find((item) => item.path === pathname);
 
   return ruta.slug;
 };
 
 export default function Layout() {
+  
+  const menuItems = useLoaderData().menuTree.data.data;
+
   return (
     <SidebarProvider>
-      <AppSidebar />
+      <AppSidebar items={menuItems}/>
       <SidebarInset>
         <header className="flex h-14 items-center gap-2 px-4 border-b">
           <SidebarTrigger className="cursor-pointer" />
@@ -44,7 +49,8 @@ export default function Layout() {
   );
 }
 
-export const loader = () => {
+export const loader = async () => {
+  
   const darkMode = () => {
     document.documentElement.classList.add("dark");
   };
@@ -66,5 +72,9 @@ export const loader = () => {
     throw redirect("/login");
   }
 
-  return null;
+  const [ menuTree ] = await Promise.all([
+    getMenusByUserId(user.id)
+  ]);
+
+  return { menuTree };
 };
