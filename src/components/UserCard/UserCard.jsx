@@ -7,6 +7,8 @@ import { Pencil, Trash2, X } from "lucide-react";
 import toast from "react-hot-toast";
 
 import { takeInitials } from "@/utilities/takeInitials";
+import { AppSheet } from "../AppSheet/AppSheet";
+import { EditUserSheet } from "../AppSheet/EditUserSheet/EditUserSheet";
 
 export const UserCard = (props) => {
   const handleDelete = async (user) => {
@@ -42,12 +44,14 @@ export const UserCard = (props) => {
           <Badge className="mt-4">{props.datos?.roleName}</Badge>
         </div>
         <div className="flex flex-row gap-6 mt-2">
-          <Button
-            variant="secondary"
-            className="text-(--primary) hover:text-(--secondary) cursor-pointer"
-          >
-            <Pencil />
-          </Button>
+          <AppSheet
+            buttonClassName="bg-trasnparent text-(--primary) hover:text-(--secondary) hover:bg-transparent cursor-pointer"
+            sheetClassName="sm:max-w-xl"
+            buttonTitle={<Pencil />}
+            sheetTitle="Editar Datos del Usuario"
+            sheetDescription="Modulo de Edición de datos de un Usuario"
+            children={<EditUserSheet user={props.datos}/>}
+          />
           <Button
             variant="secondary"
             className="text-(--destructive) hover:text-(--hover-destructive) cursor-pointer"

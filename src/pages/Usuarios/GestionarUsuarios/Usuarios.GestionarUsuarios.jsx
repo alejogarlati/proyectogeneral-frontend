@@ -14,6 +14,7 @@ import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 import { ArrowRightFromLine } from "lucide-react";
 import { AppSheet } from "@/components/AppSheet/AppSheet.jsx";
 import { NewUserSheet } from "@/components/AppSheet/NewUserSheet/NewUserSheet.jsx";
+import { EditUserSheet } from "@/components/AppSheet/EditUserSheet/EditUserSheet";
 
 export const UsuariosGestionarUsuarios = () => {
 
@@ -25,6 +26,7 @@ export const UsuariosGestionarUsuarios = () => {
   const [roleFilter, setRoleFilter] = useState(null);
   const [filteredUsers, setFilteredUsers] = useState(userList);
   const [isOpen, setIsOpen] = useState(false);
+  const [isEditOpen, setIsEditOpen] = useState(false);
 
   useEffect(() => {
     handleOnChange({
@@ -120,13 +122,14 @@ export const UsuariosGestionarUsuarios = () => {
           />
         </div>
       </div>
-      {selectedUser && isOpen && (
+            {selectedUser && isOpen && (
         <div className="col-span-4 bg-(--card) rounded p-4 shadow">
           <UserCard
             datos={selectedUser}
             roleFilter={roleFilter}
             isOpen={(open) => setIsOpen(open)}
             onDelete={ () => { setIsOpen(false); revalidate(); } }
+            unUpdate={ () => { revalidate(); } } 
           />
         </div>
       )}

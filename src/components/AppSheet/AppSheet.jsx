@@ -12,15 +12,16 @@ import { Button } from "@/components/ui/button";
 import { useState } from "react";
 
 export const AppSheet = (props) => {
+  
   const [open, setOpen] = useState(false);
 
   return (
     <div>
       <Sheet open={open} onOpenChange={setOpen}>
-        <Button asChild>
+        <Button className={props.buttonClassName} asChild>
           <SheetTrigger>{props.buttonTitle}</SheetTrigger>
         </Button>
-        <SheetContent>
+        <SheetContent className={props.sheetClassName}>
           <SheetHeader>
             <SheetTitle>{props.sheetTitle}</SheetTitle>
             {/*             <SheetDescription>{props.sheetDescription}</SheetDescription> */}
