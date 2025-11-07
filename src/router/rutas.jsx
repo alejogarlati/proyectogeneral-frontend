@@ -19,6 +19,7 @@ import { UsuariosRolesPermisos } from "@/pages/Usuarios/RolesPermisos/Usuarios.R
 import { loader as rolesPermisosUsuariosLoader } from "@/pages/Usuarios/RolesPermisos/Usuarios.RolesPermisos.jsx";
 import { UsuariosCuenta } from "@/pages/Usuarios/Cuenta/Usuarios.cuenta.jsx";
 import { loader as cuentaUsuarioLoader } from "@/pages/Usuarios/Cuenta/Usuarios.cuenta.jsx";
+import { Preferencias, loader as preferenciasLoader } from "@/pages/Preferencias/Preferencias.jsx";
 import { loader } from "@/pages/Layout/Layout.jsx";
 
 
@@ -115,4 +116,10 @@ export const rutas = [
     loader: cuentaUsuarioLoader,
     slug: "Mi Cuenta",
   },
+  {
+    path: "/ajustes/preferencias",
+    element: <Preferencias />,
+    loader: preferenciasLoader,
+    slug: "Preferencias"
+  }
 ];

@@ -51,12 +51,6 @@ export default function Layout() {
 
 export const loader = async () => {
   
-  const darkMode = () => {
-    document.documentElement.classList.add("dark");
-  };
-
-  darkMode();
-
   const user = sessionStorage.getItem("user");
   const token = sessionStorage.getItem("accessToken");
   if (!token) {
@@ -64,7 +58,6 @@ export const loader = async () => {
   }
 
   const decodedToken = jwtDecode(token);
-  console.log("Token decodificado:", decodedToken);
   const currentTime = Date.now() / 1000;
   if (decodedToken.exp < currentTime) {
     sessionStorage.removeItem("accessToken");
@@ -72,9 +65,9 @@ export const loader = async () => {
     throw redirect("/login");
   }
 
+  if (JSON.parse(user).darkMode) document.documentElement.classList.add("dark");
   const [ menuTree ] = await Promise.all([
-    getMenusByUserId(user.id)
+    getMenusByUserId(JSON.parse(user).id)
   ]);
-
   return { menuTree };
 };

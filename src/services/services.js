@@ -9,7 +9,7 @@ export const getUserById = async (id) =>
   await axiosInstance.get(`/users/search/${id}`);
 
 export const getUserByEmail = async (email) =>
-  await axiosInstance.post('/users/search/email', email);
+  await axiosInstance.post("/users/search/email", email);
 
 export const createUser = async (data) =>
   await axiosInstance.post("/users", data);
@@ -19,4 +19,5 @@ export const deleteUser = async (id) =>
 
 export const getRoles = async () => await axiosInstance.get("/roles");
 
-export const getMenusByUserId = async (userId) => await axiosInstance.get("/menus/user/" + userId);
+export const getMenusByUserId = async (userId) =>
+  await axiosInstance.get("/menus/user/" + userId);
