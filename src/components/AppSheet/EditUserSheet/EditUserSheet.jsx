@@ -30,9 +30,10 @@ export const EditUserSheet = (props) => {
     resetField,
     setValue,
   } = useForm();
-  
+
   const [password, setPassword] = useState(null);
   const [toggleEye, setToggleEye] = useState(false);
+  const [toggleEyeConf, setToggleEyeConf] = useState(false);
   const [open, setOpen] = useState(true);
   const [requirements, setRequirements] = useState({
     minLength: false,
@@ -95,24 +96,6 @@ export const EditUserSheet = (props) => {
     >
       <div className="flex flex-row gap-2 w-full">
         <div className="flex flex-col gap-2 w-full">
-          <Label className="pl-1">Apellido</Label>
-          <div className="flex flex-col gap-2">
-            <Input
-              type="text"
-              autoComplete="off"
-              placeholder="Apellido"
-              {...register("lastName", {
-                required: { value: true, message: "El apellido es obligatorio" },
-              })}
-            />
-            {errors.lastName && (
-              <p className="text-(--destructive) pl-2 text-xs">
-                {errors.lastName.message}
-              </p>
-            )}
-          </div>
-        </div>
-        <div className="flex flex-col gap-2 w-full">
           <Label className="pl-1">Nombre</Label>
           <div className="flex flex-col gap-2">
             <Input
@@ -130,27 +113,289 @@ export const EditUserSheet = (props) => {
             )}
           </div>
         </div>
+        <div className="flex flex-col gap-2 w-full">
+          <Label className="pl-1">Apellido</Label>
+          <div className="flex flex-col gap-2">
+            <Input
+              type="text"
+              autoComplete="off"
+              placeholder="Apellido"
+              {...register("lastName", {
+                required: {
+                  value: true,
+                  message: "El apellido es obligatorio",
+                },
+              })}
+            />
+            {errors.lastName && (
+              <p className="text-(--destructive) pl-2 text-xs">
+                {errors.lastName.message}
+              </p>
+            )}
+          </div>
+        </div>
       </div>
-      <div className="flex flex-col gap-2">
-        <Label className="pl-1">Correo electrónico</Label>
-        <div className="flex flex-col gap-2">
-          <Input
-            type="email"
-            autoComplete="off"
-            placeholder="micorreo@misitio.com"
-            {...register("email", {
-              required: { value: true, message: "El email es obligatorio" },
-              pattern: {
-                value: /^[^\s@]+@[^\s@]+.[^\s@]+$/,
-                message: "Ingrese un email válido",
-              },
-            })}
-          />
-          {errors.email && (
+      <div className="flex flex-row gap-2 w-full">
+        <div className="flex flex-col gap-2 w-full">
+          <Label className="pl-1">Correo electrónico</Label>
+          <div className="flex flex-col gap-2">
+            <Input
+              type="email"
+              autoComplete="off"
+              placeholder="micorreo@misitio.com"
+              {...register("email", {
+                required: { value: true, message: "El email es obligatorio" },
+                pattern: {
+                  value: /^[^\s@]+@[^\s@]+.[^\s@]+$/,
+                  message: "Ingrese un email válido",
+                },
+              })}
+            />
+            {errors.email && (
+              <p className="text-(--destructive) pl-2 text-xs">
+                {errors.email.message}
+              </p>
+            )}
+          </div>
+        </div>
+        <div className="flex flex-col gap-2 w-full">
+          <Label className="pl-1">Fecha de nacimiento</Label>
+          <div className="flex flex-col gap-2">
+            <Input
+              type="date"
+              autoComplete="off"
+              {...register("email", {
+                required: { value: true, message: "El email es obligatorio" },
+                pattern: {
+                  value: /^[^\s@]+@[^\s@]+.[^\s@]+$/,
+                  message: "Ingrese un email válido",
+                },
+              })}
+            />
+            {errors.email && (
+              <p className="text-(--destructive) pl-2 text-xs">
+                {errors.email.message}
+              </p>
+            )}
+          </div>
+        </div>
+      </div>
+      <div className="flex flex-col gap-4">
+        <hr></hr>
+        <div className="flex flex-row justify-between w-full">
+          <p>Direcciones</p>
+          <button type="button">+</button>
+        </div>
+      </div>
+      {/* TO DO: Agregar acordeón de direcciones */}
+      {/* LINEA 1 Y 2 ---------------------------- */}
+      <div className="flex flex-col gap-4 w-full">
+        <div className="flex flex-col gap-2 w-full">
+          <Label className="pl-1">Línea 1</Label>
+          <div className="flex flex-col gap-2">
+            <Input
+              type="text"
+              autoComplete="off"
+              placeholder="Dirección"
+              {...register("firstName", {
+                required: { value: true, message: "El nombre es obligatorio" },
+              })}
+            />
+            {errors.firstName && (
+              <p className="text-(--destructive) pl-2 text-xs">
+                {errors.firstName.message}
+              </p>
+            )}
+          </div>
+        </div>
+        <div className="flex flex-col gap-2 w-full">
+          <Label className="pl-1">Línea 2</Label>
+          <div className="flex flex-col gap-2">
+            <Input
+              type="text"
+              autoComplete="off"
+              placeholder="Aclaraciones"
+              {...register("lastName", {
+                required: {
+                  value: true,
+                  message: "El apellido es obligatorio",
+                },
+              })}
+            />
+            {errors.lastName && (
+              <p className="text-(--destructive) pl-2 text-xs">
+                {errors.lastName.message}
+              </p>
+            )}
+          </div>
+        </div>
+      </div>
+      {/* PROVINCIA CIUDAD ----------------------- */}
+      <div className="flex flex-row gap-2 w-full">
+        <div className="flex flex-col gap-2 w-full">
+          <div className="flex flex-col gap-2">
+            <Controller
+              name="role"
+              control={control}
+              defaultValue={undefined}
+              rules={{ required: { value: true, message: "Rol obligatorio" } }}
+              render={({ field }) => (
+                <Select value={field.value} onValueChange={field.onChange}>
+                  <Label className="pl-1">Provincia</Label>
+                  <SelectTrigger className="w-full">
+                    <SelectValue placeholder="Provincias" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {props.roles.map((role) => (
+                      <SelectItem key={role.id} value={role.id.toString()}>
+                        {role.name}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              )}
+            />
+            {errors.role && (
+              <p className="text-(--destructive) pl-2 text-xs">
+                {errors.role.message}
+              </p>
+            )}
+          </div>
+        </div>
+        <div className="flex flex-col gap-2 w-full">
+          <Label className="pl-1">Ciudad</Label>
+          <div className="flex flex-col gap-2">
+            <Input
+              type="text"
+              autoComplete="off"
+              placeholder="Aclaraciones"
+              {...register("lastName", {
+                required: {
+                  value: true,
+                  message: "El apellido es obligatorio",
+                },
+              })}
+            />
+            {errors.lastName && (
+              <p className="text-(--destructive) pl-2 text-xs">
+                {errors.lastName.message}
+              </p>
+            )}
+          </div>
+        </div>
+      </div>
+      <hr></hr>
+      {/* CONTRASEÑAS ----------------------- */}
+      <div className="flex flex-row gap-2 justify-between w-full">
+        <div className="flex flex-col gap-2 w-full">
+          <Label className="pl-1">Contraseña</Label>
+          <div className="flex flex-row gap-2 items-center justify-end">
+            <Input
+              id="password"
+              type={toggleEye ? "text" : "password"}
+              autoComplete="new-password"
+              placeholder="Mínimo 8 caracteres"
+              {...register("password", {
+                required: { value: true, message: "Contraseña Obligatoria" },
+              })}
+              onChange={(e) => validatePassword(e.target.value)}
+            />
+            <button type="button" onClick={() => setToggleEye(!toggleEye)}>
+              {toggleEye ? (
+                <Eye className="text-(--muted-foreground) hover:text-(--primary) h-5 w-5 hover:scale-110 cursor-pointer animate ease-in-out duration-200" />
+              ) : (
+                <EyeOff className="text-(--muted-foreground) hover:text-(--primary) h-5 w-5 hover:scale-110 cursor-pointer animate ease-in-out duration-200" />
+              )}
+              {/* <Eye /> */}
+            </button>
+          </div>
+          {errors.password && (
             <p className="text-(--destructive) pl-2 text-xs">
-              {errors.email.message}
+              {errors.password.message}
             </p>
           )}
+          {password?.length > 0 && (
+            <div className="mt-2 px-2 justify-between text-xs text-(--muted-foreground)">
+              <ul className="flex flex-col gap-1">
+                <li
+                  className={
+                    requirements.minLength
+                      ? "text-(--primary)"
+                      : "text-(--muted-foreground)"
+                  }
+                >
+                  Al menos 8 caracteres
+                </li>
+                <li
+                  className={
+                    requirements.maxLength
+                      ? "text-(--primary)"
+                      : "text-(--muted-foreground)"
+                  }
+                >
+                  Máximo 20 caracteres
+                </li>
+                <li
+                  className={
+                    requirements.uppercase
+                      ? "text-(--primary)"
+                      : "text-(--muted-foreground)"
+                  }
+                >
+                  Una letra mayúscula
+                </li>
+                <li
+                  className={
+                    requirements.number
+                      ? "text-(--primary)"
+                      : "text-(--muted-foreground)"
+                  }
+                >
+                  Un número
+                </li>
+                <li
+                  className={
+                    requirements.specialChar
+                      ? "text-(--primary)"
+                      : "text-(--muted-foreground)"
+                  }
+                >
+                  Un carácter especial (! * + - @ $ & # ¡ ¿ ?)
+                </li>
+              </ul>
+            </div>
+          )}
+        </div>
+        <div className="flex flex-col gap-2 w-full">
+          <Label className="pl-1">Confirmar Contraseña</Label>
+          <div className="flex flex-row gap-2">
+            <Input
+              type={toggleEyeConf ? "text" : "password"}
+              autoComplete="off"
+              placeholder="Las contraseñas deben coincidir"
+              {...register("confirmPassword", {
+                required: "La contraseña es obligatoria",
+                validate: (value) =>
+                  value === password || "Las contraseñas no coinciden",
+              })}
+            />
+            <button
+              type="button"
+              onClick={() => setToggleEyeConf(!toggleEyeConf)}
+            >
+              {toggleEyeConf ? (
+                <Eye className="text-(--muted-foreground) hover:text-(--primary) h-5 w-5 hover:scale-110 cursor-pointer animate ease-in-out duration-200" />
+              ) : (
+                <EyeOff className="text-(--muted-foreground) hover:text-(--primary) h-5 w-5 hover:scale-110 cursor-pointer animate ease-in-out duration-200" />
+              )}
+              {/* <Eye /> */}
+            </button>
+            {errors.confirmPassword && (
+              <p className="text-(--destructive) pl-2 text-xs">
+                {errors.confirmPassword.message}
+              </p>
+            )}
+          </div>
         </div>
       </div>
       <hr></hr>
@@ -164,15 +409,15 @@ export const EditUserSheet = (props) => {
             <Select value={field.value} onValueChange={field.onChange}>
               <Label className="pl-1">Rol de usuario</Label>
               <SelectTrigger className="w-full">
-                <SelectValue placeholder="Roles"/>
+                <SelectValue placeholder="Roles" />
               </SelectTrigger>
-              {/* <SelectContent>
+              <SelectContent>
                 {props.roles.map((role) => (
                   <SelectItem key={role.id} value={role.id.toString()}>
                     {role.name}
                   </SelectItem>
                 ))}
-              </SelectContent> */}
+              </SelectContent>
             </Select>
           )}
         />

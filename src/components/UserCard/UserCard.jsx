@@ -36,21 +36,25 @@ export const UserCard = (props) => {
       </div>
       <div className="flex flex-col items-center justify-center gap-4 p-12 h-full">
         <Avatar className="h-25 w-25">
-          <AvatarFallback className="text-3xl font-bold">{takeInitials(props.datos?.userFullName)}</AvatarFallback>
+          <AvatarFallback className="text-3xl font-bold">
+            {takeInitials(props.datos?.userFullName)}
+          </AvatarFallback>
         </Avatar>
         <div className="text-center flex flex-col items-center">
-          <h1 className="text-2xl font-semibold">{props.datos?.userFullName}</h1>
+          <h1 className="text-2xl font-semibold">
+            {props.datos?.userFullName}
+          </h1>
           <h3 className="text-sm">{props.datos?.userEmail}</h3>
           <Badge className="mt-4">{props.datos?.roleName}</Badge>
         </div>
         <div className="flex flex-row gap-6 mt-2">
           <AppSheet
-            buttonClassName="bg-trasnparent text-(--primary) hover:text-(--secondary) hover:bg-transparent cursor-pointer"
+            buttonClassName="bg-transparent text-(--primary) hover:text-(--secondary) hover:bg-transparent cursor-pointer"
             sheetClassName="sm:max-w-xl"
             buttonTitle={<Pencil />}
             sheetTitle="Editar Datos del Usuario"
             sheetDescription="Modulo de Edición de datos de un Usuario"
-            children={<EditUserSheet user={props.datos}/>}
+            children={<EditUserSheet user={props.datos} roles={props.rolesList}/>}
           />
           <Button
             variant="secondary"

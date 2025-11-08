@@ -17,10 +17,10 @@ import { NewUserSheet } from "@/components/AppSheet/NewUserSheet/NewUserSheet.js
 import { EditUserSheet } from "@/components/AppSheet/EditUserSheet/EditUserSheet";
 
 export const UsuariosGestionarUsuarios = () => {
-
   const userList = useLoaderData().userData;
   const rolesList = useLoaderData().rolesData;
   const { revalidate } = useRevalidator();
+  const activeUser = JSON.parse(sessionStorage.getItem("user"));
 
   const [selectedUser, setSelectedUser] = useState(null);
   const [roleFilter, setRoleFilter] = useState(null);
@@ -79,14 +79,19 @@ export const UsuariosGestionarUsuarios = () => {
               name="searchInput"
               onChange={handleOnChange}
             />
-            {/* <Button> */}
-            <AppSheet
-              buttonTitle="Nuevo Usuario"
-              sheetTitle="Crear Nuevo Usuario"
-              sheetDescription="Modulo de Creacion de Usuario"
-              children={<NewUserSheet roles={rolesList} onCreate={()=> revalidate()}/>}
-            />
-            {/* </Button> */}
+            {activeUser.userRoleId === 1 && (
+              <AppSheet
+                buttonTitle="Nuevo Usuario"
+                sheetTitle="Crear Nuevo Usuario"
+                sheetDescription="Modulo de Creacion de Usuario"
+                children={
+                  <NewUserSheet
+                    roles={rolesList}
+                    onCreate={() => revalidate()}
+                  />
+                }
+              />
+            )}
           </div>
           <ToggleGroup
             type="single"
@@ -94,17 +99,17 @@ export const UsuariosGestionarUsuarios = () => {
             size="sm"
             value={roleFilter || ""}
             onValueChange={handleValueChange}
-          > 
-            { rolesList.map( (role, index) => (
+          >
+            {rolesList.map((role, index) => (
               <ToggleGroupItem
-              key={index}
+                key={index}
                 className="bg-(--secondary) text-(--primary-whited)"
                 value={role.name}
                 aria-label="Filtrar por rol de Administrador"
               >
-              {role.name}
-            </ToggleGroupItem>
-              ))}
+                {role.name}
+              </ToggleGroupItem>
+            ))}
           </ToggleGroup>
         </div>
         <div className="flex flex-col usersTable w-full mt-3">
@@ -122,14 +127,21 @@ export const UsuariosGestionarUsuarios = () => {
           />
         </div>
       </div>
-            {selectedUser && isOpen && (
+      {selectedUser && isOpen && (
         <div className="col-span-4 bg-(--card) rounded p-4 shadow">
           <UserCard
             datos={selectedUser}
             roleFilter={roleFilter}
             isOpen={(open) => setIsOpen(open)}
-            onDelete={ () => { setIsOpen(false); revalidate(); } }
-            unUpdate={ () => { revalidate(); } } 
+            onDelete={() => {
+              setIsOpen(false);
+              revalidate();
+            }}
+            onUpdate={() => {
+              revalidate();
+            }}
+            activeUserRole={activeUser.userRoleId}
+            rolesList={rolesList}
           />
         </div>
       )}
@@ -138,17 +150,14 @@ export const UsuariosGestionarUsuarios = () => {
 };
 
 export const loader = async () => {
-  const [usuarios, roles] = await Promise.all([
-    getUsers(),
-    getRoles(),
-  ]);
+  const [usuarios, roles] = await Promise.all([getUsers(), getRoles()]);
 
-  const userData = usuarios.data.data.map(user => ({
+  const userData = usuarios.data.data.map((user) => ({
     ...user,
     userFullName: `${user.userName} ${user.userLastName}`,
   }));
 
   const rolesData = roles.data.data;
 
-  return {userData, rolesData};
+  return { userData, rolesData };
 };

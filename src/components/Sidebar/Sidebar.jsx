@@ -87,7 +87,7 @@ export function AppSidebar(props) {
   const logout = () => {
     sessionStorage.removeItem("accessToken");
     sessionStorage.removeItem("user");
-    navigate("/");
+    navigate("/login");
   };
 
   const darkMode = () => {

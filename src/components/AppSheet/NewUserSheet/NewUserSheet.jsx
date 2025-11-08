@@ -30,7 +30,7 @@ export const NewUserSheet = (props) => {
     resetField,
     setValue,
   } = useForm();
-  
+
   const [password, setPassword] = useState(null);
   const [toggleEye, setToggleEye] = useState(false);
   const [open, setOpen] = useState(true);
@@ -93,24 +93,6 @@ export const NewUserSheet = (props) => {
       onSubmit={handleSubmit(onSubmit)}
       className="flex flex-col gap-8 p-4"
     >
-            <div className="flex flex-col gap-2">
-        <Label className="pl-1">Apellido</Label>
-        <div className="flex flex-col gap-2">
-          <Input
-            type="text"
-            autoComplete="off"
-            placeholder="Apellido"
-            {...register("lastName", {
-              required: { value: true, message: "El apellido es obligatorio" },
-            })}
-          />
-          {errors.lastName && (
-            <p className="text-(--destructive) pl-2 text-xs">
-              {errors.lastName.message}
-            </p>
-          )}
-        </div>
-      </div>
       <div className="flex flex-col gap-2">
         <Label className="pl-1">Nombre</Label>
         <div className="flex flex-col gap-2">
@@ -125,6 +107,24 @@ export const NewUserSheet = (props) => {
           {errors.firstName && (
             <p className="text-(--destructive) pl-2 text-xs">
               {errors.firstName.message}
+            </p>
+          )}
+        </div>
+      </div>
+      <div className="flex flex-col gap-2">
+        <Label className="pl-1">Apellido</Label>
+        <div className="flex flex-col gap-2">
+          <Input
+            type="text"
+            autoComplete="off"
+            placeholder="Apellido"
+            {...register("lastName", {
+              required: { value: true, message: "El apellido es obligatorio" },
+            })}
+          />
+          {errors.lastName && (
+            <p className="text-(--destructive) pl-2 text-xs">
+              {errors.lastName.message}
             </p>
           )}
         </div>
@@ -152,7 +152,7 @@ export const NewUserSheet = (props) => {
         </div>
       </div>
       <div className="flex flex-col gap-2">
-        <Label className="pl-1">Contraseña temporal</Label>
+        <Label className="pl-1">Contraseña</Label>
         <div className="flex flex-row gap-2 items-center justify-end">
           <Input
             id="password"
@@ -261,7 +261,7 @@ export const NewUserSheet = (props) => {
             <Select value={field.value} onValueChange={field.onChange}>
               <Label className="pl-1">Rol de usuario</Label>
               <SelectTrigger className="w-full">
-                <SelectValue placeholder="Roles"/>
+                <SelectValue placeholder="Roles" />
               </SelectTrigger>
               <SelectContent>
                 {props.roles.map((role) => (
