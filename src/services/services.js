@@ -21,3 +21,6 @@ export const getRoles = async () => await axiosInstance.get("/roles");
 
 export const getMenusByUserId = async (userId) =>
   await axiosInstance.get("/menus/user/" + userId);
+
+export const getMenus = async () =>
+  await axiosInstance.get("/menus");
