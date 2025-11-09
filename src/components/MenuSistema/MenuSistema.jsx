@@ -1,4 +1,4 @@
-import { useLoaderData } from "react-router-dom";
+import { useEffect } from "react";
 import { useState } from "react";
 import { getMenus } from "@/services/services";
 import { InlineEditableTitle } from "@/components/InlineEditableTitle/InlineEditableTitle";
@@ -19,9 +19,15 @@ import {
 export const MenuSistema = () => {
   const [editing, setEditing] = useState(null);
 
-  const menuTree = useLoaderData().menuTree.data.data;
-  const [menus, setMenus] = useState(menuTree);
-  const menuTreeById = useLoaderData().menuTreeById.data.data;
+  const [menus, setMenus] = useState([]);
+
+  useEffect(() => {
+    (async () => {
+    const resp = await getMenus();
+      setMenus(resp.data.data);
+    })();
+
+  }, []);
 
   const updateMenuTitle = (menuId, newTitle) => {
     setMenus((prev) =>
@@ -56,7 +62,7 @@ export const MenuSistema = () => {
   };
 
   return (
-    <Accordion type="multiple" collapsible className="w-full space-y-2">
+    <Accordion type="single" collapsible className="w-full space-y-2">
       {menus.map((menu) => {
         const isEditingMenu =
           editing?.type === "menu" && editing?.id === menu.id;
@@ -159,10 +165,4 @@ export const MenuSistema = () => {
       })}
     </Accordion>
   );
-};
-
-export const loader = async () => {
-  const user = JSON.parse(sessionStorage.getItem("user"));
-  const [menuTree] = await Promise.all([getMenus()]);
-  return { menuTree };
 };

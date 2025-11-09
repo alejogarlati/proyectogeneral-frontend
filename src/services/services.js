@@ -24,3 +24,10 @@ export const getMenusByUserId = async (userId) =>
 
 export const getMenus = async () =>
   await axiosInstance.get("/menus");
+
+export const getPermisosByUserId = async (user) => 
+  await axiosInstance.get("/menus/permisos/user/" + user);
+
+export const updatePermisosByUserId = async (datos) =>
+  await axiosInstance.post ("menus/permisos/user", datos);
+

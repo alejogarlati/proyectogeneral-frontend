@@ -1,8 +1,6 @@
-import { useLoaderData, useNavigate } from "react-router-dom";
-import { useState } from "react";
-import { getMenus, getMenusByUserId } from "@/services/services";
+import { useNavigate } from "react-router-dom";
+import { MenuSistema } from "@/components/MenuSistema/MenuSistema";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { InlineEditableTitle } from "@/components/InlineEditableTitle/InlineEditableTitle";
 
 import {
   Accordion,
@@ -11,55 +9,12 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover";
-
 import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
-import { MenuSistema } from "@/components/MenuSistema/MenuSistema";
+import { PermisosUsuario } from "@/components/PermisosUsuario/PermisosUsuario";
 
 export const Preferencias = () => {
   const navigate = useNavigate();
-  const [editing, setEditing] = useState(null);
-
-  const menuTree = useLoaderData().menuTree.data.data;
-  const [menus, setMenus] = useState(menuTree);
-  const menuTreeById = useLoaderData().menuTreeById.data.data;
-
-  const updateMenuTitle = (menuId, newTitle) => {
-    setMenus((prev) =>
-      prev.map((menu) =>
-        menu.id === menuId ? { ...menu, title: newTitle } : menu
-      )
-    );
-  };
-
-  const updateSubmenuTitle = (menuId, subMenuId, newTitle) => {
-    setMenus((prev) =>
-      prev.map((menu) =>
-        menu.id === menuId
-          ? {
-              ...menu,
-              submenu: menu.submenu?.map((submenu) =>
-                submenu.id === subMenuId
-                  ? { ...submenu, title: newTitle }
-                  : submenu
-              ),
-            }
-          : menu
-      )
-    );
-  };
-
-  const stopToggle = (e) => {
-    if (editing) {
-      e.preventDefault();
-      e.stopPropagation();
-    }
-  };
 
   return (
     <div className="grid grid-cols-12 w-full gap-6 p-4">
@@ -95,7 +50,30 @@ export const Preferencias = () => {
               </AccordionItem>
             </Accordion>
           </TabsContent>
-          <TabsContent value="permissions"></TabsContent>
+          <TabsContent value="permissions" className="w-full">
+            <Accordion
+              type="single"
+              collapsible
+              className="w-full"
+              defaultValue=""
+            >
+              <AccordionItem value="roles" className="w-full">
+                <AccordionTrigger>Roles</AccordionTrigger>
+                <AccordionContent className="flex flex-col gap-4 text-balance">
+                  Listado de Roles
+                </AccordionContent>
+              </AccordionItem>
+              <AccordionItem value="permisos" className="w-full">
+                <AccordionTrigger>Permisos de Usuarios</AccordionTrigger>
+                <AccordionContent className="flex flex-col gap-4 text-balance">
+                  <div className="flex items-center justify-between px-4  rounded-xl py">
+                    <PermisosUsuario />
+                  </div>
+                </AccordionContent>
+              </AccordionItem>
+            </Accordion>
+
+          </TabsContent>
         </Tabs>
       </div>
     </div>
@@ -103,10 +81,5 @@ export const Preferencias = () => {
 };
 
 export const loader = async () => {
-  const user = JSON.parse(sessionStorage.getItem("user"));
-  const [menuTreeById, menuTree] = await Promise.all([
-    getMenusByUserId(user.id),
-    getMenus(),
-  ]);
-  return { menuTreeById, menuTree };
+  return null;
 };
