@@ -3,7 +3,7 @@ import { useLoaderData, useRevalidator } from "react-router-dom";
 import { Input } from "@/components/ui/input";
 import { AppTable } from "@/components/Table/AppTable.jsx";
 
-import { getRoles, getUsers } from "@/services/services";
+import { getRoles, getUsers, getProvincias } from "@/services/services";
 import { useEffect, useState } from "react";
 import { UserCard } from "@/components/UserCard/UserCard.jsx";
 import { Badge } from "@/components/ui/badge";
@@ -19,9 +19,12 @@ import { EditUserSheet } from "@/components/AppSheet/EditUserSheet/EditUserSheet
 export const UsuariosGestionarUsuarios = () => {
   const userList = useLoaderData().userData;
   const rolesList = useLoaderData().rolesData;
+  const provincesList = useLoaderData().provincesData;
   const { revalidate } = useRevalidator();
   const activeUser = JSON.parse(sessionStorage.getItem("user"));
 
+
+  console.log(provincesList)
   const [selectedUser, setSelectedUser] = useState(null);
   const [roleFilter, setRoleFilter] = useState(null);
   const [filteredUsers, setFilteredUsers] = useState(userList);
@@ -142,6 +145,7 @@ export const UsuariosGestionarUsuarios = () => {
             }}
             activeUserRole={activeUser.userRoleId}
             rolesList={rolesList}
+            provincesList={provincesList}
           />
         </div>
       )}
@@ -150,7 +154,7 @@ export const UsuariosGestionarUsuarios = () => {
 };
 
 export const loader = async () => {
-  const [usuarios, roles] = await Promise.all([getUsers(), getRoles()]);
+  const [usuarios, roles, provincias] = await Promise.all([getUsers(), getRoles(), getProvincias()]);
 
   const userData = usuarios.data.data.map((user) => ({
     ...user,
@@ -159,5 +163,7 @@ export const loader = async () => {
 
   const rolesData = roles.data.data;
 
-  return { userData, rolesData };
+  const provincesData = provincias.data.data;
+
+  return { userData, rolesData, provincesData};
 };
