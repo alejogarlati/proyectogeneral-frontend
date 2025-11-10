@@ -7,8 +7,6 @@ import { useNavigate } from "react-router-dom";
 import "./FormLogin.css";
 import toast from "react-hot-toast";
 
-// !-- FALTA IMPLEMENTAR REACT-HOOK-FORM
-
 export const FormLogin = () => {
   
   const { setUser, setAccessToken } = useContext(UserContext);
