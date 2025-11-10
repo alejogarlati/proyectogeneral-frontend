@@ -100,7 +100,7 @@ export const UsuariosGestionarUsuarios = () => {
             value={roleFilter || ""}
             onValueChange={handleValueChange}
           >
-            {rolesList.map((role, index) => (
+            {rolesList?.map((role, index) => (
               <ToggleGroupItem
                 key={index}
                 className="bg-(--secondary) text-(--primary-whited)"

@@ -1,7 +1,7 @@
 import { createBrowserRouter } from "react-router-dom";
 
 import { rutas } from "./rutas.jsx";
-import Layout from "../pages/Layout/Layout.jsx";
+import { Layout } from "../pages/Layout/Layout.jsx";
 import { loader as layoutLoader } from "../pages/Layout/Layout.jsx";;
 import { Login } from "../pages/Login/Login.jsx";
 

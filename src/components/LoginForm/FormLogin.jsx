@@ -1,7 +1,7 @@
-import React, { use } from "react";
 import { useForm } from "react-hook-form";
 
-import { useState } from "react";
+import { useContext, useState } from "react";
+import { UserContext } from "@/context/AuthContext.jsx";
 import { getLogin } from "../../services/services.js";
 import { useNavigate } from "react-router-dom";
 import "./FormLogin.css";
@@ -10,6 +10,9 @@ import toast from "react-hot-toast";
 // !-- FALTA IMPLEMENTAR REACT-HOOK-FORM
 
 export const FormLogin = () => {
+  
+  const { setUser, setAccessToken } = useContext(UserContext);
+  
   const {
     register,
     handleSubmit,
@@ -31,6 +34,8 @@ export const FormLogin = () => {
         toast.success("Inicio de sesión exitoso");
         sessionStorage.setItem("accessToken", user.data.accessToken);
         sessionStorage.setItem("user", JSON.stringify(user.data.data));
+        setUser(user.data.data);
+        setAccessToken(user.data.accessToken);
         navigate("/");
       } else {
         toast.error("Error en el inicio de sesión");

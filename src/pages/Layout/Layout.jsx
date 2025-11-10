@@ -1,5 +1,5 @@
-import React from "react";
-import { Outlet, useLoaderData, useLocation } from "react-router-dom";
+import { useEffect, useContext, useState } from "react";
+import { Outlet, useLoaderData, useLocation, useNavigate } from "react-router-dom";
 import { Navbar } from "../../components/Navbar/Navbar.jsx";
 import { Footer } from "../../components/Footer/Footer.jsx";
 import { jwtDecode } from "jwt-decode";
@@ -15,24 +15,56 @@ import { Toaster } from "react-hot-toast";
 import { AppSidebar } from "../../components/Sidebar/Sidebar.jsx";
 
 import { rutas } from "@/router/rutas.jsx";
-import { getMenusByUserId } from "@/services/services.js";
-
+import { getMenusByUserId, getProvincias, getRoles } from "@/services/services.js";
+import { UserContext } from "@/context/AuthContext.jsx";
+import { DataContext } from "@/context/DataContext.jsx";
 
 const Titulo = () => {
   const { pathname } = useLocation();
-  
   const ruta = rutas.find((item) => item.path === pathname);
-
   return ruta.slug;
 };
 
-export default function Layout() {
-  
-  const menuItems = useLoaderData().menuTree.data.data;
+export const Layout = () => {
 
+  const { user, accessToken, setAccessToken } = useContext(UserContext);
+  const { setRoles, setProvincias } = useContext(DataContext);
+  const [ menuTree, SetMenuTree ] = useState([]);
+  const navigate = useNavigate ();
+
+  useEffect(() => {
+    if (!accessToken) {
+      navigate("/login", { replace: true });
+      return
+    }
+    const decodedToken = jwtDecode(accessToken);
+    const currentTime = Date.now() / 1000;
+    if (decodedToken.exp < currentTime) {
+      setAccessToken(null);
+      alert("Sesión expirada. Por favor, inicie sesión nuevamente.");
+      navigate("/login", { replace: true });
+      return
+    }
+
+      (user.darkMode) ? document.documentElement.classList.add("dark") : document.documentElement.classList.remove("dark");
+      try {
+        ( async () => {
+          const roles = await getRoles();
+          setRoles(roles);
+          const provincias = await getProvincias();
+          setProvincias(provincias);
+          const menu = await getMenusByUserId(user.id);
+          console.log(menu.data.data);
+          SetMenuTree(menu.data.data);
+        })();
+      } catch (error) {
+        console.log (error);
+      }
+  },[]);
+  
   return (
     <SidebarProvider>
-      <AppSidebar items={menuItems}/>
+      <AppSidebar items={menuTree}/>
       <SidebarInset>
         <header className="flex h-14 items-center gap-2 px-4 border-b">
           <SidebarTrigger className="cursor-pointer" />
@@ -50,24 +82,5 @@ export default function Layout() {
 }
 
 export const loader = async () => {
-  
-  const user = sessionStorage.getItem("user");
-  const token = sessionStorage.getItem("accessToken");
-  if (!token) {
-    throw redirect("/login");
-  }
-
-  const decodedToken = jwtDecode(token);
-  const currentTime = Date.now() / 1000;
-  if (decodedToken.exp < currentTime) {
-    sessionStorage.removeItem("accessToken");
-    alert("Sesión expirada. Por favor, inicie sesión nuevamente.");
-    throw redirect("/login");
-  }
-
-  (JSON.parse(user).darkMode) ? document.documentElement.classList.add("dark") : document.documentElement.classList.remove("dark");
-  const [ menuTree ] = await Promise.all([
-    getMenusByUserId(JSON.parse(user).id)
-  ]);
-  return { menuTree };
+  return null;
 };
