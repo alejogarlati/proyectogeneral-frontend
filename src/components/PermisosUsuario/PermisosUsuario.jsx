@@ -1,5 +1,10 @@
 import { useEffect, useState } from "react";
-import { getMenus, getUsers, getPermisosByUserId } from "@/services/services";
+import {
+  getMenus,
+  getUsers,
+  getPermisosByUserId,
+  updatePermisosByUserId,
+} from "@/services/services";
 
 import {
   Accordion,
@@ -18,17 +23,17 @@ import {
   SelectItem,
   SelectValue,
 } from "@/components/ui/select";
+import toast from "react-hot-toast";
 
 export const PermisosUsuario = () => {
   const [users, setUsers] = useState([]);
   const [menus, setMenus] = useState([]);
-  const [selectedUserId, setSelectedUserId] = useState(null);
+  const [selectedUserId, setSelectedUserId] = useState("");
 
   const [permissions, setPermissions] = useState(new Set());
   const [loadingBase, setLoadingBase] = useState(true);
   const [loadingPerms, setLoadingPerms] = useState(false);
 
-  // Carga base: usuarios y menús (SIN ordenar, tal como vienen de la DB)
   useEffect(() => {
     (async () => {
       try {
@@ -41,7 +46,6 @@ export const PermisosUsuario = () => {
     })();
   }, []);
 
-  // Al elegir usuario, cargo permisos y seteo checks
   useEffect(() => {
     (async () => {
       if (!selectedUserId) {
@@ -50,10 +54,16 @@ export const PermisosUsuario = () => {
       }
       setLoadingPerms(true);
       try {
-        const pResp = await getPermisosByUserId(Number(selectedUserId));
-        // Debe devolver [{ userId, menuId }, ...]
-        const ids = (pResp?.data?.data ?? pResp ?? []).map((p) => p.menuId);
-        setPermissions(new Set(ids));
+        const permisos = await getPermisosByUserId(Number(selectedUserId));
+        const ids = (permisos.data?.data ? permisos.data.data : []).map(
+          (permiso) => permiso.menuId
+        );
+        const hijos = ids.filter((id) => {
+          const menuPadre = menus.find((m) => m.id === id);
+          return !menuPadre?.submenu || menuPadre.submenu.length === 0;
+        });
+
+        setPermissions(new Set(hijos));
       } finally {
         setLoadingPerms(false);
       }
@@ -66,19 +76,43 @@ export const PermisosUsuario = () => {
     setPermissions(next);
   };
 
-  const handleGuardar = () => {
+  const handleGuardar = async () => {
     if (!selectedUserId) return;
     const permisos = Array.from(permissions).map((menuId) => ({
       userId: Number(selectedUserId),
       menuId,
     }));
-    console.log("Listado de Permisos:", permisos);
-    // TODO: await api.put(`/usuarios/${selectedUserId}/permisos`, payload)
+    console.log("Permisos: ", permisos);
+    const padres = menus
+      .filter((menuPrincipal) => menuPrincipal.submenu?.length > 0)
+      .filter((menuPrincipal) =>
+        menuPrincipal.submenu.some((submenuActual) =>
+          permissions.has(submenuActual.id)
+        )
+      )
+      .map((menuPrincipal) => ({
+        userId: Number(selectedUserId),
+        menuId: menuPrincipal.id,
+      }));
+
+    const permisosUnited = [...permisos, ...padres].sort(
+      (a, b) => a.menuId - b.menuId
+    );
+    try {
+      const actualizar = await updatePermisosByUserId(permisosUnited);
+      console.log(actualizar.data.responsecode)
+      if (actualizar.data?.responseCode === 200) {
+        toast.success("Permisos Actualizados con Exito");
+        handleCancelar();
+      }
+    } catch (error) {
+      toast.error("Error al Actualizar Permisos");
+    }
   };
 
   const handleCancelar = () => {
-    setSelectedUserId(null); // deselecciona usuario
-    setPermissions(new Set()); // limpia checks
+    setSelectedUserId("");
+    setPermissions(new Set());
   };
 
   if (loadingBase)

@@ -65,7 +65,7 @@ export const loader = async () => {
     throw redirect("/login");
   }
 
-  if (JSON.parse(user).darkMode) document.documentElement.classList.add("dark");
+  (JSON.parse(user).darkMode) ? document.documentElement.classList.add("dark") : document.documentElement.classList.remove("dark");
   const [ menuTree ] = await Promise.all([
     getMenusByUserId(JSON.parse(user).id)
   ]);

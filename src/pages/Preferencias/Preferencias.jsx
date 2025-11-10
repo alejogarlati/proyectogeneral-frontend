@@ -16,6 +16,17 @@ import { PermisosUsuario } from "@/components/PermisosUsuario/PermisosUsuario";
 export const Preferencias = () => {
   const navigate = useNavigate();
 
+  const setDarkMode = () => {
+    const sessionDarkMode = JSON.parse(sessionStorage.getItem("user"));
+    if (!sessionDarkMode.darkMode) {
+      document.documentElement.classList.add("dark");
+    } else {
+      document.documentElement.classList.remove("dark");
+    }
+    sessionDarkMode.darkMode = !sessionDarkMode.darkMode;
+    sessionStorage.setItem("user", JSON.stringify(sessionDarkMode));
+  };
+
   return (
     <div className="grid grid-cols-12 w-full gap-6 p-4">
       <div className="col-span-12 flex flex-col items-center justify-start w-full gap-2 p-8 bg-(--card) rounded-xl shadow">
@@ -36,7 +47,13 @@ export const Preferencias = () => {
                 <AccordionContent className="flex flex-col gap-4 text-balance">
                   <div className="flex items-center justify-between px-4 border-2 rounded-xl py-3">
                     <Label htmlFor="darkMode">Modo Oscuro</Label>
-                    <Switch id="darkMode" />
+                    <Switch
+                      id="darkMode"
+                      checked={
+                        JSON.parse(sessionStorage.getItem("user")).DarkMode
+                      }
+                      onCheckedChange={setDarkMode}
+                    />
                   </div>
                 </AccordionContent>
               </AccordionItem>
@@ -72,7 +89,6 @@ export const Preferencias = () => {
                 </AccordionContent>
               </AccordionItem>
             </Accordion>
-
           </TabsContent>
         </Tabs>
       </div>
