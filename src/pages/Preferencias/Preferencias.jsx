@@ -12,19 +12,16 @@ import {
 import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
 import { PermisosUsuario } from "@/components/PermisosUsuario/PermisosUsuario";
+import { useContext } from "react";
+import { UserContext } from "@/context/AuthContext";
 
 export const Preferencias = () => {
   const navigate = useNavigate();
+  const { user, setUser } = useContext(UserContext);
 
-  const setDarkMode = () => {
-    const sessionDarkMode = JSON.parse(sessionStorage.getItem("user"));
-    if (!sessionDarkMode.darkMode) {
-      document.documentElement.classList.add("dark");
-    } else {
-      document.documentElement.classList.remove("dark");
-    }
-    sessionDarkMode.darkMode = !sessionDarkMode.darkMode;
-    sessionStorage.setItem("user", JSON.stringify(sessionDarkMode));
+  const setDarkMode = (checked) => {
+    document.documentElement.classList.toggle("dark", checked);
+    setUser(prev => ({ ...prev, darkMode: checked }));
   };
 
   return (
@@ -47,13 +44,13 @@ export const Preferencias = () => {
                 <AccordionContent className="flex flex-col gap-4 text-balance">
                   <div className="flex items-center justify-between px-4 border-2 rounded-xl py-3">
                     <Label htmlFor="darkMode">Modo Oscuro</Label>
-                    <Switch
-                      id="darkMode"
-                      checked={
-                        JSON.parse(sessionStorage.getItem("user")).DarkMode
-                      }
-                      onCheckedChange={setDarkMode}
-                    />
+                    {user?.hasOwnProperty("darkMode") && (
+                      <Switch
+                        id="darkMode"
+                        checked={user.darkMode}
+                        onCheckedChange={setDarkMode}
+                      />
+                    )}
                   </div>
                 </AccordionContent>
               </AccordionItem>
