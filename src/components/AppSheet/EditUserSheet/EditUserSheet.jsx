@@ -14,10 +14,16 @@ import {
 import { SelectGroup, SelectLabel } from "@radix-ui/react-select";
 import toast from "react-hot-toast";
 import { SheetClose } from "@/components/ui/sheet";
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion";
+
 import { createUser } from "@/services/services";
 import { getUserByEmail } from "@/services/services.js";
-
-import { Eye, EyeOff } from "lucide-react";
+import { Eye, EyeOff, Plus, X } from "lucide-react";
 
 export const EditUserSheet = (props) => {
   const {
@@ -34,6 +40,7 @@ export const EditUserSheet = (props) => {
   const [password, setPassword] = useState(null);
   const [toggleEye, setToggleEye] = useState(false);
   const [toggleEyeConf, setToggleEyeConf] = useState(false);
+  const [newDirField, setNewDirField] = useState(false);
   const [open, setOpen] = useState(true);
   const [requirements, setRequirements] = useState({
     minLength: false,
@@ -88,11 +95,13 @@ export const EditUserSheet = (props) => {
     }
   };
 
+  const handleNewDir = () => setNewDirField(!newDirField);
+
   return (
     <form
       noValidate
       onSubmit={handleSubmit(onSubmit)}
-      className="flex flex-col gap-8 p-4"
+      className="flex flex-col gap-8 p-8"
     >
       <div className="flex flex-row gap-2 w-full">
         <div className="flex flex-col gap-2 w-full">
@@ -180,109 +189,259 @@ export const EditUserSheet = (props) => {
           </div>
         </div>
       </div>
-      <div className="flex flex-col gap-4">
-        <hr></hr>
-        <div className="flex flex-row justify-between w-full">
-          <p>Direcciones</p>
-          <button type="button">+</button>
-        </div>
-      </div>
+      <hr></hr>
+      <p>Direcciones</p>
       {/* TO DO: Agregar acordeón de direcciones */}
-      {/* LINEA 1 Y 2 ---------------------------- */}
-      <div className="flex flex-col gap-4 w-full">
-        <div className="flex flex-col gap-2 w-full">
-          <Label className="pl-1">Línea 1</Label>
-          <div className="flex flex-col gap-2">
-            <Input
-              type="text"
-              autoComplete="off"
-              placeholder="Dirección"
-              {...register("firstName", {
-                required: { value: true, message: "El nombre es obligatorio" },
-              })}
-            />
-            {errors.firstName && (
-              <p className="text-(--destructive) pl-2 text-xs">
-                {errors.firstName.message}
-              </p>
-            )}
-          </div>
-        </div>
-        <div className="flex flex-col gap-2 w-full">
-          <Label className="pl-1">Línea 2</Label>
-          <div className="flex flex-col gap-2">
-            <Input
-              type="text"
-              autoComplete="off"
-              placeholder="Aclaraciones"
-              {...register("lastName", {
-                required: {
-                  value: true,
-                  message: "El apellido es obligatorio",
-                },
-              })}
-            />
-            {errors.lastName && (
-              <p className="text-(--destructive) pl-2 text-xs">
-                {errors.lastName.message}
-              </p>
-            )}
-          </div>
-        </div>
-      </div>
-      {/* PROVINCIA CIUDAD ----------------------- */}
-      <div className="flex flex-row gap-2 w-full">
-        <div className="flex flex-col gap-2 w-full">
-          <div className="flex flex-col gap-2">
-            <Controller
-              name="role"
-              control={control}
-              defaultValue={undefined}
-              rules={{ required: { value: true, message: "Rol obligatorio" } }}
-              render={({ field }) => (
-                <Select value={field.value} onValueChange={field.onChange}>
-                  <Label className="pl-1">Provincia</Label>
-                  <SelectTrigger className="w-full">
-                    <SelectValue placeholder="Provincias" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {props.roles.map((role) => (
-                      <SelectItem key={role.id} value={role.id.toString()}>
-                        {role.name}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-              )}
-            />
-            {errors.role && (
-              <p className="text-(--destructive) pl-2 text-xs">
-                {errors.role.message}
-              </p>
-            )}
-          </div>
-        </div>
-        <div className="flex flex-col gap-2 w-full">
-          <Label className="pl-1">Ciudad</Label>
-          <div className="flex flex-col gap-2">
-            <Input
-              type="text"
-              autoComplete="off"
-              placeholder="Aclaraciones"
-              {...register("lastName", {
-                required: {
-                  value: true,
-                  message: "El apellido es obligatorio",
-                },
-              })}
-            />
-            {errors.lastName && (
-              <p className="text-(--destructive) pl-2 text-xs">
-                {errors.lastName.message}
-              </p>
-            )}
-          </div>
-        </div>
+      <div className="bg-(--card) rounded-xl shadow-xl">
+        <Accordion
+          type="multiple"
+          defaultValue={["direccion-1", "direccion-2"]}
+        >
+          <AccordionItem
+            value="direccion-1"
+            className="flex flex-col gap-4 p-4"
+          >
+            <AccordionTrigger>Dirección principal</AccordionTrigger>
+            <AccordionContent className="flex flex-col gap-4">
+              <div className="flex flex-col gap-4 w-full">
+                <div className="flex flex-col gap-2 w-full">
+                  <Label className="pl-1">Línea 1</Label>
+                  <div className="flex flex-col gap-2">
+                    <Input
+                      type="text"
+                      autoComplete="off"
+                      {...register("dir1Linea1", {
+                        required: {
+                          value: true,
+                          message: "La dirección es obligatoria",
+                        },
+                      })}
+                    />
+                    {errors.dir1Linea1 && (
+                      <p className="text-(--destructive) pl-2 text-xs">
+                        {errors.dir1Linea1.message}
+                      </p>
+                    )}
+                  </div>
+                </div>
+                <div className="flex flex-col gap-2 w-full">
+                  <Label className="pl-1">Línea 2</Label>
+                  <div className="flex flex-col gap-2">
+                    <Input
+                      type="text"
+                      autoComplete="off"
+                      {...register("dir1Linea2")}
+                    />
+                    {errors.dir1Linea2 && (
+                      <p className="text-(--destructive) pl-2 text-xs">
+                        {errors.dir1Linea2.message}
+                      </p>
+                    )}
+                  </div>
+                </div>
+              </div>
+              {/* PROVINCIA CIUDAD ----------------------- */}
+              <div className="flex flex-row gap-2 w-full">
+                <div className="flex flex-col gap-2 w-full">
+                  <div className="flex flex-col gap-2">
+                    <Controller
+                      name="provincia"
+                      control={control}
+                      defaultValue={undefined}
+                      rules={{
+                        required: {
+                          value: true,
+                          message: "Provincia obligatoria",
+                        },
+                      }}
+                      render={({ field }) => (
+                        <Select
+                          value={field.value}
+                          onValueChange={field.onChange}
+                        >
+                          <Label className="pl-1">Provincia</Label>
+                          <SelectTrigger className="w-full">
+                            <SelectValue placeholder="" />
+                          </SelectTrigger>
+                          <SelectContent
+                            position="popper"
+                            side="bottom"
+                            align="start"
+                            sideOffset={6}
+                            avoidCollisions={false}
+                            className="max-h-60"
+                          >
+                            {props.provincias.map((provincia) => (
+                              <SelectItem
+                                key={provincia.id}
+                                value={provincia.id.toString()}
+                              >
+                                {provincia.name}
+                              </SelectItem>
+                            ))}
+                          </SelectContent>
+                        </Select>
+                      )}
+                    />
+                    {errors.provincia && (
+                      <p className="text-(--destructive) pl-2 text-xs">
+                        {errors.provincia.message}
+                      </p>
+                    )}
+                  </div>
+                </div>
+                <div className="flex flex-col gap-2 w-full">
+                  <Label className="pl-1">Ciudad</Label>
+                  <div className="flex flex-col gap-2">
+                    <Input
+                      type="text"
+                      autoComplete="off"
+                      {...register("lastName", {
+                        required: {
+                          value: true,
+                          message: "La ciudad es obligatoria",
+                        },
+                      })}
+                    />
+                    {errors.lastName && (
+                      <p className="text-(--destructive) pl-2 text-xs">
+                        {errors.lastName.message}
+                      </p>
+                    )}
+                  </div>
+                </div>
+              </div>
+            </AccordionContent>
+          </AccordionItem>
+          {!newDirField && (
+            <AccordionItem
+              value="btn-direccion-2"
+              onClick={handleNewDir}
+              className="p-4 hover:bg-(--muted) hover:underline cursor-pointer animate ease-in-out duration-200 flex flex-row gap-2 w-full items-center justify-center text-center"
+            >
+              <Plus />
+              Añadir nueva dirección
+            </AccordionItem>
+          )}
+          {newDirField && (
+            <AccordionItem
+              value="direccion-2"
+              className="flex flex-col gap-4 p-4"
+            >
+              <div className="flex flex-row gap-4 w-full items-center">
+                <button type="button" onClick={handleNewDir}>
+                  <X />
+                </button>
+                <AccordionTrigger>Dirección secundaria</AccordionTrigger>
+              </div>
+              <AccordionContent className="flex flex-col gap-4">
+                <div className="flex flex-col gap-4 w-full">
+                  <div className="flex flex-col gap-2 w-full">
+                    <Label className="pl-1">Línea 1</Label>
+                    <div className="flex flex-col gap-2">
+                      <Input
+                        type="text"
+                        autoComplete="off"
+                        {...register("dir2Linea1")}
+                      />
+                      {errors.dir2Linea1 && (
+                        <p className="text-(--destructive) pl-2 text-xs">
+                          {errors.dir2Linea1.message}
+                        </p>
+                      )}
+                    </div>
+                  </div>
+                  <div className="flex flex-col gap-2 w-full">
+                    <Label className="pl-1">Línea 2</Label>
+                    <div className="flex flex-col gap-2">
+                      <Input
+                        type="text"
+                        autoComplete="off"
+                        {...register("dir2Linea2")}
+                      />
+                      {errors.dir2Linea2 && (
+                        <p className="text-(--destructive) pl-2 text-xs">
+                          {errors.dir2Linea2.message}
+                        </p>
+                      )}
+                    </div>
+                  </div>
+                </div>
+                {/* PROVINCIA CIUDAD ----------------------- */}
+                <div className="flex flex-row gap-2 w-full">
+                  <div className="flex flex-col gap-2 w-full">
+                    <div className="flex flex-col gap-2">
+                      <Controller
+                        name="provincia2"
+                        control={control}
+                        defaultValue={undefined}
+                        rules={{
+                          required: {
+                            value: true,
+                            message: "Provincia obligatoria",
+                          },
+                        }}
+                        render={({ field }) => (
+                          <Select
+                            value={field.value}
+                            onValueChange={field.onChange}
+                          >
+                            <Label className="pl-1">Provincia</Label>
+                            <SelectTrigger className="w-full">
+                              <SelectValue placeholder="" />
+                            </SelectTrigger>
+                            <SelectContent
+                              position="popper"
+                              side="bottom"
+                              align="start"
+                              sideOffset={6}
+                              avoidCollisions={false}
+                              className="max-h-60"
+                            >
+                              {props.provincias.map((provincia2) => (
+                                <SelectItem
+                                  key={provincia2.id}
+                                  value={provincia2.id.toString()}
+                                >
+                                  {provincia2.name}
+                                </SelectItem>
+                              ))}
+                            </SelectContent>
+                          </Select>
+                        )}
+                      />
+                      {errors.provincia2 && (
+                        <p className="text-(--destructive) pl-2 text-xs">
+                          {errors.provincia2.message}
+                        </p>
+                      )}
+                    </div>
+                  </div>
+                  <div className="flex flex-col gap-2 w-full">
+                    <Label className="pl-1">Ciudad</Label>
+                    <div className="flex flex-col gap-2">
+                      <Input
+                        type="text"
+                        autoComplete="off"
+                        {...register("dir2Ciudad", {
+                          required: {
+                            value: true,
+                            message: "La ciudad es obligatoria",
+                          },
+                        })}
+                      />
+                      {errors.dir2Ciudad && (
+                        <p className="text-(--destructive) pl-2 text-xs">
+                          {errors.dir2Ciudad.message}
+                        </p>
+                      )}
+                    </div>
+                  </div>
+                </div>
+              </AccordionContent>
+            </AccordionItem>
+          )}
+        </Accordion>
       </div>
       <hr></hr>
       {/* CONTRASEÑAS ----------------------- */}

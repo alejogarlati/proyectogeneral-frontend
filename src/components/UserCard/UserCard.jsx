@@ -54,7 +54,7 @@ export const UserCard = (props) => {
             buttonTitle={<Pencil />}
             sheetTitle="Editar Datos del Usuario"
             sheetDescription="Modulo de Edición de datos de un Usuario"
-            children={<EditUserSheet user={props.datos} roles={props.rolesList}/>}
+            children={<EditUserSheet user={props.datos} roles={props.rolesList} provincias={props.provincesList}/>}
           />
           <Button
             variant="secondary"
