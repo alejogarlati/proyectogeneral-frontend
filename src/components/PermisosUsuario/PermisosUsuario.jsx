@@ -23,6 +23,8 @@ import {
   SelectItem,
   SelectValue,
 } from "@/components/ui/select";
+
+import { SaveAll, Undo2 } from "lucide-react";
 import toast from "react-hot-toast";
 
 export const PermisosUsuario = () => {
@@ -37,8 +39,11 @@ export const PermisosUsuario = () => {
   useEffect(() => {
     (async () => {
       try {
+        const loggedUser = JSON.parse(sessionStorage.getItem("user"));
         const [users, menus] = await Promise.all([getUsers(), getMenus()]);
-        setUsers(users.data?.data || []);
+        setUsers(
+          users.data?.data.filter((user) => user.id !== loggedUser.id) || []
+        );
         setMenus(menus.data?.data || []);
       } finally {
         setLoadingBase(false);
@@ -100,7 +105,7 @@ export const PermisosUsuario = () => {
     );
     try {
       const actualizar = await updatePermisosByUserId(permisosUnited);
-      console.log(actualizar.data.responsecode)
+      console.log(actualizar.data.responsecode);
       if (actualizar.data?.responseCode === 200) {
         toast.success("Permisos Actualizados con Exito");
         handleCancelar();
@@ -142,14 +147,20 @@ export const PermisosUsuario = () => {
         </div>
 
         {selectedUserId && (
-          <>
-            <Button variant="outline" onClick={handleCancelar}>
-              Revertir Cambios
-            </Button>
-            <Button onClick={handleGuardar} disabled={loadingPerms}>
-              Guardar Cambios
-            </Button>
-          </>
+          <div className="flex flex-row gap-5 pr-3">
+            <Undo2
+              variant="outline"
+              onClick={handleCancelar}
+              className="cursor-pointer hover:text-(--primary)"
+              size={20}
+            />
+            <SaveAll
+              onClick={handleGuardar}
+              disabled={loadingPerms}
+              className="cursor-pointer hover:text-(--primary)"
+              size={24}
+            />
+          </div>
         )}
       </div>
 

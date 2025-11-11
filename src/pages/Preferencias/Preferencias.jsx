@@ -1,4 +1,4 @@
-import { useNavigate } from "react-router-dom";
+import { useLoaderData, useNavigate } from "react-router-dom";
 import { MenuSistema } from "@/components/MenuSistema/MenuSistema";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
@@ -12,12 +12,13 @@ import {
 import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
 import { PermisosUsuario } from "@/components/PermisosUsuario/PermisosUsuario";
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { UserContext } from "@/context/AuthContext";
+import { PermisosRoles } from "@/components/PermisosRoles/PermisosRoles";
 
 export const Preferencias = () => {
   const navigate = useNavigate();
-  const { user, setUser } = useContext(UserContext);
+  const [ user, setUser ] = useState(useLoaderData());
 
   const setDarkMode = (checked) => {
     document.documentElement.classList.toggle("dark", checked);
@@ -36,7 +37,7 @@ export const Preferencias = () => {
             <Accordion
               type="single"
               collapsible
-              className="w-full"
+              className="w-full border-[2px] border-(--border) p-3 rounded-xl"
               defaultValue=""
             >
               <AccordionItem value="visualization">
@@ -68,13 +69,13 @@ export const Preferencias = () => {
             <Accordion
               type="single"
               collapsible
-              className="w-full"
+              className="w-full border-[2px] border-(--border) p-3 rounded-xl"
               defaultValue=""
             >
               <AccordionItem value="roles" className="w-full">
                 <AccordionTrigger>Roles</AccordionTrigger>
                 <AccordionContent className="flex flex-col gap-4 text-balance">
-                  Listado de Roles
+                  <PermisosRoles />
                 </AccordionContent>
               </AccordionItem>
               <AccordionItem value="permisos" className="w-full">
@@ -94,5 +95,6 @@ export const Preferencias = () => {
 };
 
 export const loader = async () => {
-  return null;
+  const usuarioActivo = JSON.parse(sessionStorage.getItem("user"));
+  return usuarioActivo;
 };
