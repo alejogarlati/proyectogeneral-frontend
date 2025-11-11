@@ -1,6 +1,9 @@
 import { Controller, useForm } from "react-hook-form";
 import { useState } from "react";
 
+import PhoneInput from "react-phone-number-input";
+import "react-phone-number-input/style.css";
+
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
@@ -97,6 +100,10 @@ export const EditUserSheet = (props) => {
 
   const handleNewDir = () => setNewDirField(!newDirField);
 
+  const [phoneValue, setPhoneValue] = useState();
+
+  console.log("usuario: ", props.user);
+
   return (
     <form
       noValidate
@@ -111,6 +118,7 @@ export const EditUserSheet = (props) => {
               type="text"
               autoComplete="off"
               placeholder="Nombre"
+              defaultValue={props.user.userName}
               {...register("firstName", {
                 required: { value: true, message: "El nombre es obligatorio" },
               })}
@@ -129,6 +137,7 @@ export const EditUserSheet = (props) => {
               type="text"
               autoComplete="off"
               placeholder="Apellido"
+              defaultValue={props.user.userLastName}
               {...register("lastName", {
                 required: {
                   value: true,
@@ -152,6 +161,7 @@ export const EditUserSheet = (props) => {
               type="email"
               autoComplete="off"
               placeholder="micorreo@misitio.com"
+              defaultValue={props.user.userEmail}
               {...register("email", {
                 required: { value: true, message: "El email es obligatorio" },
                 pattern: {
@@ -173,17 +183,18 @@ export const EditUserSheet = (props) => {
             <Input
               type="date"
               autoComplete="off"
-              {...register("email", {
-                required: { value: true, message: "El email es obligatorio" },
-                pattern: {
-                  value: /^[^\s@]+@[^\s@]+.[^\s@]+$/,
-                  message: "Ingrese un email válido",
-                },
-              })}
+              defaultValue={
+                props.user.userBirthDate
+                  ? new Date(props.user.userBirthDate)
+                      .toISOString()
+                      .split("T")[0]
+                  : ""
+              }
+              {...register("birthDate")}
             />
-            {errors.email && (
+            {errors.birthDate && (
               <p className="text-(--destructive) pl-2 text-xs">
-                {errors.email.message}
+                {errors.birthDate.message}
               </p>
             )}
           </div>
@@ -296,16 +307,16 @@ export const EditUserSheet = (props) => {
                     <Input
                       type="text"
                       autoComplete="off"
-                      {...register("lastName", {
+                      {...register("cityName", {
                         required: {
                           value: true,
                           message: "La ciudad es obligatoria",
                         },
                       })}
                     />
-                    {errors.lastName && (
+                    {errors.cityName && (
                       <p className="text-(--destructive) pl-2 text-xs">
-                        {errors.lastName.message}
+                        {errors.cityName.message}
                       </p>
                     )}
                   </div>
@@ -444,6 +455,19 @@ export const EditUserSheet = (props) => {
         </Accordion>
       </div>
       <hr></hr>
+      <div className="flex flex-col gap-4">
+        <p>Teléfono</p>
+        <PhoneInput
+          defaultCountry="AR"
+          placeholder="+01 234 567 8910"
+          value={phoneValue}
+          onChange={setPhoneValue}
+          inputComponent={Input}
+          className="rounded-xl text-sm px-1"
+          smartCaret={true}
+        />
+      </div>
+      <hr></hr>
       {/* CONTRASEÑAS ----------------------- */}
       <div className="flex flex-row gap-2 justify-between w-full">
         <div className="flex flex-col gap-2 w-full">
@@ -562,10 +586,13 @@ export const EditUserSheet = (props) => {
         <Controller
           name="role"
           control={control}
-          defaultValue={undefined}
+          defaultValue={props.user.userRole?.toString()}
           rules={{ required: { value: true, message: "Rol obligatorio" } }}
           render={({ field }) => (
-            <Select value={field.value} onValueChange={field.onChange}>
+            <Select
+              value={field.value}
+              onValueChange={field.onChange}
+            >
               <Label className="pl-1">Rol de usuario</Label>
               <SelectTrigger className="w-full">
                 <SelectValue placeholder="Roles" />
@@ -586,7 +613,7 @@ export const EditUserSheet = (props) => {
           </p>
         )}
       </div>
-      <Button type="submit">Crear Usuario</Button>
+      <Button type="submit">Editar Usuario</Button>
     </form>
   );
 };
