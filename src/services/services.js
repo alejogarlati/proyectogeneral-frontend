@@ -47,3 +47,4 @@ export const getPermisosByUserId = async (user) =>
 export const updatePermisosByUserId = async (datos) =>
   await axiosInstance.patch("/menus/permisos/user", datos);
 
+export const getNoticias = async () => await axiosInstance.get("/noticias");
