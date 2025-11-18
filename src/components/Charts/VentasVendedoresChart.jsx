@@ -35,7 +35,7 @@ export const VentasVendedoresChart = (props) => {
   };
 
   return (
-    <ChartContainer config={chartConfig} className="max-h-[300px]">
+    <ChartContainer config={chartConfig} className="max-h-[250px]">
       <BarChart
         accessibilityLayer
         data={chartData}

@@ -26,12 +26,12 @@ import { getNoticias, getVentasTotalesVendedor } from "@/services/services.js";
 export const Home = () => {
   const navigate = useNavigate();
 
-/*   const noticias = useLoaderData().noticias.data.data; */
+    const noticias = useLoaderData().noticias.data.data;
   const ventas = useLoaderData().ventasVendedor.data.data;
   
   return (
-    <div className="flex flex-col gap-4 p-4 w-1/2">
-{/*       <div className="flex w-full flex-col gap-4 p-8 bg-(--card) rounded-xl">
+    <div className="flex flex-col gap-4 p-4">
+       <div className="flex w-full flex-col gap-4 p-8 bg-(--card) rounded-xl">
         <h1 className="font-bold">Noticias del día</h1>
         <Carousel
           className="w-full"
@@ -76,8 +76,8 @@ export const Home = () => {
           <CarouselPrevious />
           <CarouselNext />
         </Carousel> 
-      </div> */}
-      <div className="flex w-full flex-col gap-4 p-8 bg-(--card) rounded-xl">
+      </div>
+      <div className="flex w-1/2 flex-col gap-4 p-8 bg-(--card) rounded-xl">
         <h1 className="font-bold">Ventas Totales por Vendedor</h1>
         <VentasVendedoresChart ventas={ventas.data}/>
       </div>
@@ -86,6 +86,6 @@ export const Home = () => {
 };
 
 export const loader = async () => {
-  const [ventasVendedor] = await Promise.all([getVentasTotalesVendedor()]);
-  return {ventasVendedor};
+  const [noticias, ventasVendedor] = await Promise.all([getNoticias(), getVentasTotalesVendedor()]);
+  return {noticias, ventasVendedor};
 };
