@@ -33,3 +33,6 @@ export const getPermisosByUserId = async (user) =>
 
 export const updatePermisosByUserId = async (datos) =>
   await axiosInstance.post ("/menus/permisos/user", datos);
+
+export const getDomiciliosByUserId = async (userId) =>
+  await axiosInstance.get("/domicilios/user/" + userId);

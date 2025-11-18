@@ -1,5 +1,5 @@
 import { Controller, useForm } from "react-hook-form";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import PhoneInput from "react-phone-number-input";
 import "react-phone-number-input/style.css";
@@ -24,7 +24,7 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 
-import { createUser } from "@/services/services";
+import { createUser, getDomiciliosByUserId } from "@/services/services";
 import { getUserByEmail } from "@/services/services.js";
 import { Eye, EyeOff, Plus, X } from "lucide-react";
 
@@ -39,6 +39,40 @@ export const EditUserSheet = (props) => {
     resetField,
     setValue,
   } = useForm();
+
+  const getUserDomicilios = async (userId) => {
+    try {
+      const domicilios = (await getDomiciliosByUserId(userId)).data.data.data;
+      return domicilios;
+    } catch (error) {
+      console.log("Error al obtener domicilios:", error);
+      return [];
+    }
+  };
+
+  useEffect(() => {
+    const loadDomicilios = async () => {
+      const domicilios = await getUserDomicilios(props.user.id);
+
+      console.log(domicilios);
+
+      if (domicilios && domicilios.length > 0) {
+        const domicilioPrincipal = domicilios[0];
+
+        setValue("dir1Linea1", domicilioPrincipal.linea1 || "");
+        setValue("dir1Linea2", domicilioPrincipal.linea2 || "");
+        setValue(
+          "provincia",
+          domicilioPrincipal.provinciaId
+            ? domicilioPrincipal.provinciaId.toString()
+            : undefined
+        );
+        setValue("cityName", domicilioPrincipal.ciudadId || "");
+      }
+    };
+
+    loadDomicilios();
+  }, [props.user.id, setValue]);
 
   const [password, setPassword] = useState(null);
   const [toggleEye, setToggleEye] = useState(false);
@@ -102,7 +136,7 @@ export const EditUserSheet = (props) => {
 
   const [phoneValue, setPhoneValue] = useState();
 
-  console.log("usuario: ", props.user);
+  console.log("usuario: ", props.user.id);
 
   return (
     <form
@@ -221,6 +255,7 @@ export const EditUserSheet = (props) => {
                     <Input
                       type="text"
                       autoComplete="off"
+                      // onClick={() => getUserDomicilios(props.user.id)}
                       {...register("dir1Linea1", {
                         required: {
                           value: true,
@@ -589,10 +624,7 @@ export const EditUserSheet = (props) => {
           defaultValue={props.user.userRole?.toString()}
           rules={{ required: { value: true, message: "Rol obligatorio" } }}
           render={({ field }) => (
-            <Select
-              value={field.value}
-              onValueChange={field.onChange}
-            >
+            <Select value={field.value} onValueChange={field.onChange}>
               <Label className="pl-1">Rol de usuario</Label>
               <SelectTrigger className="w-full">
                 <SelectValue placeholder="Roles" />
