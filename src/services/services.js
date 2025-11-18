@@ -25,6 +25,9 @@ export const getRoles = async () =>
 export const createRoles = async (datos) =>
   await axiosInstance.post("/roles", datos);
 
+export const deleteRoleById = async (id) =>
+  await axiosInstance.delete(`/roles/destroy/${id}`);
+
 export const getPermisosByRolId = async (id) =>
   await axiosInstance.get("roles/permisos/"+id)
 
@@ -43,3 +46,4 @@ export const getPermisosByUserId = async (user) =>
 
 export const updatePermisosByUserId = async (datos) =>
   await axiosInstance.patch("/menus/permisos/user", datos);
+

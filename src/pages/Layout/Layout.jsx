@@ -68,7 +68,6 @@ export const Layout = () => {
         const provincias = await getProvincias();
         setProvincias(provincias);
         const menu = await getMenusByUserId(user.id);
-        console.log(menu.data.data);
         SetMenuTree(menu.data.data);
       })();
     } catch (error) {

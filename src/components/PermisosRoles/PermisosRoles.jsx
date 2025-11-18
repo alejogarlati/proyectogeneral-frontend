@@ -5,6 +5,7 @@ import {
   createRoles,
   getPermisosByRolId,
   updatePermisosByRolId,
+  deleteRoleById,
 } from "@/services/services";
 
 import {
@@ -130,7 +131,6 @@ export const PermisosRoles = () => {
     );
     try {
       const actualizar = await updatePermisosByRolId(permisosUnited);
-      console.log(actualizar.data.responsecode);
       if (actualizar.data?.responseCode === 200) {
         toast.success("Permisos Actualizados con Exito");
         handleCancelarCambiosPermisos();
@@ -153,9 +153,26 @@ export const PermisosRoles = () => {
       toast.success("Rol Agregado a la Base de Datos");
       setIsDialogNewRolOpen(false);
       sortRoles([...roles, nuevoRol.data.data]);
-      console.log("Roles: \n", roles, "\nNuevo Rol:\n", nuevoRol.data);
     } else {
       toast.error("Hubo un error al agregar el rol");
+    }
+  };
+
+  const handleDeleteRol = async (id) => {
+    const confirmar = window.confirm("¿Estás seguro de que deseas eliminar este rol?");
+    if (!confirmar) return;
+    try { 
+      const respuesta = await deleteRoleById(id);
+      if (respuesta.data.success) {
+        toast.success("Rol eliminado correctamente");
+        const rolesActualizados = roles.filter((rol) => rol.id !== id);
+        sortRoles(rolesActualizados);
+      } else {
+        toast.error("No se pudo eliminar el rol");
+      }
+    } catch (error) {
+      toast.error("Error al eliminar el rol");
+      console.error("Error al eliminar el rol:", error);
     }
   };
 
@@ -191,7 +208,11 @@ export const PermisosRoles = () => {
                       >
                         {rol.name}
                       </div>
-                      <Trash2 className="cursor-pointer text-(--destructive)" />
+                      <Trash2 
+                        size={20} 
+                        className="cursor-pointer text-(--destructive)" 
+                        onClick={()=> handleDeleteRol(rol.id)}
+                        />
                     </div>
                   </ListItem>
                 ))}
