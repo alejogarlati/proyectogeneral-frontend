@@ -52,6 +52,5 @@ export const getNoticias = async () => await axiosInstance.get("/noticias");
 export const getVentasTotalesVendedor = async () =>
   await axiosInstance.get('/ventas/totales/vendedores');
 
-
 export const getDomiciliosByUserId = async (userId) =>
   await axiosInstance.get("/domicilios/user/" + userId);
