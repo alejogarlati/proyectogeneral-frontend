@@ -4,7 +4,8 @@ import axiosInstance from "./axiosInstance.js";
 export const getLogin = async (data) =>
   await axiosInstance.post("/users/login", data);
 
-export const getUsers = async () => await axiosInstance.get("/users");
+export const getUsers = async () => 
+  await axiosInstance.get("/users");
 
 export const getUserById = async (id) =>
   await axiosInstance.get(`/users/search/${id}`);
@@ -18,21 +19,39 @@ export const createUser = async (data) =>
 export const deleteUser = async (id) =>
   await axiosInstance.delete(`/users/destroy/${id}`);
 
-export const getRoles = async () => await axiosInstance.get("/roles");
+export const getRoles = async () => 
+  await axiosInstance.get("/roles");
+
+export const createRoles = async (datos) =>
+  await axiosInstance.post("/roles", datos);
+
+export const deleteRoleById = async (id) =>
+  await axiosInstance.delete(`/roles/destroy/${id}`);
+
+export const getPermisosByRolId = async (id) =>
+  await axiosInstance.get("roles/permisos/"+id)
+
+export const updatePermisosByRolId = async (datos) =>
+  await axiosInstance.patch("/roles/permisos/", datos);
 
 export const getProvincias = async () => await axiosInstance.get("/provincias");
 
 export const getMenusByUserId = async (userId) =>
   await axiosInstance.get("/menus/user/" + userId);
 
-export const getMenus = async () =>
-  await axiosInstance.get("/menus");
+export const getMenus = async () => await axiosInstance.get("/menus");
 
-export const getPermisosByUserId = async (user) => 
+export const getPermisosByUserId = async (user) =>
   await axiosInstance.get("/menus/permisos/user/" + user);
 
 export const updatePermisosByUserId = async (datos) =>
-  await axiosInstance.post ("/menus/permisos/user", datos);
+  await axiosInstance.patch("/menus/permisos/user", datos);
+
+export const getNoticias = async () => await axiosInstance.get("/noticias");
+
+export const getVentasTotalesVendedor = async () =>
+  await axiosInstance.get('/ventas/totales/vendedores');
+
 
 export const getDomiciliosByUserId = async (userId) =>
   await axiosInstance.get("/domicilios/user/" + userId);
