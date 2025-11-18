@@ -40,6 +40,16 @@ export const EditUserSheet = (props) => {
     setValue,
   } = useForm();
 
+  const getTelefonosUser = async (userId) => {
+    try {
+      const telefonos = (await getTelefonosByUserId(userId)).data.data.data;
+      return telefonos;
+    } catch (error) {
+      console.log("Error al obtener teléfonos:", error);
+      return [];
+    }
+  };
+
   const getUserDomicilios = async (userId) => {
     try {
       const domicilios = (await getDomiciliosByUserId(userId)).data.data.data;
@@ -67,11 +77,23 @@ export const EditUserSheet = (props) => {
             ? domicilioPrincipal.provinciaId.toString()
             : undefined
         );
-        setValue("cityName", domicilioPrincipal.ciudadId || "");
+        setValue("cityName", domicilioPrincipal.nombreCiudad || "");
       }
     };
-
     loadDomicilios();
+
+      const loadTelefonos = async () => {
+        const telefonos = await getTelefonosUser(props.user.id);
+
+        console.log(telefonos);
+
+        if (telefonos) {
+          const telefonoPrincipal = telefonos[0];
+          setPhoneValue(telefonoPrincipal.number || "");
+        }
+      };
+
+      loadTelefonos();
   }, [props.user.id, setValue]);
 
   const [password, setPassword] = useState(null);

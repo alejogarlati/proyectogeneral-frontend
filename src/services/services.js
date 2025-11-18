@@ -54,3 +54,6 @@ export const getVentasTotalesVendedor = async () =>
 
 export const getDomiciliosByUserId = async (userId) =>
   await axiosInstance.get("/domicilios/user/" + userId);
+
+export const getTelefonosByUserId = async (userId) =>
+  await axiosInstance.get("/telefonos/user/" + userId);
