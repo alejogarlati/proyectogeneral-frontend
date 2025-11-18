@@ -25,11 +25,12 @@ export const getProvincias = async () => await axiosInstance.get("/provincias");
 export const getMenusByUserId = async (userId) =>
   await axiosInstance.get("/menus/user/" + userId);
 
-export const getMenus = async () =>
-  await axiosInstance.get("/menus");
+export const getMenus = async () => await axiosInstance.get("/menus");
 
-export const getPermisosByUserId = async (user) => 
+export const getPermisosByUserId = async (user) =>
   await axiosInstance.get("/menus/permisos/user/" + user);
 
 export const updatePermisosByUserId = async (datos) =>
-  await axiosInstance.post ("/menus/permisos/user", datos);
+  await axiosInstance.post("/menus/permisos/user", datos);
+
+export const getNoticias = async () => await axiosInstance.get("/noticias");
